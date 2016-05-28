@@ -85,6 +85,21 @@ func TestGetCustomerPaymentProfile(t *testing.T){
 
 
 
+
+func TestUpdateCustomerPaymentProfile(t *testing.T){
+	address := Address{FirstName: "Test", LastName: "User", Address: "58585 Changed St", City: "Bulbasaur", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
+	credit_card := CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
+	updated_payment_profile := UpdateCustomerPaymentProfile(test_profile_id, test_payment_id, address, credit_card)
+	if updated_payment_profile==nil {
+		t.Fail()
+	}
+	t.Log("Updated the Users Payment Profile with new information \n")
+}
+
+
+
+
+
 func TestProfileTransaction(t *testing.T) {
 	item := LineItem{ItemID: "S0897", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "5.50"}
 	amount := "14.43"
@@ -97,7 +112,7 @@ func TestProfileTransaction(t *testing.T) {
 		t.Log("Transaction has failed! "+tranx_id+"\n")
 	} else {
 		tranx_id = fixtransx["transId"].(string)
-		t.Log("Received Transaction: "+tranx_id+"\n")
+		t.Log("Submitted and Received Transaction: "+tranx_id+"\n")
 	}
 }
 

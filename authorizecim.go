@@ -1,7 +1,6 @@
 package AuthorizeCIM
 
 import (
-	"fmt"
 	"net/http"
 	"bytes"
 	"io/ioutil"
@@ -12,7 +11,7 @@ var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
 var api_name string
 var api_key string
 
-// Return new user_id from Authorize.net
+
 func CreateCustomerProfile(user_info AuthUser) (string, map[string]string) {
 	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
 	profile := Profile{MerchantCustomerID: user_info.Uuid, Description: user_info.Description, Email: user_info.Email}
@@ -93,14 +92,14 @@ func GetCustomerPaymentProfile(profile_id string, payment_id string) map[string]
 }
 
 
-func UpdateCustomerPaymentProfile(profile_id string, payment_id string, address Address, credit_card CreditCard) {
+func UpdateCustomerPaymentProfile(profile_id string, payment_id string, address Address, credit_card CreditCard) map[string]interface{} {
 	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
 	new_billing := UpdatePaymentBillingProfile{Address: address, Payment: Payment{CreditCard:credit_card}, CustomerPaymentProfileId: payment_id}
 	profile := updateCustomerPaymentProfileRequest{auth_token, profile_id, new_billing, "testMode"}
 	input := changeCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
-	fmt.Println("Sending JSON: "+string(jsoned))
-	SendRequest(string(jsoned))
+	outgoing, _ := SendRequest(string(jsoned))
+	return outgoing
 }
 
 
