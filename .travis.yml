@@ -1,11 +1,16 @@
 language: go
-
+sudo: false
 go:
   - 1.5
   - 1.6
+  - tip
 
 addons:
     code_climate:
         repo_token: 6e3d45f2498bdc105ae1be00b809b02abd8222461ec037306984be92858ff3c3
 
-script: go test -v
+before_install:
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
+
+script: go test -v -covermode=count -coverprofile=coverage.out $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
