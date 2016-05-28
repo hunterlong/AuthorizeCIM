@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 	"math/rand"
+	"os"
 )
 
 
@@ -21,6 +22,8 @@ func RandomString(strlen int) string {
 }
 
 func TestAPIAccess(t *testing.T) {
+	api_name = os.Getenv("api_name")
+	api_key = os.Getenv("api_key")
 	if TestConnection() {
 		t.Log("API Connection was successful \n")
 	} else {

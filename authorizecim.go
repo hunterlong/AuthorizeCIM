@@ -8,12 +8,9 @@ import (
 	"encoding/json"
 )
 
-var (
-	api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
-	api_name string = "8v25DGQq9kf"
-	api_key string = "8L4m66p2EjVX25zK"
-)
-
+var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
+var api_name string
+var api_key string
 
 // Return new user_id from Authorize.net
 func CreateCustomerProfile(user_info AuthUser) (string, map[string]string) {
