@@ -58,16 +58,6 @@ func TestGetCustomerProfile(t *testing.T){
 }
 
 
-
-func TestGetAllProfiles(t *testing.T){
-	profiles := GetAllProfiles()
-	if profiles==nil{
-		t.Fail()
-	}
-	t.Log("Fetched ALL Customer Profiles \n")
-}
-
-
 func TestCreatePaymentProfile(t *testing.T){
 	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93063", Country: "USA", PhoneNumber: "5555555555"}
 	credit_card := CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
@@ -102,6 +92,16 @@ func TestUpdateCustomerPaymentProfile(t *testing.T){
 	t.Log("Updated the Users Payment Profile with new information \n")
 }
 
+
+
+
+func TestGetAllProfiles(t *testing.T){
+	profiles := GetAllProfiles()
+	if profiles==nil{
+		t.Fail()
+	}
+	t.Log("Fetched ALL Customer Profiles \n")
+}
 
 
 

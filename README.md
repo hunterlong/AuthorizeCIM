@@ -11,10 +11,11 @@ Give your Go Language applications the ability to store and retrieve credit card
 go get github.com/hunterlong/authorizecim
 ```
 
-* Add Authorize.net API Keys
+* Set Authorize.net API Keys
 ```
 api_name = os.Getenv("api_name")
 api_key = os.Getenv("api_key")
+AuthorizeCIM.SetAPIInfo(api_name,api_key)
 ```
 
 ## Features
@@ -28,12 +29,8 @@ api_key = os.Getenv("api_key")
 Below you'll find the useful functions to get you up and running in no time!
 
 
-#### Set and Test Correct API Key
+#### Test Correct API Key
 ```
-api_name = os.Getenv("api_name")
-api_key = os.Getenv("api_key")
-AuthorizeCIM.SetAPIInfo(api_name,api_key)
-
 connected := AuthorizeCIM.TestConnection()
 // true or false
 ```
