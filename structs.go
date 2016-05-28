@@ -14,6 +14,31 @@ type AuthUser struct {
 }
 
 
+type DeleteCustomerShippingAddressRequest struct {
+	GetCustomerShippingAddress GetCustomerShippingAddress `json:"deleteCustomerShippingAddressRequest"`
+}
+
+type GetCustomerShippingAddressRequest struct {
+	GetCustomerShippingAddress GetCustomerShippingAddress `json:"getCustomerShippingAddressRequest"`
+}
+
+type GetCustomerShippingAddress struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileId string `json:"customerProfileId"`
+	CustomerShippingId string `json:"customerAddressId"`
+}
+
+type CustomerShippingAddressRequest struct {
+	CustomerShippingAddress CustomerShippingAddress `json:"createCustomerShippingAddressRequest"`
+}
+
+type CustomerShippingAddress struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileId string `json:"customerProfileId"`
+	Address Address		`json:"address"`
+}
+
+
 type TransactionRecord struct {
 
 }

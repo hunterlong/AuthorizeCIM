@@ -10,6 +10,7 @@ import (
 
 var test_profile_id string
 var test_payment_id string
+var test_shipping_id string
 
 func RandomString(strlen int) string {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -79,6 +80,35 @@ func TestGetCustomerPaymentProfile(t *testing.T){
 	t.Log("Fetched the Users Payment Profile \n")
 }
 
+
+
+func TestCreateShippingAddress(t *testing.T){
+	address := Address{FirstName: "Test", LastName: "User", Address: "18273 Different St", City: "Los Angeles", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
+	user_new_shipping := CreateShippingAddress(test_profile_id, address)
+	if user_new_shipping=="0" {
+		t.Fail()
+	}
+	test_shipping_id = user_new_shipping
+	t.Log("Created New Shipping Profile for user "+user_new_shipping+"\n")
+}
+
+
+func TestGetShippingAddress(t *testing.T){
+	user_shipping := GetShippingAddress(test_profile_id, test_shipping_id)
+	if user_shipping==nil {
+		t.Fail()
+	}
+	t.Log("Fetched User Shipping Address "+test_shipping_id+"\n")
+}
+
+
+func TestDeleteShippingAddress(t *testing.T){
+	user_shipping := DeleteShippingAddress(test_profile_id, test_shipping_id)
+	if user_shipping==nil {
+		t.Fail()
+	}
+	t.Log("Deleted User Shipping Address "+test_shipping_id+"\n")
+}
 
 
 

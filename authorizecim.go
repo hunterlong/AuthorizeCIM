@@ -168,17 +168,39 @@ func TestConnection() bool {
 }
 
 
-func CreateShippingAddress(){
-
+func CreateShippingAddress(profile_id string, address Address) string {
+	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
+	customer_shipping := CustomerShippingAddress{auth_token,profile_id,address}
+	customer_shipping_request := CustomerShippingAddressRequest{customer_shipping}
+	jsoned, _ := json.Marshal(customer_shipping_request)
+	outgoing, _ := SendRequest(string(jsoned))
+	var new_address_id string
+	if outgoing["customerAddressId"]==nil {
+		new_address_id = "0"
+	} else {
+		new_address_id = outgoing["customerAddressId"].(string)
+	}
+	return new_address_id
 }
 
-func DeleteShippingAddress(){
-
+func GetShippingAddress(profile_id string, shipping_id string) map[string]interface{} {
+	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
+	customer_shipping := GetCustomerShippingAddress{auth_token,profile_id,shipping_id}
+	customer_shipping_request := GetCustomerShippingAddressRequest{customer_shipping}
+	jsoned, _ := json.Marshal(customer_shipping_request)
+	outgoing, _ := SendRequest(string(jsoned))
+	return outgoing
 }
 
-func UsersShippingAddresses() {
-
+func DeleteShippingAddress(profile_id string, shipping_id string) map[string]interface{} {
+	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
+	customer_shipping := GetCustomerShippingAddress{auth_token,profile_id,shipping_id}
+	customer_shipping_request := DeleteCustomerShippingAddressRequest{customer_shipping}
+	jsoned, _ := json.Marshal(customer_shipping_request)
+	outgoing, _ := SendRequest(string(jsoned))
+	return outgoing
 }
+
 
 func RefundTransactions(){
 
