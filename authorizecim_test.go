@@ -21,9 +21,15 @@ func RandomString(strlen int) string {
 	return string(result)
 }
 
-func TestAPIAccess(t *testing.T) {
+
+func TestSetAPIInfo(t *testing.T) {
 	api_name = os.Getenv("api_name")
 	api_key = os.Getenv("api_key")
+	SetAPIInfo(api_name,api_key)
+	t.Log("Authorize.net API Keys have been set! \n")
+}
+
+func TestAPIAccess(t *testing.T) {
 	if TestConnection() {
 		t.Log("API Connection was successful \n")
 	} else {

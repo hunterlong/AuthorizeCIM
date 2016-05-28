@@ -27,6 +27,18 @@ api_key = os.Getenv("api_key")
 ## Examples
 Below you'll find the useful functions to get you up and running in no time!
 
+
+#### Set and Test Correct API Key
+```
+api_name = os.Getenv("api_name")
+api_key = os.Getenv("api_key")
+AuthorizeCIM.SetAPIInfo(api_name,api_key)
+
+connected := AuthorizeCIM.TestConnection()
+// true or false
+```
+
+
 #### Create new Customer Account
 ```
 customer_info := AuthorizeCIM.AuthUser{

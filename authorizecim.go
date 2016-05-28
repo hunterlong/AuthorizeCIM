@@ -12,6 +12,11 @@ var api_name string
 var api_key string
 
 
+func SetAPIInfo(api_name string, api_key string) {
+	api_key = api_key
+	api_name = api_name
+}
+
 func CreateCustomerProfile(user_info AuthUser) (string, map[string]string) {
 	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
 	profile := Profile{MerchantCustomerID: user_info.Uuid, Description: user_info.Description, Email: user_info.Email}
