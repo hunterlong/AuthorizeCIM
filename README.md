@@ -99,11 +99,27 @@ AuthorizeCIM.UpdateCustomerPaymentProfile(profile_id,payment_id,new_address,cred
 
 #### Create a transaction that will be charged on customers billing profile
 ```
-item := AuthorizeCIM.LineItem{ItemID: "55", Name: "item here", Description: "its simple", Quantity: "1", UnitPrice: "9.58"}
+item := LineItem{
+                  ItemID: "S0897", 
+                  Name: "New Product", 
+                  Description: "brand new", 
+                  Quantity: "1", 
+                  UnitPrice: "5.50"
+                  }
+amount := "14.43"
 profile_id := "53"
 payment_id := "416"
-amount := "18.99"
-AuthorizeCIM.CreateTransaction(profile_id,payment_id,item,amount)
+
+tranx, _ := CreateTransaction(profile_id, payment_id, item, amount)
+
+var tranx_id string
+fixtransx, _ := tranx["transactionResponse"].(map[string]interface{})
+if tranx["transactionResponse"]==nil {
+    // this transaction failed!
+} else {
+	tranx_id = fixtransx["transId"].(string)
+	fmt.Println("Received Transaction ID: "+tranx_id)
+}
 ```
 
 # Testing
