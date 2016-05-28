@@ -7,7 +7,7 @@ Give your Go Language applications the ability to store and retrieve credit card
 
 * Import package
 ```
-go get github.com/hunterlong/authorize_cim
+go get github.com/hunterlong/authorizecim
 ```
 
 ## Features
