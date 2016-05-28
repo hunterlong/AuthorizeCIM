@@ -23,18 +23,30 @@ Below you'll find the useful functions to get you up and running in no time!
 #### Create new Customer Account
 ```
 customer_info := AuthorizeCIM.AuthUser{
-      "54",
-      "email@domain.com",
-      "Test Account"
-      }
+                  "54",
+                  "email@domain.com",
+                  "Test Account"
+                  }
 new_customer, err := AuthorizeCIM.CreateCustomerProfile(customer_info)
 // outputs new user profile ID
 ```
 
 #### Create Payment Profile for Customer
 ```
-address := AuthorizeCIM.Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93063", Country: "USA", PhoneNumber: "5555555555"}
-credit_card := AuthorizeCIM.CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
+address := AuthorizeCIM.Address{
+                  FirstName: "Test", 
+                  LastName: "User", 
+                  Address: "1234 Road St", 
+                  City: "City Name", 
+                  State:" California",
+                  Zip: "93063", 
+                  Country: "USA", 
+                  PhoneNumber: "5555555555"
+                  }
+credit_card := AuthorizeCIM.CreditCard{
+                  CardNumber: "4111111111111111", 
+                  ExpirationDate: "2020-12"
+                  }
 profile_id := "53"
 AuthorizeCIM.CreateCustomerBillingProfile(profile_id, address, credit_card)
 ```
@@ -66,8 +78,20 @@ AuthorizeCIM.DeleteCustomerPaymentProfile(profile_id,payment_id)
 
 #### Update a single billing profile with new information
 ```
-new_address := AuthorizeCIM.Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93063", Country: "USA", PhoneNumber: "5555555555"}
-credit_card := AuthorizeCIM.CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
+new_address := AuthorizeCIM.Address{
+                  FirstName: "Test", 
+                  LastName: "User", 
+                  Address: "1234 Road St", 
+                  City: "City Name", 
+                  State:" California",
+                  Zip: "93063", 
+                  Country: "USA", 
+                  PhoneNumber: "5555555555"
+                  }
+credit_card := AuthorizeCIM.CreditCard{
+                  CardNumber: "4111111111111111", 
+                  ExpirationDate: "2020-12"
+                  }
 profile_id := "53"
 payment_id := "416"
 AuthorizeCIM.UpdateCustomerPaymentProfile(profile_id,payment_id,new_address,credit_card)
