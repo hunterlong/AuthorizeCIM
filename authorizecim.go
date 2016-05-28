@@ -10,8 +10,8 @@ import (
 
 var (
 	api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
-	api_name string = ""
-	api_key string = ""
+	api_name string = "8v25DGQq9kf"
+	api_key string = "8L4m66p2EjVX25zK"
 )
 
 
@@ -36,23 +36,23 @@ func CreateCustomerProfile(user_info AuthUser) (string, map[string]string) {
 }
 
 
-func GetCustomerProfile(profile_id string) {
+func GetCustomerProfile(profile_id string) map[string]interface{} {
 	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
 	profile := getCustomerProfileRequest{auth_token, profile_id}
 	input := CustomerProfile{profile}
 	jsoned, _ := json.Marshal(input)
-	fmt.Println("Sending JSON: "+string(jsoned))
-	SendRequest(string(jsoned))
+	outgoing, _ :=SendRequest(string(jsoned))
+	return outgoing
 }
 
 
-func GetAllProfiles(){
+func GetAllProfiles() map[string]interface{} {
 	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
 	profilerequest := getCustomerProfileIdsRequest{auth_token}
 	all := AllCustomerProfileIds{profilerequest}
 	jsoned, _ := json.Marshal(all)
-	fmt.Println("Sending JSON: "+string(jsoned))
-	SendRequest(string(jsoned))
+	outgoing, _ :=SendRequest(string(jsoned))
+	return outgoing
 }
 
 
@@ -86,13 +86,13 @@ func CreateCustomerBillingProfile(profile_id string, credit_card CreditCard, add
 
 
 
-func GetCustomerPaymentProfile(profile_id string, payment_id string) {
+func GetCustomerPaymentProfile(profile_id string, payment_id string) map[string]interface{} {
 	auth_token := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
 	profile := CustomerPaymentProfileRequest{auth_token, profile_id, payment_id}
 	input := getCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
-	fmt.Println("Sending JSON: "+string(jsoned))
-	SendRequest(string(jsoned))
+	outgoing, _ := SendRequest(string(jsoned))
+	return outgoing
 }
 
 
@@ -154,7 +154,16 @@ func CreateTransaction(profile_id string, payment_id string, item LineItem, amou
 
 func TestConnection() bool {
 
-	return true
+	auth_token := AuthenticateTestRequest{MerchantAuthentication{Name: api_name, TransactionKey: api_key}}
+	authnettest := AuthorizeNetTest{AuthenticateTestRequest:auth_token}
+	jsoned, _ := json.Marshal(authnettest)
+	outgoing, _ := SendRequest(string(jsoned))
+	outinner, _ := outgoing["messages"].(map[string]interface{})
+	status := outinner["resultCode"]
+	if status=="Ok" {
+		return true
+	}
+	return false
 }
 
 
