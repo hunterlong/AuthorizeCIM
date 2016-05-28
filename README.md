@@ -22,7 +22,11 @@ Below you'll find the useful functions to get you up and running in no time!
 
 #### Create new Customer Account
 ```
-customer_info := AuthorizeCIM.AuthUser{"54","email@domain.com","Test Account"}
+customer_info := AuthorizeCIM.AuthUser{
+      "54",
+      "email@domain.com",
+      "Test Account"
+      }
 new_customer, err := AuthorizeCIM.CreateCustomerProfile(customer_info)
 // outputs new user profile ID
 ```
