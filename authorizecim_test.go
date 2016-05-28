@@ -21,7 +21,12 @@ func RandomString(strlen int) string {
 }
 
 func TestAPIAccess(t *testing.T) {
-
+	if TestConnection() {
+		t.Log("API Connection was successful \n")
+	} else {
+		t.Log("API Connection has incorrect API Keys! \n")
+		t.Fail()
+	}
 }
 
 func TestUserCreation(t *testing.T) {
@@ -32,6 +37,25 @@ func TestUserCreation(t *testing.T) {
 	}
 	test_profile_id = newuser
 	t.Log("User was created "+test_profile_id+"\n")
+}
+
+
+func TestGetCustomerProfile(t *testing.T){
+	profile := GetCustomerProfile(test_profile_id)
+	if profile==nil{
+		t.Fail()
+	}
+	t.Log("Fetched single Customer Profile \n")
+}
+
+
+
+func TestGetAllProfiles(t *testing.T){
+	profiles := GetAllProfiles()
+	if profiles==nil{
+		t.Fail()
+	}
+	t.Log("Fetched ALL Customer Profiles \n")
 }
 
 
@@ -47,13 +71,21 @@ func TestCreatePaymentProfile(t *testing.T){
 }
 
 
+
+func TestGetCustomerPaymentProfile(t *testing.T){
+	user_payment_profile := GetCustomerPaymentProfile(test_profile_id, test_payment_id)
+	if user_payment_profile==nil {
+		t.Fail()
+	}
+	t.Log("Fetched the Users Payment Profile \n")
+}
+
+
+
 func TestProfileTransaction(t *testing.T) {
 	item := LineItem{ItemID: "S0897", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "5.50"}
 	amount := "14.43"
-	tranx, err := CreateTransaction(test_profile_id, test_payment_id, item, amount)
-	if err!=nil{
-		t.Fail()
-	}
+	tranx, _ := CreateTransaction(test_profile_id, test_payment_id, item, amount)
 	var tranx_id string
 	fixtransx, _ := tranx["transactionResponse"].(map[string]interface{})
 	if tranx["transactionResponse"]==nil {
