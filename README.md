@@ -145,7 +145,13 @@ go test -v
 ##### This will run a test of each function, make sure you have correct API keys for Authorize.net
 
 # ToDo
-* Cleanup code and add organized structs for function inputs
+* Make cleaner maps for outputs
+* Subscriptions (create, status, delete)
+* Functions to search Subscriptions (active, expired, etc)
+* Get information about Transactions ID
+* Void and Refund Transactions
+* Add Bank Account Support
+* Authorize Only methods
 
 
 # License
