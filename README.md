@@ -1,5 +1,5 @@
 # Authorize.net CIM for golang
-[![Build Status](https://travis-ci.com/Hunterlong/AuthorizeCIM.svg?token=UzkEXUuQV1czxpPfYqgb&branch=master)](https://travis-ci.com/Hunterlong/AuthorizeCIM)
+[![Build Status](https://travis-ci.org/Hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/Hunterlong/AuthorizeCIM)
 
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net.
 
@@ -9,6 +9,12 @@ Give your Go Language applications the ability to store and retrieve credit card
 * Import package
 ```
 go get github.com/hunterlong/authorizecim
+```
+
+* Add Authorize.net API Keys
+```
+api_name = os.Getenv("api_name")
+api_key = os.Getenv("api_key")
 ```
 
 ## Features
