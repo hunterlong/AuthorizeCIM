@@ -106,6 +106,12 @@ amount := "18.99"
 AuthorizeCIM.CreateTransaction(profile_id,payment_id,item,amount)
 ```
 
+# Testing
+```
+go test -v
+```
+##### This will run a test of each function, make sure you have correct API keys for Authorize.net
+
 # ToDo
 * Cleanup code and add organized structs for function inputs
 
