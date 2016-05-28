@@ -1,4 +1,5 @@
 # Authorize.net CIM for golang
+![alt tag](https://travis-ci.com/Hunterlong/AuthorizeCIM.svg?token=UzkEXUuQV1czxpPfYqgb&branch=master)
 
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net.
 
