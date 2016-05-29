@@ -12,9 +12,9 @@ var apiName string
 var apiKey string
 
 
-func SetAPIInfo(apiName string, apiKey string) {
-	apiKey = apiKey
-	apiName = apiName
+func SetAPIInfo(name string, key string) {
+	apiKey = key
+	apiName = name
 }
 
 func CreateCustomerProfile(userInfo AuthUser) (string, map[string]string) {
