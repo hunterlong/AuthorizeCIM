@@ -13,8 +13,8 @@ go get github.com/hunterlong/authorizecim
 
 * Set Authorize.net API Keys
 ```
-api_name = os.Getenv("api_name")
-api_key = os.Getenv("api_key")
+apiName = os.Getenv("apiName")
+apiKey = os.Getenv("apiKey")
 AuthorizeCIM.SetAPIInfo(api_name,api_key)
 ```
 
