@@ -8,18 +8,18 @@ import (
 )
 
 var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
-var api_name string
-var api_key string
+var apiName string
+var apiKey string
 
 
-func SetAPIInfo(api_name string, api_key string) {
-	api_key = api_key
-	api_name = api_name
+func SetAPIInfo(apiName string, apiKey string) {
+	apiKey = apiKey
+	apiName = apiName
 }
 
-func CreateCustomerProfile(user_info AuthUser) (string, map[string]string) {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	profile := Profile{MerchantCustomerID: user_info.Uuid, Description: user_info.Description, Email: user_info.Email}
+func CreateCustomerProfile(userInfo AuthUser) (string, map[string]string) {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	profile := Profile{MerchantCustomerID: userInfo.Uuid, Description: userInfo.Description, Email: userInfo.Email}
 	request := CreateCustomerProfileRequest{authToken, profile}
 	newprofile := NewCustomerProfile{request}
 	jsoned, _ := json.Marshal(newprofile)
@@ -37,9 +37,9 @@ func CreateCustomerProfile(user_info AuthUser) (string, map[string]string) {
 }
 
 
-func GetCustomerProfile(profile_id string) map[string]interface{} {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	profile := getCustomerProfileRequest{authToken, profile_id}
+func GetCustomerProfile(profileID string) map[string]interface{} {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	profile := getCustomerProfileRequest{authToken, profileID}
 	input := CustomerProfile{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ :=SendRequest(string(jsoned))
@@ -48,7 +48,7 @@ func GetCustomerProfile(profile_id string) map[string]interface{} {
 
 
 func GetAllProfiles() map[string]interface{} {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	profilerequest := getCustomerProfileIdsRequest{authToken}
 	all := AllCustomerProfileIds{profilerequest}
 	jsoned, _ := json.Marshal(all)
@@ -57,39 +57,39 @@ func GetAllProfiles() map[string]interface{} {
 }
 
 
-func DeleteCustomerProfile(profile_id string){
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	profile := deleteCustomerProfileRequest{authToken, profile_id}
+func DeleteCustomerProfile(profileID string){
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	profile := deleteCustomerProfileRequest{authToken, profileID}
 	input := deleteCustomerProfile{profile}
 	jsoned, _ := json.Marshal(input)
 	SendRequest(string(jsoned))
 }
 
 
-func CreateCustomerBillingProfile(profile_id string, credit_card CreditCard, address Address) (string, map[string]string) {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	payment_profile := PaymentBillingProfile{Address: address, Payment: Payment{CreditCard:credit_card}}
-	request := CreateCustomerBillingProfileRequest{authToken, profile_id, payment_profile, "testMode"}
+func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, address Address) (string, map[string]string) {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	paymentProfile := PaymentBillingProfile{Address: address, Payment: Payment{CreditCard:creditCard}}
+	request := CreateCustomerBillingProfileRequest{authToken, profileID, paymentProfile, "testMode"}
 	newprofile := NewCustomerBillingProfile{request}
 	jsoned, _ := json.Marshal(newprofile)
 	outgoing, _ :=SendRequest(string(jsoned))
-	var new_payment_id string
+	var new_paymentID string
 	var errors map[string]string
 	if outgoing["customerPaymentProfileId"]==nil {
-		new_payment_id = "0"
+		new_paymentID = "0"
 		errors = map[string]string{"message": "User cannot be created"}
 	} else {
-		new_payment_id = outgoing["customerPaymentProfileId"].(string)
+		new_paymentID = outgoing["customerPaymentProfileId"].(string)
 		errors = nil
 	}
-	return new_payment_id, errors
+	return new_paymentID, errors
 }
 
 
 
-func GetCustomerPaymentProfile(profile_id string, payment_id string) map[string]interface{} {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	profile := CustomerPaymentProfileRequest{authToken, profile_id, payment_id}
+func GetCustomerPaymentProfile(profileID string, paymentID string) map[string]interface{} {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	profile := CustomerPaymentProfileRequest{authToken, profileID, paymentID}
 	input := getCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
@@ -97,10 +97,10 @@ func GetCustomerPaymentProfile(profile_id string, payment_id string) map[string]
 }
 
 
-func UpdateCustomerPaymentProfile(profile_id string, payment_id string, address Address, credit_card CreditCard) map[string]interface{} {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	new_billing := UpdatePaymentBillingProfile{Address: address, Payment: Payment{CreditCard:credit_card}, CustomerPaymentProfileId: payment_id}
-	profile := updateCustomerPaymentProfileRequest{authToken, profile_id, new_billing, "testMode"}
+func UpdateCustomerPaymentProfile(profileID string, paymentID string, address Address, creditCard CreditCard) map[string]interface{} {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	new_billing := UpdatePaymentBillingProfile{Address: address, Payment: Payment{CreditCard:creditCard}, CustomerPaymentProfileId: paymentID}
+	profile := updateCustomerPaymentProfileRequest{authToken, profileID, new_billing, "testMode"}
 	input := changeCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
@@ -108,9 +108,9 @@ func UpdateCustomerPaymentProfile(profile_id string, payment_id string, address 
 }
 
 
-func DeleteCustomerPaymentProfile(profile_id string, payment_id string) {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	profile := deleteCustomerPaymentProfile{authToken, profile_id, payment_id}
+func DeleteCustomerPaymentProfile(profileID string, paymentID string) {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	profile := deleteCustomerPaymentProfile{authToken, profileID, paymentID}
 	input := deleteCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
 	SendRequest(string(jsoned))
@@ -139,15 +139,15 @@ func SendRequest(input string) (map[string]interface{}, interface{}) {
 
 
 
-func CreateTransaction(profile_id string, payment_id string, item LineItem, amount string) (map[string]interface{}, map[string]string) {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
+func CreateTransaction(profileID string, paymentID string, item LineItem, amount string) (map[string]interface{}, map[string]string) {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	items := LineItems{LineItem: item}
-	sub_profile := SubProfile{CustomerPaymentProfileId: payment_id}
-	trans_profile := TranProfile{CustomerProfileId: profile_id, SubProfile: sub_profile}
-	transaction := TransactionRequest{TransactionType: "authCaptureTransaction", Amount: amount, TranProfile: trans_profile, LineItems: items}
+	subProfile := SubProfile{CustomerPaymentProfileId: paymentID}
+	transProfile := TranProfile{CustomerProfileId: profileID, SubProfile: subProfile}
+	transaction := TransactionRequest{TransactionType: "authCaptureTransaction", Amount: amount, TranProfile: transProfile, LineItems: items}
 	tranxrequest := CreateTransactionRequest{MerchantAuthentication: authToken, RefID: "none33", TransactionRequest: transaction}
-	do_tranx := DoCreateTransaction{tranxrequest}
-	jsoned, _ := json.Marshal(do_tranx)
+	doTranx := DoCreateTransaction{tranxrequest}
+	jsoned, _ := json.Marshal(doTranx)
 	outgoing, _ := SendRequest(string(jsoned))
 	return outgoing, map[string]string{"yoyo":"yoyook"}
 }
@@ -155,7 +155,7 @@ func CreateTransaction(profile_id string, payment_id string, item LineItem, amou
 
 func TestConnection() bool {
 
-	authToken := AuthenticateTestRequest{MerchantAuthentication{Name: api_name, TransactionKey: api_key}}
+	authToken := AuthenticateTestRequest{MerchantAuthentication{Name: apiName, TransactionKey: apiKey}}
 	authnettest := AuthorizeNetTest{AuthenticateTestRequest:authToken}
 	jsoned, _ := json.Marshal(authnettest)
 	outgoing, _ := SendRequest(string(jsoned))
@@ -168,11 +168,11 @@ func TestConnection() bool {
 }
 
 
-func CreateShippingAddress(profile_id string, address Address) string {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	customer_shipping := CustomerShippingAddress{authToken,profile_id,address}
-	customer_shipping_request := CustomerShippingAddressRequest{customer_shipping}
-	jsoned, _ := json.Marshal(customer_shipping_request)
+func CreateShippingAddress(profileID string, address Address) string {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	customerShipping := CustomerShippingAddress{authToken,profileID,address}
+	customerShippingRequest := CustomerShippingAddressRequest{customerShipping}
+	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
 	var new_address_id string
 	if outgoing["customerAddressId"]==nil {
@@ -183,20 +183,20 @@ func CreateShippingAddress(profile_id string, address Address) string {
 	return new_address_id
 }
 
-func GetShippingAddress(profile_id string, shipping_id string) map[string]interface{} {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	customer_shipping := GetCustomerShippingAddress{authToken,profile_id,shipping_id}
-	customer_shipping_request := GetCustomerShippingAddressRequest{customer_shipping}
-	jsoned, _ := json.Marshal(customer_shipping_request)
+func GetShippingAddress(profileID string, shippingID string) map[string]interface{} {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	customerShipping := GetCustomerShippingAddress{authToken,profileID,shippingID}
+	customerShippingRequest := GetCustomerShippingAddressRequest{customerShipping}
+	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
 	return outgoing
 }
 
-func DeleteShippingAddress(profile_id string, shipping_id string) map[string]interface{} {
-	authToken := MerchantAuthentication{Name: api_name, TransactionKey: api_key}
-	customer_shipping := GetCustomerShippingAddress{authToken,profile_id,shipping_id}
-	customer_shipping_request := DeleteCustomerShippingAddressRequest{customer_shipping}
-	jsoned, _ := json.Marshal(customer_shipping_request)
+func DeleteShippingAddress(profileID string, shippingID string) map[string]interface{} {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	customerShipping := GetCustomerShippingAddress{authToken,profileID,shippingID}
+	customerShippingRequest := DeleteCustomerShippingAddressRequest{customerShipping}
+	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
 	return outgoing
 }
