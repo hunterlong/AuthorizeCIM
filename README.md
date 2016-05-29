@@ -1,5 +1,5 @@
 # Authorize.net CIM for golang
-[![Build Status](https://travis-ci.org/Hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/Hunterlong/AuthorizeCIM)  [![Code Climate](https://codeclimate.com/github/Hunterlong/AuthorizeCIM/badges/gpa.svg)](https://codeclimate.com/github/Hunterlong/AuthorizeCIM)  [![Coverage Status](https://coveralls.io/repos/github/Hunterlong/AuthorizeCIM/badge.svg?branch=master)](https://coveralls.io/github/Hunterlong/AuthorizeCIM?branch=master)
+[![Build Status](https://travis-ci.org/Hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/Hunterlong/AuthorizeCIM)  [![Code Climate](https://codeclimate.com/github/Hunterlong/AuthorizeCIM/badges/gpa.svg)](https://codeclimate.com/github/Hunterlong/AuthorizeCIM)  [![Coverage Status](https://coveralls.io/repos/github/Hunterlong/AuthorizeCIM/badge.svg?branch=master)](https://coveralls.io/github/Hunterlong/AuthorizeCIM?branch=master)  [![GoDoc](https://godoc.org/github.com/Hunterlong/AuthorizeCIM?status.svg)](https://godoc.org/github.com/Hunterlong/AuthorizeCIM)
 
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net.
 
