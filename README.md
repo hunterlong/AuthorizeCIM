@@ -29,6 +29,7 @@ AuthorizeCIM.SetAPIInfo(api_name,api_key)
 * Process transactions using customers billing profile
 * Delete and Updating billing profiles
 
+![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
 ## Examples
 Below you'll find the useful functions to get you up and running in no time!
@@ -148,6 +149,8 @@ if tranx["transactionResponse"]==nil {
 go test -v
 ```
 ##### This will run a test of each function, make sure you have correct API keys for Authorize.net
+
+![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
 # ToDo
 * Make cleaner maps for outputs
