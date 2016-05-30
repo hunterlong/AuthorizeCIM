@@ -126,7 +126,7 @@ item := LineItem{
                   Name: "New Product", 
                   Description: "brand new", 
                   Quantity: "1", 
-                  UnitPrice: "5.50"
+                  UnitPrice: "14.43"
                   }
 amount := "14.43"
 profile_id := "53"
