@@ -3,7 +3,7 @@
 # Authorize.net CIM for golang
 [![Build Status](https://travis-ci.org/Hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/Hunterlong/AuthorizeCIM)  [![Code Climate](https://codeclimate.com/github/Hunterlong/AuthorizeCIM/badges/gpa.svg)](https://codeclimate.com/github/Hunterlong/AuthorizeCIM)  [![Coverage Status](https://coveralls.io/repos/github/Hunterlong/AuthorizeCIM/badge.svg?branch=master)](https://coveralls.io/github/Hunterlong/AuthorizeCIM?branch=master)  [![GoDoc](https://godoc.org/github.com/Hunterlong/AuthorizeCIM?status.svg)](https://godoc.org/github.com/Hunterlong/AuthorizeCIM)
 
-Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net.
+Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM API. 
 
 
 ## Usage
@@ -18,23 +18,27 @@ import "github.com/hunterlong/authorizecim"
 
 * Set Authorize.net API Keys
 ```go
-apiName = os.Getenv("apiName")
-apiKey = os.Getenv("apiKey")
+// Set your Authorize API name and key here
+// You can get Sandbox Access at:  https://developer.authorize.net/hello_world/sandbox/
+apiName := "auth_name_here"
+apiKey := "auth_transaction_key_here"
 AuthorizeCIM.SetAPIInfo(api_name,api_key)
 ```
 
 ## Features
-* Store Billing Profile (credit card) on Authorize.net using CIM
-* Create subscriptions (monthly, weekly, days)
-* Fetch customers billing profiles in a simple array
+* Creating Users Accounts based on user's unique ID and/or email address
+* Store Billing Profiles (credit card) on Authorize.net using Customer Information Manager (CIM)
+* Create Subscriptions (monthly, weekly, days) with Automated Recurring Billing (ARB)
+* Fetch customers billing profiles in a simple["array"]
 * Process transactions using customers stored credit card
 * Delete and Updating billing profiles
+* Add Shipping Profiles into user accounts
 * Delete a customers entire account
 
 ![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
 ## Examples
-Below you'll find the useful functions to get you up and running in no time!
+Below you'll find useful functions to get you up and running in no time!
 
 
 #### Test Correct API Key
@@ -75,6 +79,7 @@ profile_id := "53"
 newPaymentID, success := AuthorizeCIM.CreateCustomerBillingProfile(profile_id, address, credit_card)
 // outputs new payment profile ID and true/false
 ```
+
 #### Get Customers stored billing accounts
 ```go
 profile_id := "30089822"
@@ -89,7 +94,7 @@ success = AuthorizeCIM.DeleteCustomerProfile(profile_id)
 // outputs true or false
 ```
 
-#### Get detailed information about a billing profile from customer
+#### Get detailed information about the Billing Profile from customer
 ```go
 profile_id := "30089822"
 payment_id := "1200079812"
@@ -97,7 +102,7 @@ stored_card, success := AuthorizeCIM.GetCustomerPaymentProfile(profile_id,paymen
 // outputs payment profiles, and true/false
 ```
 
-#### Delete customers billing profile
+#### Delete customers Billing Profile
 ```go
 profile_id := "30089822"
 payment_id := "1200079812"
@@ -105,7 +110,7 @@ success := AuthorizeCIM.DeleteCustomerPaymentProfile(profile_id,payment_id)
 // outputs true or false
 ```
 
-#### Update a single billing profile with new information
+#### Update a single Billing Profile with new information
 ```go
 new_address := AuthorizeCIM.Address{
                   FirstName: "Test", 
@@ -127,7 +132,7 @@ success := AuthorizeCIM.UpdateCustomerPaymentProfile(profile_id,payment_id,new_a
 // outputs true or false
 ```
 
-#### Create a transaction that will be charged on customers billing profile
+#### Create a Transaction that will be charged on Customers Billing Profile
 ```go
 item := LineItem{
                   ItemID: "S0897", 
@@ -184,9 +189,10 @@ newSubscription, success := CreateSubscription(subscriptionInput)
 ```
 ###### Some transactions or subscriptions may not process if you do many functions in a short amount of time.
 
-# Testing
+
+## Testing (include "apiName" and "apiKey" as environment variables)
 ```go
-go test -v
+go test -v 
 ```
 ##### This will run a test of each function, make sure you have correct API keys for Authorize.net
 

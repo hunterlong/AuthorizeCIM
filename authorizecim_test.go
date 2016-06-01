@@ -96,6 +96,10 @@ func TestGetShippingAddress(t *testing.T){
 	t.Log("\n")
 }
 
+func TestDelay(t *testing.T){
+	time.Sleep(45 * time.Second)
+	t.Log("Done sleeping \n")
+}
 
 func TestGetAllProfiles(t *testing.T){
 	profiles := GetAllProfiles()
@@ -104,7 +108,6 @@ func TestGetAllProfiles(t *testing.T){
 	}
 	t.Log("Fetched ALL Customer Profiles IDs \n")
 }
-
 
 
 
@@ -155,11 +158,10 @@ func TestGetCustomerProfile(t *testing.T){
 
 
 
-func TestDelay(t *testing.T){
-	time.Sleep(60 * time.Second)
-	t.Log("Done sleeping \n")
+func TestAnotherDelay(t *testing.T){
+	time.Sleep(45 * time.Second)
+	t.Log("Trying not to spam Authorize.net, Done sleeping \n")
 }
-
 
 
 func TestCreateSubscription(t *testing.T){
