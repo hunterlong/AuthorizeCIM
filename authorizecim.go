@@ -152,9 +152,25 @@ func CreateTransaction(profileID string, paymentID string, item LineItem, amount
 	doTranx := DoCreateTransaction{tranxrequest}
 	jsoned, _ := json.Marshal(doTranx)
 	outgoing, _ := SendRequest(string(jsoned))
-	status := FindResultCode(outgoing)
-	approved := TransactionApproved(outgoing)
-	return outgoing["transactionResponse"].(map[string]interface{}), approved, status
+	var status, approved bool
+	var response map[string]interface{}
+	if outgoing["responseCode"]!=nil {
+		if outgoing["responseCode"].(string) != "1" {
+			approved = false
+			status = true
+			response = map[string]interface{}{}
+		} else {
+			status = FindResultCode(outgoing)
+			approved = TransactionApproved(outgoing)
+			response = outgoing["transactionResponse"].(map[string]interface{})
+		}
+	} else {
+		approved = false
+		status = false
+		response = map[string]interface{}{}
+	}
+
+	return response, approved, status
 }
 
 
@@ -211,23 +227,29 @@ func GetTransactionDetails(tranID string) map[string]interface{} {
 	transactionRequest := TransactionDetailsRequest{transDetails}
 	jsoned, _ := json.Marshal(transactionRequest)
 	outgoing, _ := SendRequest(string(jsoned))
-	return outgoing["transaction"].(map[string]interface{})
+	if outgoing["transaction"]!=nil {
+		return outgoing["transaction"].(map[string]interface{})
+	}
+	return map[string]interface{}{}
 }
 
 
 func FindResultCode(incoming map[string]interface{}) bool {
 	messages, _ := incoming["messages"].(map[string]interface{})
-	if messages["resultCode"]=="Ok" {
-		return true
-	} else {
-		return false
+	if messages!=nil {
+		if messages["resultCode"] == "Ok" {
+			return true
+		}
 	}
+	return false
 }
 
 func TransactionApproved(incoming map[string]interface{}) bool {
-	messages, _ := incoming["transactionResponse"].(map[string]interface{})
-	if messages["responseCode"]=="1" {
-		return true
+	if incoming!=nil {
+		messages, _ := incoming["transactionResponse"].(map[string]interface{})
+		if messages["responseCode"] == "1" {
+			return true
+		}
 	}
 	return false
 }
