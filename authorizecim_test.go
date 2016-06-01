@@ -123,7 +123,7 @@ func TestGetAllProfiles(t *testing.T){
 
 func TestProfileTransaction(t *testing.T) {
 	item := LineItem{ItemID: "S0897", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "5.50"}
-	amount := "14.88"
+	amount := "12.18"
 	transResponse, approved, success := CreateTransaction(testProfileID, testPaymentID, item, amount)
 	var tranxID string
 
@@ -145,12 +145,13 @@ func TestProfileTransaction(t *testing.T) {
 
 func TestGetTransactionDetails(t *testing.T) {
 	details := GetTransactionDetails(testTransactionID)
-
+	if details != nil {
 	if details["transId"] == testTransactionID {
 		t.Log("Transaction ID "+testTransactionID+" was fetched! \n")
 	} else {
 		t.Fail()
 		t.Log("Transaction was not approved! \n")
+	}
 	}
 }
 
