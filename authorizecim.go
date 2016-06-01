@@ -5,16 +5,23 @@ import (
 	"bytes"
 	"io/ioutil"
 	"encoding/json"
+	"fmt"
 )
 
 var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
 var apiName string
 var apiKey string
 
+var CurrentUser User
 
 func SetAPIInfo(name string, key string) {
 	apiKey = key
 	apiName = name
+}
+
+func MakeUser (userID string) User {
+	CurrentUser = User{ID: "55", Email: userID, ProfileID: "0"}
+	return CurrentUser
 }
 
 func CreateCustomerProfile(userInfo AuthUser) (string, bool) {
@@ -28,6 +35,8 @@ func CreateCustomerProfile(userInfo AuthUser) (string, bool) {
 	var new_uuid string
 	if success {
 		new_uuid = outgoing["customerProfileId"].(string)
+		CurrentUser.ProfileID = new_uuid
+		fmt.Println(CurrentUser)
 	} else {
 		new_uuid = "0"
 	}
@@ -42,6 +51,9 @@ func GetCustomerProfile(profileID string) (map[string]interface{}, bool) {
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ :=SendRequest(string(jsoned))
 	success := FindResultCode(outgoing)
+	fmt.Println(outgoing)
+	userProfile := outgoing["profile"].(map[string]interface{})
+	fmt.Println(userProfile)
 	return outgoing, success
 }
 
@@ -78,6 +90,7 @@ func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, addre
 	var new_paymentID string
 	if status {
 		new_paymentID = outgoing["customerPaymentProfileId"].(string)
+		fmt.Println(CurrentUser)
 	} else {
 		new_paymentID = "0"
 	}
@@ -93,6 +106,7 @@ func GetCustomerPaymentProfile(profileID string, paymentID string) (map[string]i
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
 	success := FindResultCode(outgoing)
+	fmt.Println(CurrentUser)
 	return outgoing["paymentProfile"].(map[string]interface{}), success
 }
 

@@ -51,6 +51,15 @@ func TestUserCreation(t *testing.T) {
 }
 
 
+func TestUserModelCreation(t *testing.T) {
+	CurrentUser = MakeUser("z1r3oag07@random.com")
+	subscriptions := CurrentUser.Subscriptions
+	profileid := CurrentUser.ProfileID
+	t.Log(subscriptions)
+	t.Log(profileid)
+}
+
+
 func TestCreatePaymentProfile(t *testing.T){
 	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93063", Country: "USA", PhoneNumber: "5555555555"}
 	creditCard := CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
@@ -74,7 +83,6 @@ func TestGetCustomerPaymentProfile(t *testing.T){
 }
 
 
-
 func TestCreateShippingAddress(t *testing.T){
 	address := Address{FirstName: "Test", LastName: "User", Address: "18273 Different St", City: "Los Angeles", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
 	userNewShipping, success := CreateShippingAddress(testProfileID, address)
@@ -83,6 +91,18 @@ func TestCreateShippingAddress(t *testing.T){
 	}
 	testShippingID = userNewShipping
 	t.Log("Created New Shipping Profile for user "+userNewShipping+"\n")
+}
+
+
+
+func TestCreateAnotherShippingAddress(t *testing.T){
+	address := Address{FirstName: "Test", LastName: "User", Address: "18273 MOrse St", City: "Los Nowhere", State:" California", Zip: "87048", Country: "USA", PhoneNumber: "5555555555"}
+	userNewShipping, success := CreateShippingAddress(testProfileID, address)
+	if !success {
+		t.Fail()
+	}
+	testShippingID = userNewShipping
+	t.Log("Created Another Shipping Profile for user "+userNewShipping+"\n")
 }
 
 
@@ -96,8 +116,23 @@ func TestGetShippingAddress(t *testing.T){
 	t.Log("\n")
 }
 
+
+func TestGetCustomerProfile(t *testing.T){
+	profile, success := GetCustomerProfile(testProfileID)
+	if !success {
+		t.Fail()
+	}
+	t.Log("Fetched single Customer Profile \n")
+
+
+	t.Log(profile)
+	t.Log("\n")
+	t.Log("Sleeping for 60 seconds to make sure Auth.net can keep up \n")
+}
+
+
 func TestDelay(t *testing.T){
-	time.Sleep(45 * time.Second)
+	time.Sleep(30 * time.Second)
 	t.Log("Done sleeping \n")
 }
 
@@ -142,25 +177,6 @@ func TestGetTransactionDetails(t *testing.T) {
 		t.Log("Transaction was not processed! Could be a duplicate transaction. \n")
 	}
 	}
-}
-
-
-func TestGetCustomerProfile(t *testing.T){
-	profile, success := GetCustomerProfile(testProfileID)
-	if !success {
-		t.Fail()
-	}
-	t.Log("Fetched single Customer Profile \n")
-	t.Log(profile)
-	t.Log("\n")
-	t.Log("Sleeping for 60 seconds to make sure Auth.net can keep up \n")
-}
-
-
-
-func TestAnotherDelay(t *testing.T){
-	time.Sleep(45 * time.Second)
-	t.Log("Trying not to spam Authorize.net, Done sleeping \n")
 }
 
 

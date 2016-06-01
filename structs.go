@@ -6,13 +6,21 @@ type MerchantAuthentication struct {
 }
 
 
+type User struct {
+	ID string
+	Email string
+	ProfileID string
+	BillingProfiles interface{}
+	ShippingProfiles interface{}
+	Subscriptions map[string]interface{}
+}
+
 
 type AuthUser struct {
 	Uuid	string
 	Email	string
 	Description 	string
 }
-
 
 type DeleteCustomerShippingAddressRequest struct {
 	GetCustomerShippingAddress GetCustomerShippingAddress `json:"deleteCustomerShippingAddressRequest"`

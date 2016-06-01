@@ -190,9 +190,14 @@ newSubscription, success := CreateSubscription(subscriptionInput)
 ###### Some transactions or subscriptions may not process if you do many functions in a short amount of time.
 
 
-## Testing (include "apiName" and "apiKey" as environment variables)
+## Testing 
+#### Include "apiName" and "apiKey" as environment variables
 ```go
 go test -v 
+```
+```
+//apiName = os.Getenv("apiName")
+//apiKey = os.Getenv("apiKey")
 ```
 ##### This will run a test of each function, make sure you have correct API keys for Authorize.net
 
