@@ -47,6 +47,22 @@ type TransactionMessages struct {
 
 }
 
+
+
+type TransactionResponse struct {
+	ResponseCode string `json:"responseCode"`
+	AuthCode string `json:"authCode"`
+	AvsResultCode string `json:"avsResultCode"`
+	CvvResultCode string `json:"cvvResultCode"`
+	CavvResultCode string `json:"cavvResultCode"`
+	TransID string `json:"transId"`
+	RefTransID string `json:"refTransID"`
+	TransHash string `json:"transHash"`
+	TestRequest string `json:"testRequest"`
+	AccountNumber string `json:"accountNumber"`
+	AccountType string `json:"accountType"`
+}
+
 type AuthorizeNetTest struct {
 	AuthenticateTestRequest AuthenticateTestRequest `json:"authenticateTestRequest"`
 }

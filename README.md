@@ -49,8 +49,8 @@ customer_info := AuthorizeCIM.AuthUser{
                   "email@domain.com",
                   "Test Account"
                   }
-new_customer, err := AuthorizeCIM.CreateCustomerProfile(customer_info)
-// outputs new user profile ID
+new_customer, success := AuthorizeCIM.CreateCustomerProfile(customer_info)
+// outputs new user profile ID, and true/false
 ```
 
 #### Create Payment Profile for Customer
@@ -70,32 +70,37 @@ credit_card := AuthorizeCIM.CreditCard{
                   ExpirationDate: "2020-12"
                   }
 profile_id := "53"
-AuthorizeCIM.CreateCustomerBillingProfile(profile_id, address, credit_card)
+newPaymentID, success := AuthorizeCIM.CreateCustomerBillingProfile(profile_id, address, credit_card)
+// outputs new payment profile ID and true/false
 ```
 #### Get Customers stored billing accounts
 ```go
 profile_id := "30089822"
-billing_accounts := AuthorizeCIM.GetCustomerProfile(profile_id)
+profile, success := AuthorizeCIM.GetCustomerProfile(profile_id)
+// outputs array of user payment account, and true/false
 ```
 
 #### Delete Customer Profile
 ```go
 profile_id := "30089822"
-billing_accounts = AuthorizeCIM.DeleteCustomerProfile(profile_id)
+success = AuthorizeCIM.DeleteCustomerProfile(profile_id)
+// outputs true or false
 ```
 
 #### Get detailed information about a billing profile from customer
 ```go
 profile_id := "30089822"
 payment_id := "1200079812"
-stored_card := AuthorizeCIM.GetCustomerPaymentProfile(profile_id,payment_id)
+stored_card, success := AuthorizeCIM.GetCustomerPaymentProfile(profile_id,payment_id)
+// outputs payment profiles, and true/false
 ```
 
 #### Delete customers billing profile
 ```go
 profile_id := "30089822"
 payment_id := "1200079812"
-AuthorizeCIM.DeleteCustomerPaymentProfile(profile_id,payment_id)
+success := AuthorizeCIM.DeleteCustomerPaymentProfile(profile_id,payment_id)
+// outputs true or false
 ```
 
 #### Update a single billing profile with new information
@@ -116,7 +121,8 @@ credit_card := AuthorizeCIM.CreditCard{
                   }
 profile_id := "53"
 payment_id := "416"
-AuthorizeCIM.UpdateCustomerPaymentProfile(profile_id,payment_id,new_address,credit_card)
+success := AuthorizeCIM.UpdateCustomerPaymentProfile(profile_id,payment_id,new_address,credit_card)
+// outputs true or false
 ```
 
 #### Create a transaction that will be charged on customers billing profile
@@ -132,16 +138,20 @@ amount := "14.43"
 profile_id := "53"
 payment_id := "416"
 
-tranx, _ := CreateTransaction(profile_id, payment_id, item, amount)
+response, approved, success := CreateTransaction(profile_id, payment_id, item, amount)
+// outputs transaction response, approved status (true/false), and success status (true/false)
 
-var tranx_id string
-fixtransx, _ := tranx["transactionResponse"].(map[string]interface{})
-if tranx["transactionResponse"]==nil {
-    // this transaction failed!
-} else {
-	tranx_id = fixtransx["transId"].(string)
-	fmt.Println("Received Transaction ID: "+tranx_id)
-}
+var tranxID string
+if success {
+		tranxID = transResponse["transId"].(string)
+		if approved {
+			fmt.Println("Transaction was approved! "+tranxID+"\n")
+		} else {
+			fmt.Println("Transaction was denied! "+tranxID+"\n")
+		}
+	} else {
+		fmt.Println("Transaction has failed! \n")
+	}
 ```
 
 # Testing

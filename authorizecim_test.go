@@ -41,8 +41,8 @@ func TestAPIAccess(t *testing.T) {
 
 func TestUserCreation(t *testing.T) {
 	customer_info := AuthUser{"54",RandomString(9)+"@random.com","Test Account"}
-	newuser, err := CreateCustomerProfile(customer_info)
-	if err!=nil{
+	newuser, success := CreateCustomerProfile(customer_info)
+	if !success {
 		t.Fail()
 	}
 	testProfileID = newuser
@@ -50,42 +50,34 @@ func TestUserCreation(t *testing.T) {
 }
 
 
-func TestGetCustomerProfile(t *testing.T){
-	profile := GetCustomerProfile(testProfileID)
-	if profile==nil{
-		t.Fail()
-	}
-	t.Log("Fetched single Customer Profile \n")
-}
-
-
 func TestCreatePaymentProfile(t *testing.T){
 	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93063", Country: "USA", PhoneNumber: "5555555555"}
 	creditCard := CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
-	newPaymentID, err := CreateCustomerBillingProfile(testProfileID, creditCard, address)
-	if err!=nil{
+	newPaymentID, success := CreateCustomerBillingProfile(testProfileID, creditCard, address)
+	if !success {
 		t.Fail()
 	}
 	testPaymentID = newPaymentID
-	t.Log("User Payment Profile created "+testPaymentID+"\n")
-}
+	t.Log("User Payment Profile created "+testPaymentID+"\n")}
 
 
 
 func TestGetCustomerPaymentProfile(t *testing.T){
-	userPaymentProfile := GetCustomerPaymentProfile(testProfileID, testPaymentID)
-	if userPaymentProfile==nil {
+	userPaymentProfile, success := GetCustomerPaymentProfile(testProfileID, testPaymentID)
+	if !success {
 		t.Fail()
 	}
 	t.Log("Fetched the Users Payment Profile \n")
+	t.Log(userPaymentProfile)
+	t.Log("\n")
 }
 
 
 
 func TestCreateShippingAddress(t *testing.T){
 	address := Address{FirstName: "Test", LastName: "User", Address: "18273 Different St", City: "Los Angeles", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
-	userNewShipping := CreateShippingAddress(testProfileID, address)
-	if userNewShipping=="0" {
+	userNewShipping, success := CreateShippingAddress(testProfileID, address)
+	if !success {
 		t.Fail()
 	}
 	testShippingID = userNewShipping
@@ -94,29 +86,21 @@ func TestCreateShippingAddress(t *testing.T){
 
 
 func TestGetShippingAddress(t *testing.T){
-	userShipping := GetShippingAddress(testProfileID, testShippingID)
-	if userShipping==nil {
+	userShipping, success := GetShippingAddress(testProfileID, testShippingID)
+	if !success {
 		t.Fail()
 	}
 	t.Log("Fetched User Shipping Address "+testShippingID+"\n")
+	t.Log(userShipping)
+	t.Log("\n")
 }
-
-
-func TestDeleteShippingAddress(t *testing.T){
-	userShipping := DeleteShippingAddress(testProfileID, testShippingID)
-	if userShipping==nil {
-		t.Fail()
-	}
-	t.Log("Deleted User Shipping Address "+testShippingID+"\n")
-}
-
 
 
 func TestUpdateCustomerPaymentProfile(t *testing.T){
 	address := Address{FirstName: "Test", LastName: "User", Address: "58585 Changed St", City: "Bulbasaur", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
 	creditCard := CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
-	updatedPaymentProfile := UpdateCustomerPaymentProfile(testProfileID, testPaymentID, address, creditCard)
-	if updatedPaymentProfile==nil {
+	updatedPaymentProfile := UpdateCustomerPaymentProfile(testProfileID, testPaymentID, creditCard, address)
+	if !updatedPaymentProfile {
 		t.Fail()
 	}
 	t.Log("Updated the Users Payment Profile with new information \n")
@@ -130,7 +114,9 @@ func TestGetAllProfiles(t *testing.T){
 	if profiles==nil{
 		t.Fail()
 	}
-	t.Log("Fetched ALL Customer Profiles \n")
+	t.Log("Fetched ALL Customer Profiles IDs \n")
+	t.Log(profiles)
+	t.Log("\n")
 }
 
 
@@ -139,26 +125,55 @@ func TestGetAllProfiles(t *testing.T){
 func TestProfileTransaction(t *testing.T) {
 	item := LineItem{ItemID: "S0897", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "5.50"}
 	amount := "14.43"
-	tranx, _ := CreateTransaction(testProfileID, testPaymentID, item, amount)
+	transResponse, approved, success := CreateTransaction(testProfileID, testPaymentID, item, amount)
 	var tranxID string
-	fixtransx, _ := tranx["transactionResponse"].(map[string]interface{})
-	if tranx["transactionResponse"]==nil {
-		tranxID = "0"
-		t.Fail()
-		t.Log("Transaction has failed! "+tranxID+"\n")
+
+	if success {
+		tranxID = transResponse["transId"].(string)
+		if approved {
+			t.Log("Transaction was approved! "+tranxID+"\n")
+		} else {
+			t.Log("Transaction was denied! "+tranxID+"\n")
+		}
 	} else {
-		tranxID = fixtransx["transId"].(string)
-		t.Log("Submitted and Received Transaction: "+tranxID+"\n")
+		t.Fail()
+		t.Log("Transaction has failed! \n")
 	}
+	t.Log(transResponse)
+	t.Log("\n")
+}
+
+
+func TestGetCustomerProfile(t *testing.T){
+	profile, success := GetCustomerProfile(testProfileID)
+	if !success {
+		t.Fail()
+	}
+	t.Log("Fetched single Customer Profile \n")
+	t.Log(profile)
+	t.Log("\n")
+}
+
+
+func TestDeleteShippingAddress(t *testing.T){
+	userShipping := DeleteShippingAddress(testProfileID, testShippingID)
+	if !userShipping {
+		t.Fail()
+	}
+	t.Log("Deleted User Shipping Address "+testShippingID+"\n")
 }
 
 
 func TestDeleteCustomerPaymentProfile(t *testing.T) {
-	DeleteCustomerPaymentProfile(testProfileID, testPaymentID)
-	t.Log("User Payment Profile was deleted: "+testPaymentID+"\n")
+	response := DeleteCustomerPaymentProfile(testProfileID, testPaymentID)
+	if response {
+		t.Log("User Payment Profile was deleted: " + testPaymentID + "\n")
+	}
 }
 
 func TestDeleteCustomerProfile(t *testing.T){
-	DeleteCustomerProfile(testProfileID)
-	t.Log("Customer Profile was deleted: "+testProfileID+"\n")
+	response := DeleteCustomerProfile(testProfileID)
+	if response {
+		t.Log("Customer Profile was deleted: " + testProfileID + "\n")
+	}
 }
