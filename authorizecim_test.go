@@ -139,6 +139,7 @@ func TestProfileTransaction(t *testing.T) {
 		t.Fail()
 		t.Log("Transaction has failed! \n")
 	}
+	t.Log(transResponse)
 	t.Log("\n")
 }
 
