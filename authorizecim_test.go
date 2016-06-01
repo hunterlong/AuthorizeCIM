@@ -41,7 +41,7 @@ func TestAPIAccess(t *testing.T) {
 }
 
 func TestUserCreation(t *testing.T) {
-	customer_info := AuthUser{"54",RandomString(9)+"@random.com","Test Account"}
+	customer_info := AuthUser{"69",RandomString(9)+"@random.com","Test Account"}
 	newuser, success := CreateCustomerProfile(customer_info)
 	if !success {
 		t.Fail()
@@ -95,6 +95,8 @@ func TestGetShippingAddress(t *testing.T){
 	t.Log(userShipping)
 	t.Log("\n")
 }
+
+
 
 
 func TestUpdateCustomerPaymentProfile(t *testing.T){
@@ -163,17 +165,35 @@ func TestGetCustomerProfile(t *testing.T){
 	t.Log("Fetched single Customer Profile \n")
 	t.Log(profile)
 	t.Log("\n")
+	t.Log("Sleeping for 30 seconds to make sure Auth.net can keep up \n")
 }
 
 
-func TestDeleteShippingAddress(t *testing.T){
-	userShipping := DeleteShippingAddress(testProfileID, testShippingID)
-	if !userShipping {
-		t.Fail()
+
+func TestDelay(t *testing.T){
+	time.Sleep(30 * time.Second)
+	t.Log("Done sleeping \n")
+}
+
+
+
+func TestCreateSubscription(t *testing.T){
+
+	startTime := time.Now().Format("2006-01-02")
+	//startTime := "2016-06-02"
+	totalRuns := "9999" //means forever
+	trialRuns := "0"
+	userFullProfile := FullProfile{CustomerProfileID: testProfileID,CustomerAddressID: testShippingID, CustomerPaymentProfileID: testPaymentID}
+	paymentSchedule := PaymentSchedule{Interval: Interval{"1","months"}, StartDate:startTime, TotalOccurrences:totalRuns, TrialOccurrences:trialRuns}
+	subscriptionInput := Subscription{"Advanced Subscription",paymentSchedule,"7.98","0.00",userFullProfile}
+
+	newSubscription, success := CreateSubscription(subscriptionInput)
+	if success {
+		t.Log("User created a new Subscription id: "+newSubscription+"\n")
+	} else {
+		t.Log("created the subscription failed, the user might not be fully inputed yet. \n")
 	}
-	t.Log("Deleted User Shipping Address "+testShippingID+"\n")
 }
-
 
 func TestDeleteCustomerPaymentProfile(t *testing.T) {
 	response := DeleteCustomerPaymentProfile(testProfileID, testPaymentID)
@@ -181,6 +201,16 @@ func TestDeleteCustomerPaymentProfile(t *testing.T) {
 		t.Log("User Payment Profile was deleted: " + testPaymentID + "\n")
 	}
 }
+
+func TestDeleteShippingAddress(t *testing.T){
+	userShipping := DeleteShippingAddress(testProfileID, testShippingID)
+	if userShipping {
+		t.Log("Deleted User Shipping Address "+testShippingID+"\n")
+	} else {
+		t.Log("Issue with deleteing shippinn address: "+testShippingID+"\n")
+	}
+}
+
 
 func TestDeleteCustomerProfile(t *testing.T){
 	response := DeleteCustomerProfile(testProfileID)

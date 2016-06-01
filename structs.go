@@ -259,3 +259,39 @@ type NewCustomerBillingProfile struct {
 type NewCustomerProfile struct {
 	CreateCustomerProfileRequest CreateCustomerProfileRequest `json:"createCustomerProfileRequest"`
 }
+
+type CreateSubscriptionRequest struct {
+	CreateSubscription ARBCreateSubscription `json:"ARBCreateSubscriptionRequest"`
+}
+
+type ARBCreateSubscription struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	Subscription Subscription `json:"subscription"`
+}
+
+type Subscription struct {
+	Name string `json:"name"`
+	PaymentSchedule PaymentSchedule `json:"paymentSchedule"`
+	Amount string `json:"amount"`
+	TrialAmount string `json:"trialAmount"`
+	FullProfile FullProfile `json:"profile"`
+}
+
+type Interval struct {
+	Length string `json:"length"`
+	Unit string `json:"unit"`
+}
+
+type PaymentSchedule struct {
+	Interval Interval `json:"interval"`
+	StartDate string `json:"startDate"`
+	TotalOccurrences string `json:"totalOccurrences"`
+	TrialOccurrences string `json:"trialOccurrences"`
+}
+
+
+type FullProfile struct {
+	CustomerProfileID string `json:"customerProfileId"`
+	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
+	CustomerAddressID string `json:"customerAddressId"`
+}

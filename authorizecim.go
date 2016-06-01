@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"encoding/json"
+	"fmt"
 )
 
 var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
@@ -255,8 +256,17 @@ func TransactionApproved(incoming map[string]interface{}) bool {
 }
 
 
-func CreateSubscription(){
-
+func CreateSubscription(newSubscription Subscription) (string, bool) {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	subscriptonSubmit := CreateSubscriptionRequest{ARBCreateSubscription{authToken, newSubscription}}
+	jsoned, _ := json.Marshal(subscriptonSubmit)
+	fmt.Println(string(jsoned))
+	outgoing, _ := SendRequest(string(jsoned))
+	status := FindResultCode(outgoing)
+	if status {
+		return outgoing["subscriptionId"].(string), status
+	}
+	return "0", status
 }
 
 
