@@ -41,7 +41,7 @@ func TestAPIAccess(t *testing.T) {
 }
 
 func TestUserCreation(t *testing.T) {
-	customer_info := AuthUser{"73",RandomString(9)+"@random.com","Test Account"}
+	customer_info := AuthUser{"79",RandomString(9)+"@random.com","Test Account"}
 	newuser, success := CreateCustomerProfile(customer_info)
 	if !success {
 		t.Fail()
@@ -109,8 +109,8 @@ func TestGetAllProfiles(t *testing.T){
 
 
 func TestProfileTransaction(t *testing.T) {
-	item := LineItem{ItemID: "S0891", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "8.50"}
-	amount := "18.28"
+	item := LineItem{ItemID: "S0892", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "7.50"}
+	amount := "28.78"
 	transResponse, approved, success := CreateTransaction(testProfileID, testPaymentID, item, amount)
 	var tranxID string
 
@@ -170,7 +170,7 @@ func TestCreateSubscription(t *testing.T){
 	trialRuns := "0"
 	userFullProfile := FullProfile{CustomerProfileID: testProfileID,CustomerAddressID: testShippingID, CustomerPaymentProfileID: testPaymentID}
 	paymentSchedule := PaymentSchedule{Interval: Interval{"1","months"}, StartDate:startTime, TotalOccurrences:totalRuns, TrialOccurrences:trialRuns}
-	subscriptionInput := Subscription{"Advanced Subscription",paymentSchedule,"7.98","0.00",userFullProfile}
+	subscriptionInput := Subscription{"Subscription",paymentSchedule,"7.88","0.00",userFullProfile}
 
 	newSubscription, success := CreateSubscription(subscriptionInput)
 	if success {

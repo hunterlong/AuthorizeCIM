@@ -25,9 +25,11 @@ AuthorizeCIM.SetAPIInfo(api_name,api_key)
 
 ## Features
 * Store Billing Profile (credit card) on Authorize.net using CIM
+* Create subscriptions (monthly, weekly, days)
 * Fetch customers billing profiles in a simple array
-* Process transactions using customers billing profile
+* Process transactions using customers stored credit card
 * Delete and Updating billing profiles
+* Delete a customers entire account
 
 ![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
@@ -154,6 +156,34 @@ if success {
 	}
 ```
 
+#### Create a Subscription
+```go
+startTime := time.Now().Format("2006-01-02")
+totalRuns := "9999" //means forever
+trialRuns := "0"
+profile_id := "53"
+payment_id := "416"
+shipping_id := "9503"
+
+userFullProfile := FullProfile{CustomerProfileID: profile_id,CustomerAddressID: shipping_id, CustomerPaymentProfileID: payment_id}
+
+paymentSchedule := PaymentSchedule{
+                        Interval: Interval{"1","months"}, 
+                        StartDate:startTime, 
+                        TotalOccurrences:totalRuns, 
+                        TrialOccurrences:trialRuns}
+                        
+subscriptionInput := Subscription{"Advanced Subscription",paymentSchedule,"7.98","0.00",userFullProfile}
+
+newSubscription, success := CreateSubscription(subscriptionInput)
+	if success {
+		fmt.Println("User created a new Subscription id: "+newSubscription+"\n")
+	} else {
+		fmt.Println("created the subscription failed, the user might not be fully inputed yet. \n")
+	}
+```
+###### Some transactions or subscriptions may not process if you do many functions in a short amount of time.
+
 # Testing
 ```go
 go test -v
@@ -164,9 +194,7 @@ go test -v
 
 # ToDo
 * Make cleaner maps for outputs
-* Subscriptions (create, status, delete)
 * Functions to search Subscriptions (active, expired, etc)
-* Get information about Transactions ID
 * Void and Refund Transactions
 * Add Bank Account Support
 * Authorize Only methods
