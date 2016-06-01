@@ -22,7 +22,7 @@ import "github.com/hunterlong/authorizecim"
 // You can get Sandbox Access at:  https://developer.authorize.net/hello_world/sandbox/
 apiName := "auth_name_here"
 apiKey := "auth_transaction_key_here"
-AuthorizeCIM.SetAPIInfo(api_name,api_key)
+AuthorizeCIM.SetAPIInfo(apiName,apiKey)
 ```
 
 ## Features
