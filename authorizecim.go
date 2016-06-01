@@ -205,12 +205,23 @@ func DeleteShippingAddress(profileID string, shippingID string) bool {
 }
 
 
+func GetTransactionDetails(tranID string) map[string]interface{} {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	transDetails := TransactionDetails{authToken,tranID}
+	transactionRequest := TransactionDetailsRequest{transDetails}
+	jsoned, _ := json.Marshal(transactionRequest)
+	outgoing, _ := SendRequest(string(jsoned))
+	return outgoing["transaction"].(map[string]interface{})
+}
+
+
 func FindResultCode(incoming map[string]interface{}) bool {
 	messages, _ := incoming["messages"].(map[string]interface{})
 	if messages["resultCode"]=="Ok" {
 		return true
+	} else {
+		return false
 	}
-	return false
 }
 
 func TransactionApproved(incoming map[string]interface{}) bool {
@@ -222,15 +233,17 @@ func TransactionApproved(incoming map[string]interface{}) bool {
 }
 
 
+func CreateSubscription(){
+
+}
+
+
+
 func RefundTransactions(){
 
 }
 
 func VoidTransaction(){
-
-}
-
-func CreateSubscription(){
 
 }
 

@@ -11,6 +11,7 @@ import (
 var testProfileID string
 var testPaymentID string
 var testShippingID string
+var testTransactionID string
 
 func RandomString(strlen int) string {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -115,8 +116,6 @@ func TestGetAllProfiles(t *testing.T){
 		t.Fail()
 	}
 	t.Log("Fetched ALL Customer Profiles IDs \n")
-	t.Log(profiles)
-	t.Log("\n")
 }
 
 
@@ -124,12 +123,13 @@ func TestGetAllProfiles(t *testing.T){
 
 func TestProfileTransaction(t *testing.T) {
 	item := LineItem{ItemID: "S0897", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "5.50"}
-	amount := "14.43"
+	amount := "14.88"
 	transResponse, approved, success := CreateTransaction(testProfileID, testPaymentID, item, amount)
 	var tranxID string
 
 	if success {
 		tranxID = transResponse["transId"].(string)
+		testTransactionID = tranxID
 		if approved {
 			t.Log("Transaction was approved! "+tranxID+"\n")
 		} else {
@@ -139,8 +139,19 @@ func TestProfileTransaction(t *testing.T) {
 		t.Fail()
 		t.Log("Transaction has failed! \n")
 	}
-	t.Log(transResponse)
 	t.Log("\n")
+}
+
+
+func TestGetTransactionDetails(t *testing.T) {
+	details := GetTransactionDetails(testTransactionID)
+
+	if details["transId"] == testTransactionID {
+		t.Log("Transaction ID "+testTransactionID+" was fetched! \n")
+	} else {
+		t.Fail()
+		t.Log("Transaction was not approved! \n")
+	}
 }
 
 

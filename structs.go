@@ -48,6 +48,15 @@ type TransactionMessages struct {
 }
 
 
+type TransactionDetailsRequest struct {
+	TransactionDetails TransactionDetails `json:"getTransactionDetailsRequest"`
+}
+
+type TransactionDetails struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	TransId string `json:"transId"`
+}
+
 
 type TransactionResponse struct {
 	ResponseCode string `json:"responseCode"`
