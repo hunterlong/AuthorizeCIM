@@ -41,7 +41,7 @@ func TestAPIAccess(t *testing.T) {
 }
 
 func TestUserCreation(t *testing.T) {
-	customer_info := AuthUser{"69",RandomString(9)+"@random.com","Test Account"}
+	customer_info := AuthUser{"73",RandomString(9)+"@random.com","Test Account"}
 	newuser, success := CreateCustomerProfile(customer_info)
 	if !success {
 		t.Fail()
@@ -97,21 +97,6 @@ func TestGetShippingAddress(t *testing.T){
 }
 
 
-
-
-func TestUpdateCustomerPaymentProfile(t *testing.T){
-	address := Address{FirstName: "Test", LastName: "User", Address: "58585 Changed St", City: "Bulbasaur", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
-	creditCard := CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
-	updatedPaymentProfile := UpdateCustomerPaymentProfile(testProfileID, testPaymentID, creditCard, address)
-	if !updatedPaymentProfile {
-		t.Fail()
-	}
-	t.Log("Updated the Users Payment Profile with new information \n")
-}
-
-
-
-
 func TestGetAllProfiles(t *testing.T){
 	profiles := GetAllProfiles()
 	if profiles==nil{
@@ -124,8 +109,8 @@ func TestGetAllProfiles(t *testing.T){
 
 
 func TestProfileTransaction(t *testing.T) {
-	item := LineItem{ItemID: "S0897", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "6.50"}
-	amount := "17.18"
+	item := LineItem{ItemID: "S0891", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "8.50"}
+	amount := "18.28"
 	transResponse, approved, success := CreateTransaction(testProfileID, testPaymentID, item, amount)
 	var tranxID string
 
@@ -165,13 +150,13 @@ func TestGetCustomerProfile(t *testing.T){
 	t.Log("Fetched single Customer Profile \n")
 	t.Log(profile)
 	t.Log("\n")
-	t.Log("Sleeping for 30 seconds to make sure Auth.net can keep up \n")
+	t.Log("Sleeping for 60 seconds to make sure Auth.net can keep up \n")
 }
 
 
 
 func TestDelay(t *testing.T){
-	time.Sleep(30 * time.Second)
+	time.Sleep(60 * time.Second)
 	t.Log("Done sleeping \n")
 }
 
@@ -194,6 +179,20 @@ func TestCreateSubscription(t *testing.T){
 		t.Log("created the subscription failed, the user might not be fully inputed yet. \n")
 	}
 }
+
+
+
+
+func TestUpdateCustomerPaymentProfile(t *testing.T){
+	address := Address{FirstName: "Test", LastName: "User", Address: "58585 Changed St", City: "Bulbasaur", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
+	creditCard := CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
+	updatedPaymentProfile := UpdateCustomerPaymentProfile(testProfileID, testPaymentID, creditCard, address)
+	if !updatedPaymentProfile {
+		t.Fail()
+	}
+	t.Log("Updated the Users Payment Profile with new information \n")
+}
+
 
 func TestDeleteCustomerPaymentProfile(t *testing.T) {
 	response := DeleteCustomerPaymentProfile(testProfileID, testPaymentID)
