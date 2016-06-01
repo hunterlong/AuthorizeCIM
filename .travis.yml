@@ -1,5 +1,4 @@
 language: go
-sudo: false
 
 go:
   - 1.6
@@ -8,10 +7,5 @@ addons:
     code_climate:
         repo_token: 6e3d45f2498bdc105ae1be00b809b02abd8222461ec037306984be92858ff3c3
 
-before_install:
-  - go get github.com/mattn/goveralls
-  - go get golang.org/x/tools/cmd/cover
-
 script:
-  - $(go env GOPATH | awk 'BEGIN{FS=":"} {print $1}')/bin/goveralls -service=travis-ci -repotoken $COVERALLS_TOKEN
   - go test -v
