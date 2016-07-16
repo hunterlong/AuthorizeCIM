@@ -66,6 +66,7 @@ func main() {
 }
 
 
+
 // NOT NEEDED - ONLY FOR CREATING A RANDOM EMAIL ADDRESS
 func RandomString(strlen int) string {
 	rand.Seed(time.Now().UTC().UnixNano())
