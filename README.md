@@ -22,7 +22,8 @@ import "github.com/hunterlong/authorizecim"
 // You can get Sandbox Access at:  https://developer.authorize.net/hello_world/sandbox/
 apiName := "auth_name_here"
 apiKey := "auth_transaction_key_here"
-AuthorizeCIM.SetAPIInfo(apiName,apiKey)
+AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
+// use "live" to do transactions on production server
 ```
 
 ## Features
@@ -53,7 +54,7 @@ connected := AuthorizeCIM.TestConnection()
 customer_info := AuthorizeCIM.AuthUser{
                   "54",
                   "email@domain.com",
-                  "Test Account"
+                  "Test Account",
                   }
 new_customer, success := AuthorizeCIM.CreateCustomerProfile(customer_info)
 // outputs new user profile ID, and true/false
@@ -69,14 +70,14 @@ address := AuthorizeCIM.Address{
                   State:" California",
                   Zip: "93063", 
                   Country: "USA", 
-                  PhoneNumber: "5555555555"
+                  PhoneNumber: "5555555555",
                   }
 credit_card := AuthorizeCIM.CreditCard{
                   CardNumber: "4111111111111111", 
-                  ExpirationDate: "2020-12"
+                  ExpirationDate: "2020-12",
                   }
 profile_id := "53"
-newPaymentID, success := AuthorizeCIM.CreateCustomerBillingProfile(profile_id, address, credit_card)
+newPaymentID, success := AuthorizeCIM.CreateCustomerBillingProfile(profile_id, credit_card, address)
 // outputs new payment profile ID and true/false
 ```
 
@@ -134,23 +135,23 @@ success := AuthorizeCIM.UpdateCustomerPaymentProfile(profile_id,payment_id,new_a
 
 #### Create a Transaction that will be charged on Customers Billing Profile
 ```go
-item := LineItem{
+item := AuthorizeCIM.LineItem{
                   ItemID: "S0897", 
                   Name: "New Product", 
                   Description: "brand new", 
                   Quantity: "1", 
-                  UnitPrice: "14.43"
+                  UnitPrice: "14.43",
                   }
 amount := "14.43"
 profile_id := "53"
 payment_id := "416"
 
-response, approved, success := CreateTransaction(profile_id, payment_id, item, amount)
+response, approved, success := AuthorizeCIM.CreateTransaction(profile_id, payment_id, item, amount)
 // outputs transaction response, approved status (true/false), and success status (true/false)
 
 var tranxID string
 if success {
-		tranxID = transResponse["transId"].(string)
+		tranxID = response["transId"].(string)
 		if approved {
 			fmt.Println("Transaction was approved! "+tranxID+"\n")
 		} else {

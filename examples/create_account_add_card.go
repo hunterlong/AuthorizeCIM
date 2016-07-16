@@ -50,7 +50,7 @@ func main() {
 		ExpirationDate: "2020-12",
 	}
 	profile_id := new_customer
-	newPaymentID, success := AuthorizeCIM.CreateCustomerBillingProfile(profile_id, address, credit_card)
+	newPaymentID, success := AuthorizeCIM.CreateCustomerBillingProfile(profile_id, credit_card, address)
 
 	if success {
 		fmt.Println("New Credit Card was added, Billing ID: ",newPaymentID)
