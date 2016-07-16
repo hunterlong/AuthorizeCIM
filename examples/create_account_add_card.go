@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/hunterlong/authorizecim"
 	"fmt"
+	"os"
 )
 
 func main() {

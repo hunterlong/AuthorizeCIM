@@ -4,6 +4,7 @@ import (
 	"github.com/hunterlong/authorizecim"
 	"fmt"
 	"time"
+	"os"
 )
 
 func main() {
