@@ -18,13 +18,13 @@ var CurrentUser User
 func SetAPIInfo(name string, key string, mode string) {
 	apiKey = key
 	apiName = name
-	if mode == "test"
+	if mode == "test" {
 		testMode = "testMode"
 		api_endpoint = "https://apitest.authorize.net/xml/v1/request.api"
-	else
+	} else {
 		testMode = "liveMode"
 		api_endpoint = "https://api.authorize.net/xml/v1/request.api"
-	end
+	}
 }
 
 func MakeUser (userID string) User {
