@@ -190,6 +190,7 @@ func TestGetTransactionDetails(t *testing.T) {
 		t.Log("Transaction was not processed! Could be a duplicate transaction. \n")
 	}
 	}
+	t.Log(details)
 }
 
 
@@ -199,9 +200,10 @@ func TestCreateSubscription(t *testing.T){
 	//startTime := "2016-06-02"
 	totalRuns := "9999" //means forever
 	trialRuns := "0"
+	amount := RandomDollar(10,90)
 	userFullProfile := FullProfile{CustomerProfileID: testProfileID,CustomerAddressID: testShippingID, CustomerPaymentProfileID: testPaymentID}
 	paymentSchedule := PaymentSchedule{Interval: Interval{"1","months"}, StartDate:startTime, TotalOccurrences:totalRuns, TrialOccurrences:trialRuns}
-	subscriptionInput := Subscription{"New Subscription",paymentSchedule,"7.78","0.00",userFullProfile}
+	subscriptionInput := Subscription{"New Subscription",paymentSchedule,amount,"0.00",userFullProfile}
 
 	newSubscription, success := CreateSubscription(subscriptionInput)
 	if success {
