@@ -174,11 +174,12 @@ func CreateTransaction(profileID string, paymentID string, item LineItem, amount
 	outgoing, _ := SendRequest(string(jsoned))
 	var status, approved bool
 	var response map[string]interface{}
-	if outgoing["responseCode"]!=nil {
-		if outgoing["responseCode"].(string) != "1" {
+	transxResponse := outgoing["transactionResponse"].(map[string]interface{})
+	if transxResponse["responseCode"]!=nil {
+		if transxResponse["responseCode"].(string) != "1" {
 			approved = false
 			status = true
-			response = map[string]interface{}{}
+			response = transxResponse
 		} else {
 			status = FindResultCode(outgoing)
 			approved = TransactionApproved(outgoing)

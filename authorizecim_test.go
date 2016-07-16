@@ -5,6 +5,7 @@ import (
 	"time"
 	"math/rand"
 	"os"
+	"strconv"
 )
 
 
@@ -12,6 +13,7 @@ var testProfileID string
 var testPaymentID string
 var testShippingID string
 var testTransactionID string
+var randomUserEmail string
 
 func RandomString(strlen int) string {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -22,6 +24,15 @@ func RandomString(strlen int) string {
 	}
 	return string(result)
 }
+
+
+func RandomDollar(min int, max int) string {
+	rand.Seed(time.Now().UTC().UnixNano())
+	amount := float64(rand.Intn(max - min) + min)
+	f := strconv.FormatFloat(amount, 'f', 2, 64)
+	return f
+}
+
 
 
 func TestSetAPIInfo(t *testing.T) {
@@ -41,7 +52,8 @@ func TestAPIAccess(t *testing.T) {
 }
 
 func TestUserCreation(t *testing.T) {
-	customer_info := AuthUser{"19",RandomString(9)+"@random.com","Test Account"}
+	randomUserEmail = RandomString(9)+"@random.com"
+	customer_info := AuthUser{"19",randomUserEmail,"Test Account"}
 	newuser, success := CreateCustomerProfile(customer_info)
 	if !success {
 		t.Fail()
@@ -52,7 +64,7 @@ func TestUserCreation(t *testing.T) {
 
 
 func TestUserModelCreation(t *testing.T) {
-	CurrentUser = MakeUser("z1r3oag07@random.com")
+	CurrentUser = MakeUser(randomUserEmail)
 	subscriptions := CurrentUser.Subscriptions
 	profileid := CurrentUser.ProfileID
 	t.Log(subscriptions)
@@ -147,8 +159,9 @@ func TestGetAllProfiles(t *testing.T){
 
 
 func TestProfileTransaction(t *testing.T) {
-	item := LineItem{ItemID: "S0592", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: "7.50"}
-	amount := "23.78"
+
+	amount := RandomDollar(10,90)
+	item := LineItem{ItemID: "S0592", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: amount}
 	transResponse, approved, success := CreateTransaction(testProfileID, testPaymentID, item, amount)
 	var tranxID string
 
