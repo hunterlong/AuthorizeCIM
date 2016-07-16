@@ -8,15 +8,23 @@ import (
 	"fmt"
 )
 
-var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
+var api_endpoint string
 var apiName string
 var apiKey string
+var testMode string
 
 var CurrentUser User
 
-func SetAPIInfo(name string, key string) {
+func SetAPIInfo(name string, key string, mode string) {
 	apiKey = key
 	apiName = name
+	if mode == "test"
+		testMode = "testMode"
+		api_endpoint = "https://apitest.authorize.net/xml/v1/request.api"
+	else
+		testMode = "liveMode"
+		api_endpoint = "https://api.authorize.net/xml/v1/request.api"
+	end
 }
 
 func MakeUser (userID string) User {
@@ -82,7 +90,7 @@ func DeleteCustomerProfile(profileID string) bool {
 func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, address Address) (string, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	paymentProfile := PaymentBillingProfile{Address: address, Payment: Payment{CreditCard:creditCard}}
-	request := CreateCustomerBillingProfileRequest{authToken, profileID, paymentProfile, "testMode"}
+	request := CreateCustomerBillingProfileRequest{authToken, profileID, paymentProfile, testMode}
 	newprofile := NewCustomerBillingProfile{request}
 	jsoned, _ := json.Marshal(newprofile)
 	outgoing, _ :=SendRequest(string(jsoned))
@@ -114,7 +122,7 @@ func GetCustomerPaymentProfile(profileID string, paymentID string) (map[string]i
 func UpdateCustomerPaymentProfile(profileID string, paymentID string, creditCard CreditCard, address Address) bool {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	new_billing := UpdatePaymentBillingProfile{Address: address, Payment: Payment{CreditCard:creditCard}, CustomerPaymentProfileId: paymentID}
-	profile := updateCustomerPaymentProfileRequest{authToken, profileID, new_billing, "testMode"}
+	profile := updateCustomerPaymentProfileRequest{authToken, profileID, new_billing, testMode}
 	input := changeCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
