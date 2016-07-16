@@ -4,6 +4,8 @@ import (
 	"github.com/hunterlong/authorizecim"
 	"fmt"
 	"os"
+	"time"
+	"math/rand"
 )
 
 func main() {
@@ -20,9 +22,12 @@ func main() {
 		fmt.Println("There was an issue connecting to Authorize.net")
 	}
 
+	// Create random email address so it won't make duplicate records
+	newUserEmail := RandomString(7)+"@domain.com"
+
 	customer_info := AuthorizeCIM.AuthUser{
 		"70",
-		"email@domain.com",
+		newUserEmail,
 		"Test Account",
 	}
 
@@ -58,4 +63,16 @@ func main() {
 		fmt.Println("There was an issue inserting a credit card into the user account")
 	}
 
+}
+
+
+// NOT NEEDED - ONLY FOR CREATING A RANDOM EMAIL ADDRESS
+func RandomString(strlen int) string {
+	rand.Seed(time.Now().UTC().UnixNano())
+	const chars = "abcdefghijklmnopqrstuvwxyz0123456789"
+	result := make([]byte, strlen)
+	for i := 0; i < strlen; i++ {
+		result[i] = chars[rand.Intn(len(chars))]
+	}
+	return string(result)
 }

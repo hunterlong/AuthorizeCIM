@@ -44,7 +44,6 @@ func CreateCustomerProfile(userInfo AuthUser) (string, bool) {
 	if success {
 		new_uuid = outgoing["customerProfileId"].(string)
 		CurrentUser.ProfileID = new_uuid
-		fmt.Println(CurrentUser)
 	} else {
 		new_uuid = "0"
 	}
@@ -98,7 +97,6 @@ func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, addre
 	var new_paymentID string
 	if status {
 		new_paymentID = outgoing["customerPaymentProfileId"].(string)
-		fmt.Println(CurrentUser)
 	} else {
 		new_paymentID = "0"
 	}

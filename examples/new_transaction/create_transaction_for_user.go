@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 	"os"
+	"math/rand"
 )
 
 func main() {
@@ -21,9 +22,12 @@ func main() {
 		fmt.Println("There was an issue connecting to Authorize.net")
 	}
 
+	// Create random email address so it won't make duplicate records
+	newUserEmail := RandomString(7)+"@domain.com"
+
 	customer_info := AuthorizeCIM.AuthUser{
 		"399",
-		"ncxokpllai@domain.com",
+		newUserEmail,
 		"Test Account",
 	}
 
@@ -61,10 +65,8 @@ func main() {
 	}
 
 
-
 	fmt.Println("Waiting for 10 seconds to allow Authorize.net to keep up")
 	time.Sleep(10000 * time.Millisecond)
-
 
 
 	item := AuthorizeCIM.LineItem{
@@ -96,4 +98,16 @@ func main() {
 	}
 
 
+}
+
+
+// NOT NEEDED - ONLY FOR CREATING A RANDOM EMAIL ADDRESS
+func RandomString(strlen int) string {
+	rand.Seed(time.Now().UTC().UnixNano())
+	const chars = "abcdefghijklmnopqrstuvwxyz0123456789"
+	result := make([]byte, strlen)
+	for i := 0; i < strlen; i++ {
+		result[i] = chars[rand.Intn(len(chars))]
+	}
+	return string(result)
 }
