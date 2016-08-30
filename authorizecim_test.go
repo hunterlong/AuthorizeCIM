@@ -171,6 +171,7 @@ func TestProfileTransaction(t *testing.T) {
 		if approved {
 			t.Log("Transaction was approved! "+tranxID+"\n")
 		} else {
+			t.Fail()
 			t.Log("Transaction was denied! "+tranxID+"\n")
 		}
 	} else {
@@ -181,12 +182,52 @@ func TestProfileTransaction(t *testing.T) {
 }
 
 
+
+func TestProfileTransactionDeclined(t *testing.T) {
+
+	// make a new billing profile with a credit card that will be declined
+	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "46282", Country: "USA", PhoneNumber: "5555555555"}
+	creditCard := CreditCard{CardNumber: "4007000000027", ExpirationDate: "2020-12"}
+	newPaymentID, success := CreateCustomerBillingProfile(testProfileID, creditCard, address)
+	if !success {
+		t.Fail()
+	}
+	newTestPaymentID := newPaymentID
+	t.Log("New User Payment Profile created "+testPaymentID+"\n")
+
+	// Delay for Authorize.net, waiting for Billing ID
+	time.Sleep(10 * time.Second)
+
+	amount := RandomDollar(10,90)
+	item := LineItem{ItemID: "S0595", Name: "New Product", Description: "brand new", Quantity: "1", UnitPrice: amount}
+	transResponse, approved, success := CreateTransaction(testProfileID, newTestPaymentID, item, amount)
+	var tranxID string
+
+	if success {
+		tranxID = transResponse["transId"].(string)
+		testTransactionID = tranxID
+		if approved {
+			t.Fail()
+			t.Log("Transaction was approved! "+tranxID+"\n")
+		} else {
+			t.Log("Transaction was denied! "+tranxID+"\n")
+		}
+	} else {
+		t.Log("Transaction has failed! It was a duplication transaction or card was rejected. \n")
+	}
+	t.Log(transResponse)
+	t.Log("\n")
+}
+
+
+
 func TestGetTransactionDetails(t *testing.T) {
 	details := GetTransactionDetails(testTransactionID)
 	if details != nil {
 	if details["transId"] == testTransactionID {
 		t.Log("Transaction ID "+testTransactionID+" was fetched! \n")
 	} else {
+		t.Fail()
 		t.Log("Transaction was not processed! Could be a duplicate transaction. \n")
 	}
 	}
@@ -209,6 +250,7 @@ func TestCreateSubscription(t *testing.T){
 	if success {
 		t.Log("User created a new Subscription id: "+newSubscription+"\n")
 	} else {
+		t.Fail()
 		t.Log("created the subscription failed, the user might not be fully inputed yet. \n")
 	}
 }
@@ -239,6 +281,7 @@ func TestDeleteShippingAddress(t *testing.T){
 	if userShipping {
 		t.Log("Deleted User Shipping Address "+testShippingID+"\n")
 	} else {
+		t.Fail()
 		t.Log("Issue with deleteing shippinn address: "+testShippingID+"\n")
 	}
 }
