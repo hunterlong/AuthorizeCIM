@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 var api_endpoint string
@@ -47,6 +48,8 @@ func CreateCustomerProfile(userInfo AuthUser) (string, bool) {
 	} else {
 		new_uuid = "0"
 	}
+	// Delay for Authorize.net
+	time.Sleep(3 * time.Second)
 	return new_uuid, success
 }
 
@@ -100,6 +103,8 @@ func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, addre
 	} else {
 		new_paymentID = "0"
 	}
+	// Delay for Authorize.net
+	time.Sleep(3 * time.Second)
 	return new_paymentID, status
 }
 
@@ -218,6 +223,8 @@ func CreateShippingAddress(profileID string, address Address) (string, bool) {
 	} else {
 		new_address_id = outgoing["customerAddressId"].(string)
 	}
+	// Delay for Authorize.net
+	time.Sleep(3 * time.Second)
 	return new_address_id, success
 }
 
@@ -282,6 +289,8 @@ func CreateSubscription(newSubscription Subscription) (string, bool) {
 	jsoned, _ := json.Marshal(subscriptonSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
 	status := FindResultCode(outgoing)
+	// Delay for Authorize.net
+	time.Sleep(3 * time.Second)
 	if status {
 		return outgoing["subscriptionId"].(string), status
 	}
