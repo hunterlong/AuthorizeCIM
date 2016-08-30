@@ -100,6 +100,9 @@ func main() {
 		userFullProfile,
 	}
 
+	// Delay for Authorize.net, waiting for Shipping and Billing ID
+	time.Sleep(10 * time.Second)
+
 	newSubscriptionID, success := AuthorizeCIM.CreateSubscription(subscriptionInput)
 
 	if success {

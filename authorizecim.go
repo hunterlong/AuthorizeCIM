@@ -289,8 +289,6 @@ func CreateSubscription(newSubscription Subscription) (string, bool) {
 	jsoned, _ := json.Marshal(subscriptonSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
 	status := FindResultCode(outgoing)
-	// Delay for Authorize.net
-	time.Sleep(3 * time.Second)
 	if status {
 		return outgoing["subscriptionId"].(string), status
 	}
