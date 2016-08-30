@@ -296,7 +296,6 @@ func CreateSubscription(newSubscription Subscription) (string, bool) {
 }
 
 
-
 func RefundTransactions(){
 
 }
