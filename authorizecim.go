@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"fmt"
-	"time"
 )
 
 var api_endpoint string
@@ -48,8 +47,6 @@ func CreateCustomerProfile(userInfo AuthUser) (string, bool) {
 	} else {
 		new_uuid = "0"
 	}
-	// Delay for Authorize.net
-	time.Sleep(3 * time.Second)
 	return new_uuid, success
 }
 
@@ -61,10 +58,12 @@ func GetCustomerProfile(profileID string) (map[string]interface{}, bool) {
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ :=SendRequest(string(jsoned))
 	success := FindResultCode(outgoing)
-	fmt.Println(outgoing)
-	userProfile := outgoing["profile"].(map[string]interface{})
-	fmt.Println(userProfile)
-	return outgoing, success
+	if outgoing["profile"]==nil {
+		return nil, success
+	} else {
+		userProfile := outgoing["profile"].(map[string]interface{})
+		return userProfile, success
+	}
 }
 
 
@@ -103,8 +102,6 @@ func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, addre
 	} else {
 		new_paymentID = "0"
 	}
-	// Delay for Authorize.net
-	time.Sleep(3 * time.Second)
 	return new_paymentID, status
 }
 
@@ -223,8 +220,6 @@ func CreateShippingAddress(profileID string, address Address) (string, bool) {
 	} else {
 		new_address_id = outgoing["customerAddressId"].(string)
 	}
-	// Delay for Authorize.net
-	time.Sleep(3 * time.Second)
 	return new_address_id, success
 }
 
@@ -288,12 +283,14 @@ func CreateSubscription(newSubscription Subscription) (string, bool) {
 	subscriptonSubmit := CreateSubscriptionRequest{ARBCreateSubscription{authToken, newSubscription}}
 	jsoned, _ := json.Marshal(subscriptonSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
+	fmt.Println(outgoing)
 	status := FindResultCode(outgoing)
 	if status {
 		return outgoing["subscriptionId"].(string), status
 	}
 	return "0", status
 }
+
 
 
 func RefundTransactions(){
