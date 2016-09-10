@@ -189,7 +189,7 @@ func TestProfileTransaction(t *testing.T) {
 func TestProfileTransactionDeclined(t *testing.T) {
 
 	// make a new billing profile with a credit card that will be declined
-	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "46282", Country: "USA", PhoneNumber: "5555555555"}
+	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
 	creditCard := CreditCard{CardNumber: "4007000000027", ExpirationDate: "2020-12"}
 	newPaymentID, success := CreateCustomerBillingProfile(testProfileID, creditCard, address)
 	if !success {
