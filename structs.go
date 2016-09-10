@@ -103,6 +103,12 @@ type DoCreateTransaction struct {
 	CreateTransactionRequest CreateTransactionRequest `json:"createTransactionRequest"`
 }
 
+
+type DoRefundTransaction struct {
+	CreateRefundTransactionRequest CreateRefundTransactionRequest `json:"createTransactionRequest"`
+}
+
+
 type VoidTransactionRequestARB struct {
 	VoidTransaction VoidTransactionRequest `json:"createTransactionRequest"`
 }

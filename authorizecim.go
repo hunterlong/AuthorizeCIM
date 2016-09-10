@@ -306,9 +306,9 @@ func DeleteSubscription(subscriptionId string) bool {
 func RefundTransaction(transactionId string, amount string, creditCardLastFour string, cardExp string) (map[string]interface{}, bool, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	cardRequest := CreditCard{CardNumber: creditCardLastFour, ExpirationDate: cardExp}
-	transaction := RefundTransactionRequest{TransactionType: "refundTransaction", Amount: amount, Payment: cardRequest, TransxId: transactionId}
+	transaction := RefundTransactionRequest{TransactionType: "refundTransaction", Amount: amount, Payment: Payment{cardRequest}, TransxId: transactionId}
 	tranxrequest := CreateRefundTransactionRequest{MerchantAuthentication: authToken, RefundTransactionRequest: transaction}
-	doTranx := DoCreateTransaction{tranxrequest}
+	doTranx := DoRefundTransaction{tranxrequest}
 	jsoned, _ := json.Marshal(doTranx)
 	outgoing, _ := SendRequest(string(jsoned))
 	var status, approved bool
