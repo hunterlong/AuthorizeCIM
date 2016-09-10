@@ -186,10 +186,10 @@ func TestProfileTransaction(t *testing.T) {
 
 
 
-func TestProfileTransactionDeclined(t *testing.T) {
+func TestProfileTransactionApproved(t *testing.T) {
 
 	// make a new billing profile with a credit card that will be declined
-	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
+	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93063", Country: "USA", PhoneNumber: "5555555555"}
 	creditCard := CreditCard{CardNumber: "4007000000027", ExpirationDate: "2020-12"}
 	newPaymentID, success := CreateCustomerBillingProfile(testProfileID, creditCard, address)
 	if !success {
@@ -210,12 +210,13 @@ func TestProfileTransactionDeclined(t *testing.T) {
 		tranxID = transResponse["transId"].(string)
 		testTransactionID = tranxID
 		if approved {
-			t.Fail()
 			t.Log("Transaction was approved! "+tranxID+"\n")
 		} else {
+			t.Fail()
 			t.Log("Transaction was denied! "+tranxID+"\n")
 		}
 	} else {
+		t.Fail()
 		t.Log("Transaction has failed! It was a duplication transaction or card was rejected. \n")
 	}
 	t.Log(transResponse)
@@ -300,19 +301,6 @@ func TestRefundTransaction(t *testing.T) {
 
 }
 
-func TestVoidTransaction(t *testing.T) {
-
-	success := VoidTransaction(testTransactionID)
-
-	if success {
-		fmt.Println("Transaction was successfully voided")
-	} else {
-		fmt.Println("Transaction FAILED to void")
-	}
-}
-
-
-
 
 func TestUpdateCustomerPaymentProfile(t *testing.T){
 	address := Address{FirstName: "Test", LastName: "User", Address: "58585 Changed St", City: "Bulbasaur", State:" California", Zip: "93065", Country: "USA", PhoneNumber: "5555555555"}
@@ -348,3 +336,16 @@ func TestDeleteCustomerProfile(t *testing.T){
 		t.Log("Customer Profile was deleted: " + testProfileID + "\n")
 	}
 }
+
+
+func TestVoidTransaction(t *testing.T) {
+
+	success := VoidTransaction(testTransactionID)
+
+	if success {
+		fmt.Println("Transaction was successfully voided")
+	} else {
+		fmt.Println("Transaction FAILED to void")
+	}
+}
+
