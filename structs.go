@@ -23,7 +23,7 @@ type AuthUser struct {
 }
 
 type DeleteARBSubscriptionRequest struct {
-	ARBCancelSubscriptionRequest DeleteARBSubscriptionRequest `json:"ARBCancelSubscriptionRequest"`
+	ARBCancelSubscriptionRequest DeleteSubscriptionRequest `json:"ARBCancelSubscriptionRequest"`
 }
 
 
