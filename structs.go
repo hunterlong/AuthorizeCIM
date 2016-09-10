@@ -103,6 +103,34 @@ type DoCreateTransaction struct {
 	CreateTransactionRequest CreateTransactionRequest `json:"createTransactionRequest"`
 }
 
+type VoidTransactionRequestARB struct {
+	VoidTransaction VoidTransactionRequest `json:"createTransactionRequest"`
+}
+
+type CreateRefundTransactionRequest struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	RefundTransactionRequest RefundTransactionRequest `json:"transactionRequest"`
+}
+
+type RefundTransactionRequest struct {
+	TransactionType string `json:"transactionType"`
+	Amount string `json:"amount"`
+	Payment Payment `json:"payment"`
+	TransxId string `json:"refTransId"`
+}
+
+
+type VoidTransactionRequest struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	MinTrans MinTrans `json:"transactionRequest"`
+}
+
+type MinTrans struct {
+	TransactionType string `json:"transactionType"`
+	TransxId string `json:"refTransId"`
+}
+
+
 type CreateTransactionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
 	RefID string `json:"refId"`

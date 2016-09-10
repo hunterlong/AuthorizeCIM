@@ -17,6 +17,7 @@ var testTransactionID string
 var randomUserEmail string
 var newSubscriptionId string
 
+
 func RandomString(strlen int) string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	const chars = "abcdefghijklmnopqrstuvwxyz0123456789"
@@ -271,6 +272,43 @@ func TestCancelSubscription(t *testing.T) {
 		t.Fail()
 	}
 
+}
+
+
+
+func TestRefundTransaction(t *testing.T) {
+
+	transId := "10102012"
+	amount := "10.50"
+	lastFour := "4040"
+	expiration := "10/20"
+
+	response, approved, status := RefundTransaction(transId, amount, lastFour, expiration)
+
+	if status {
+
+		if approved {
+			fmt.Println("Transaction Refund was APPROVED and processed")
+		} else {
+			fmt.Println("Transaction Refund was decliened")
+		}
+
+	} else {
+		fmt.Println("Refund failed to process")
+	}
+	fmt.Println(response)
+
+}
+
+func TestVoidTransaction(t *testing.T) {
+
+	success := VoidTransaction(testTransactionID)
+
+	if success {
+		fmt.Println("Transaction was successfully voided")
+	} else {
+		fmt.Println("Transaction FAILED to void")
+	}
 }
 
 

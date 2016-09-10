@@ -303,13 +303,47 @@ func DeleteSubscription(subscriptionId string) bool {
 }
 
 
-func RefundTransactions(){
+func RefundTransaction(transactionId string, amount string, creditCardLastFour string, cardExp string) (map[string]interface{}, bool, bool) {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	cardRequest := CreditCard{CardNumber: creditCardLastFour, ExpirationDate: cardExp}
+	transaction := RefundTransactionRequest{TransactionType: "refundTransaction", Amount: amount, Payment: cardRequest, TransxId: transactionId}
+	tranxrequest := CreateRefundTransactionRequest{MerchantAuthentication: authToken, RefundTransactionRequest: transaction}
+	doTranx := DoCreateTransaction{tranxrequest}
+	jsoned, _ := json.Marshal(doTranx)
+	outgoing, _ := SendRequest(string(jsoned))
+	var status, approved bool
+	var response map[string]interface{}
+	transxResponse := outgoing["transactionResponse"].(map[string]interface{})
+	if transxResponse["responseCode"]!=nil {
+		if transxResponse["responseCode"].(string) != "1" {
+			approved = false
+			status = true
+			response = transxResponse
+		} else {
+			status = FindResultCode(outgoing)
+			approved = TransactionApproved(outgoing)
+			response = outgoing["transactionResponse"].(map[string]interface{})
+		}
+	} else {
+		approved = false
+		status = false
+		response = map[string]interface{}{}
+	}
 
+	return response, approved, status
 }
 
-func VoidTransaction(){
 
+func VoidTransaction(transactionId string) bool {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	voidSubmit := VoidTransactionRequestARB{VoidTransactionRequest{authToken, MinTrans{"voidTransaction", transactionId}}}
+	jsoned, _ := json.Marshal(voidSubmit)
+	outgoing, _ := SendRequest(string(jsoned))
+	fmt.Println(outgoing)
+	status := FindResultCode(outgoing)
+	return status
 }
+
 
 func UpdateSubscription(){
 
