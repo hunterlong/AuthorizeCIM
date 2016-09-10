@@ -22,6 +22,17 @@ type AuthUser struct {
 	Description 	string
 }
 
+type DeleteARBSubscriptionRequest struct {
+	ARBCancelSubscriptionRequest DeleteARBSubscriptionRequest `json:"ARBCancelSubscriptionRequest"`
+}
+
+
+type DeleteSubscriptionRequest struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	SubscriptionId string `json:"subscriptionId"`
+}
+
+
 type DeleteCustomerShippingAddressRequest struct {
 	GetCustomerShippingAddress GetCustomerShippingAddress `json:"deleteCustomerShippingAddressRequest"`
 }

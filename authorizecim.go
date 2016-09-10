@@ -292,16 +292,22 @@ func CreateSubscription(newSubscription Subscription) (string, bool) {
 }
 
 
+func DeleteSubscription(subscriptionId string) bool {
+	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
+	subscriptonSubmit := DeleteARBSubscriptionRequest{DeleteSubscriptionRequest{authToken, subscriptionId}}
+	jsoned, _ := json.Marshal(subscriptonSubmit)
+	outgoing, _ := SendRequest(string(jsoned))
+	fmt.Println(outgoing)
+	status := FindResultCode(outgoing)
+	return status
+}
+
 
 func RefundTransactions(){
 
 }
 
 func VoidTransaction(){
-
-}
-
-func DeleteSubscription(){
 
 }
 

@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"strconv"
+	"fmt"
 )
 
 
@@ -14,6 +15,7 @@ var testPaymentID string
 var testShippingID string
 var testTransactionID string
 var randomUserEmail string
+var newSubscriptionId string
 
 func RandomString(strlen int) string {
 	rand.Seed(time.Now().UTC().UnixNano())
@@ -247,12 +249,28 @@ func TestCreateSubscription(t *testing.T){
 	subscriptionInput := Subscription{"New Subscription",paymentSchedule,amount,"0.00",userFullProfile}
 
 	newSubscription, success := CreateSubscription(subscriptionInput)
+	newSubscriptionId = newSubscription
 	if success {
 		t.Log("User created a new Subscription id: "+newSubscription+"\n")
 	} else {
 		t.Fail()
 		t.Log("created the subscription failed, the user might not be fully inputed yet. \n")
 	}
+}
+
+
+func TestCancelSubscription(t *testing.T) {
+
+	thisSubscriptionId := newSubscriptionId
+	success := DeleteSubscription(thisSubscriptionId)
+
+	if success {
+		fmt.Print("Canceled Subscription ID: ", thisSubscriptionId)
+	} else {
+		fmt.Println("Failed to cancel subscription ID: ", thisSubscriptionId)
+		t.Fail()
+	}
+
 }
 
 
