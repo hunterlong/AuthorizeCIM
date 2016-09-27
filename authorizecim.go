@@ -351,6 +351,7 @@ func AuthorizeCard(creditCard CreditCardCVV, amount string) bool {
 	tranxrequest := AuthorizeTransactionRequestARB{MerchantAuthentication: authToken, AuthorizeTranx: transaction}
 	jsoned, _ := json.Marshal(tranxrequest)
 	outgoing, _ := SendRequest(string(jsoned))
+	fmt.Println(outgoing)
 	response := TransactionApproved(outgoing)
 	return response
 }

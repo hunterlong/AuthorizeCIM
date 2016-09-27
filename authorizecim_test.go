@@ -188,7 +188,7 @@ func TestProfileTransaction(t *testing.T) {
 func TestAuthorizeCard(t *testing.T) {
 	creditCard := CreditCardCVV{CardNumber: "4012888818888", ExpirationDate: "10/20", CardCode: "433"}
 	approved := AuthorizeCard(creditCard, "1.00")
-	if !approved {
+	if approved {
 		t.Fail()
 	}
 }
@@ -196,7 +196,7 @@ func TestAuthorizeCard(t *testing.T) {
 func TestRejectedAuthorizeCard(t *testing.T) {
 	creditCard := CreditCardCVV{CardNumber: "401234348888", ExpirationDate: "10/20", CardCode: "433"}
 	approved := AuthorizeCard(creditCard, "1.00")
-	if approved {
+	if !approved {
 		t.Fail()
 	}
 }
