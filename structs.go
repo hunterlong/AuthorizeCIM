@@ -113,6 +113,11 @@ type VoidTransactionRequestARB struct {
 	VoidTransaction VoidTransactionRequest `json:"createTransactionRequest"`
 }
 
+type AuthorizeTransactionRequestARB struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	AuthorizeTranx AuthorizeTransactionRequest `json:"createTransactionRequest"`
+}
+
 type CreateRefundTransactionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
 	RefundTransactionRequest RefundTransactionRequest `json:"transactionRequest"`
@@ -125,6 +130,11 @@ type RefundTransactionRequest struct {
 	TransxId string `json:"refTransId"`
 }
 
+type AuthorizeTransactionRequest struct {
+	TransactionType string `json:"transactionType"`
+	Amount string `json:"amount"`
+	Payment PaymentCVV `json:"payment"`
+}
 
 type VoidTransactionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
@@ -287,10 +297,19 @@ type Payment struct {
 	CreditCard CreditCard `json:"creditCard"`
 }
 
+type PaymentCVV struct {
+	CreditCard CreditCardCVV `json:"creditCard"`
+}
 
 type CreditCard struct {
 	CardNumber string `json:"cardNumber"`
 	ExpirationDate string `json:"expirationDate"`
+}
+
+type CreditCardCVV struct {
+	CardNumber string `json:"cardNumber"`
+	ExpirationDate string `json:"expirationDate"`
+	CardCode string `json:"cardCode"`
 }
 
 type CreateCustomerProfileRequest struct {
