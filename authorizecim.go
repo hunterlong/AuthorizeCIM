@@ -345,16 +345,18 @@ func VoidTransaction(transactionId string) bool {
 }
 
 
+
 func AuthorizeCard(creditCard CreditCardCVV, amount string) bool {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	transaction := AuthorizeTransactionRequest{TransactionType: "authOnlyTransaction", Amount: amount, Payment: PaymentCVV{creditCard}}
-	tranxrequest := AuthorizeTransactionRequestARB{MerchantAuthentication: authToken, AuthorizeTranx: transaction}
-	jsoned, _ := json.Marshal(tranxrequest)
+	tranxrequest := CreateAuthorizeTransactionRequest{MerchantAuthentication: authToken, RefID: "none33", AuthorizeTranx: transaction}
+	tranxrequestARB := AuthorizeTransactionRequestARB{AuthorizeTransaction: tranxrequest}
+	jsoned, _ := json.Marshal(tranxrequestARB)
 	outgoing, _ := SendRequest(string(jsoned))
-	fmt.Println(outgoing)
 	response := TransactionApproved(outgoing)
 	return response
 }
+
 
 
 func UpdateSubscription(){
