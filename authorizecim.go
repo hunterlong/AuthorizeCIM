@@ -32,7 +32,7 @@ func MakeUser (userID string) User {
 	return CurrentUser
 }
 
-func CreateCustomerProfile(userInfo AuthUser) (string, bool) {
+func CreateCustomerProfile(userInfo AuthUser) (string, map[string]interface{}, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	profile := Profile{MerchantCustomerID: userInfo.Uuid, Description: userInfo.Description, Email: userInfo.Email}
 	request := CreateCustomerProfileRequest{authToken, profile}
@@ -40,6 +40,7 @@ func CreateCustomerProfile(userInfo AuthUser) (string, bool) {
 	jsoned, _ := json.Marshal(newprofile)
 	outgoing, _ := SendRequest(string(jsoned))
 	success := FindResultCode(outgoing)
+	response := outgoing
 	var new_uuid string
 	if success {
 		new_uuid = outgoing["customerProfileId"].(string)
@@ -47,7 +48,7 @@ func CreateCustomerProfile(userInfo AuthUser) (string, bool) {
 	} else {
 		new_uuid = "0"
 	}
-	return new_uuid, success
+	return new_uuid, response, success
 }
 
 
