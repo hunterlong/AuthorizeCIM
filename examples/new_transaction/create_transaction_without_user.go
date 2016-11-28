@@ -29,12 +29,20 @@ func main() {
 	}
 	amount := "14.43"
 
-	success := AuthorizeCIM.AuthorizeCard(credit_card, amount)
+	response, approved, success := AuthorizeCIM.AuthorizeCard(credit_card, amount)
+	// outputs transaction response, approved status (true/false), and success status (true/false)
 
+	var tranxID string
 	if success {
-		fmt.Println("Transaction was approved! \n")
+		tranxID = response["transId"].(string)
+		if approved {
+			fmt.Println("Transaction was approved! "+tranxID+"\n")
+		} else {
+			fmt.Println("Transaction was denied! "+tranxID+"\n")
+		}
 	} else {
 		fmt.Println("Transaction has failed! \n")
+		fmt.Println(response)
 	}
 
 

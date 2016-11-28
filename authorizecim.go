@@ -346,15 +346,34 @@ func VoidTransaction(transactionId string) bool {
 
 
 
-func AuthorizeCard(creditCard CreditCardCVV, amount string) bool {
+func AuthorizeCard(creditCard CreditCardCVV, amount string) (map[string]interface{}, bool, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	transaction := AuthorizeTransactionRequest{TransactionType: "authOnlyTransaction", Amount: amount, Payment: PaymentCVV{creditCard}}
 	tranxrequest := CreateAuthorizeTransactionRequest{MerchantAuthentication: authToken, RefID: "none33", AuthorizeTranx: transaction}
 	tranxrequestARB := AuthorizeTransactionRequestARB{AuthorizeTransaction: tranxrequest}
 	jsoned, _ := json.Marshal(tranxrequestARB)
 	outgoing, _ := SendRequest(string(jsoned))
-	response := TransactionApproved(outgoing)
-	return response
+
+	var status, approved bool
+	var response map[string]interface{}
+	transxResponse := outgoing["transactionResponse"].(map[string]interface{})
+	if transxResponse["responseCode"]!=nil {
+		if transxResponse["responseCode"].(string) != "1" {
+			approved = false
+			status = true
+			response = transxResponse
+		} else {
+			status = FindResultCode(outgoing)
+			approved = TransactionApproved(outgoing)
+			response = outgoing["transactionResponse"].(map[string]interface{})
+		}
+	} else {
+		approved = false
+		status = false
+		response = map[string]interface{}{}
+	}
+
+	return response, approved, status
 }
 
 
