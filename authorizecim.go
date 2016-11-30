@@ -89,21 +89,22 @@ func DeleteCustomerProfile(profileID string) bool {
 }
 
 
-func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, address Address) (string, bool) {
+func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, address Address) (string, map[string]interface{}, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	paymentProfile := PaymentBillingProfile{Address: address, Payment: Payment{CreditCard:creditCard}}
 	request := CreateCustomerBillingProfileRequest{authToken, profileID, paymentProfile, testMode}
 	newprofile := NewCustomerBillingProfile{request}
 	jsoned, _ := json.Marshal(newprofile)
 	outgoing, _ :=SendRequest(string(jsoned))
-	status := FindResultCode(outgoing)
+	success := FindResultCode(outgoing)
+	response := outgoing
 	var new_paymentID string
-	if status {
-		new_paymentID = outgoing["customerPaymentProfileId"].(string)
+	if success {
+		new_paymentID = outgoing["customerProfileId"].(string)
 	} else {
 		new_paymentID = "0"
 	}
-	return new_paymentID, status
+	return new_paymentID, response, success
 }
 
 
