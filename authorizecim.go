@@ -116,8 +116,12 @@ func GetCustomerPaymentProfile(profileID string, paymentID string) (map[string]i
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
 	success := FindResultCode(outgoing)
-	fmt.Println(CurrentUser)
-	return outgoing["paymentProfile"].(map[string]interface{}), success
+	fmt.Println(outgoing["paymentProfile"])
+	if (success) {
+		return outgoing["paymentProfile"].(map[string]interface{}), success
+	} else {
+		return map[string]interface{}{}, success
+	}
 }
 
 

@@ -83,7 +83,14 @@ func TestCreatePaymentProfile(t *testing.T){
 		t.Fail()
 	}
 	testPaymentID = newPaymentID
-	t.Log("User Payment Profile created "+testPaymentID+"\n")}
+	t.Log("User Payment Profile created "+testPaymentID+"\n")
+}
+
+
+func TestPaymentDelay(t *testing.T){
+	time.Sleep(10 * time.Second)
+	t.Log("Done sleeping \n")
+}
 
 
 
