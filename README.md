@@ -9,10 +9,10 @@ Give your Go Language applications the ability to store and retrieve credit card
 ## Usage
 * Import package
 ```
-go get github.com/hunterlong/authorizecim
+go get github.com/avator/authorizecim
 ```
 ```go
-import "github.com/hunterlong/authorizecim"
+import "github.com/avator/authorizecim"
 ```
 
 * Set Authorize.net API Keys

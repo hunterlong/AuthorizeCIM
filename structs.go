@@ -114,8 +114,13 @@ type VoidTransactionRequestARB struct {
 }
 
 type AuthorizeTransactionRequestARB struct {
+	AuthorizeTransaction CreateAuthorizeTransactionRequest `json:"createTransactionRequest"`
+}
+
+type CreateAuthorizeTransactionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	AuthorizeTranx AuthorizeTransactionRequest `json:"createTransactionRequest"`
+	RefID string `json:"refId"`
+	AuthorizeTranx AuthorizeTransactionRequest `json:"transactionRequest"`
 }
 
 type CreateRefundTransactionRequest struct {
