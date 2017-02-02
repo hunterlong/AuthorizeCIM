@@ -57,7 +57,7 @@ func TestAPIAccess(t *testing.T) {
 func TestUserCreation(t *testing.T) {
 	randomUserEmail = RandomString(9)+"@random.com"
 	customer_info := AuthUser{"19",randomUserEmail,"Test Account"}
-	newuser, success := CreateCustomerProfile(customer_info)
+	newuser, _, success := CreateCustomerProfile(customer_info)
 	if !success {
 		t.Fail()
 	}
@@ -78,7 +78,7 @@ func TestUserModelCreation(t *testing.T) {
 func TestCreatePaymentProfile(t *testing.T){
 	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93063", Country: "USA", PhoneNumber: "5555555555"}
 	creditCard := CreditCard{CardNumber: "4111111111111111", ExpirationDate: "2020-12"}
-	newPaymentID, success := CreateCustomerBillingProfile(testProfileID, creditCard, address)
+	newPaymentID, _, success := CreateCustomerBillingProfile(testProfileID, creditCard, address)
 	if !success {
 		t.Fail()
 	}
@@ -206,7 +206,7 @@ func TestProfileTransactionApproved(t *testing.T) {
 	// make a new billing profile with a credit card that will be declined
 	address := Address{FirstName: "Test", LastName: "User", Address: "1234 Road St", City: "City Name", State:" California", Zip: "93063", Country: "USA", PhoneNumber: "5555555555"}
 	creditCard := CreditCard{CardNumber: "4007000000027", ExpirationDate: "2020-12"}
-	newPaymentID, success := CreateCustomerBillingProfile(testProfileID, creditCard, address)
+	newPaymentID, _, success := CreateCustomerBillingProfile(testProfileID, creditCard, address)
 	if !success {
 		t.Fail()
 	}
