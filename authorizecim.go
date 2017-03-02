@@ -39,7 +39,7 @@ func CreateCustomerProfile(userInfo AuthUser) (string, map[string]interface{}, b
 	newprofile := NewCustomerProfile{request}
 	jsoned, _ := json.Marshal(newprofile)
 	outgoing, _ := SendRequest(string(jsoned))
-	success := FindResultCode(outgoing)
+	success, _ := FindResultCode(outgoing)
 	response := outgoing
 	var new_uuid string
 	if success {
@@ -58,7 +58,7 @@ func GetCustomerProfile(profileID string) (map[string]interface{}, bool) {
 	input := CustomerProfile{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ :=SendRequest(string(jsoned))
-	success := FindResultCode(outgoing)
+	success, _ := FindResultCode(outgoing)
 	if outgoing["profile"]==nil {
 		return nil, success
 	} else {
@@ -84,7 +84,7 @@ func DeleteCustomerProfile(profileID string) bool {
 	input := deleteCustomerProfile{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
-	status := FindResultCode(outgoing)
+	status, _ := FindResultCode(outgoing)
 	return status
 }
 
@@ -96,11 +96,11 @@ func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, addre
 	newprofile := NewCustomerBillingProfile{request}
 	jsoned, _ := json.Marshal(newprofile)
 	outgoing, _ :=SendRequest(string(jsoned))
-	success := FindResultCode(outgoing)
+	success, _ := FindResultCode(outgoing)
 	response := outgoing
 	var new_paymentID string
 	if success {
-		new_paymentID = outgoing["customerProfileId"].(string)
+		new_paymentID = outgoing["customerPaymentProfileId"].(string)
 	} else {
 		new_paymentID = "0"
 	}
@@ -115,12 +115,13 @@ func GetCustomerPaymentProfile(profileID string, paymentID string) (map[string]i
 	input := getCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
-	success := FindResultCode(outgoing)
+	success, errMsg := FindResultCode(outgoing)
 	fmt.Println(outgoing["paymentProfile"])
 	if (success) {
 		return outgoing["paymentProfile"].(map[string]interface{}), success
 	} else {
-		return map[string]interface{}{}, success
+		fmt.Println(errMsg)
+		return map[string]interface{}{}, false
 	}
 }
 
@@ -132,7 +133,7 @@ func UpdateCustomerPaymentProfile(profileID string, paymentID string, creditCard
 	input := changeCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
-	status := FindResultCode(outgoing)
+	status, _ := FindResultCode(outgoing)
 	return status
 }
 
@@ -143,7 +144,7 @@ func DeleteCustomerPaymentProfile(profileID string, paymentID string) bool {
 	input := deleteCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ :=SendRequest(string(jsoned))
-	status := FindResultCode(outgoing)
+	status, _ := FindResultCode(outgoing)
 	return status
 }
 
@@ -160,7 +161,7 @@ func SendRequest(input string) (map[string]interface{}, interface{}) {
 	body, _ := ioutil.ReadAll(resp.Body)
 	body = bytes.TrimPrefix(body, []byte("\xef\xbb\xbf"))
 	var dat map[string]interface{}
-	//fmt.Printf(string(body))
+	fmt.Println(string(body))
 	err = json.Unmarshal(body, &dat)
 	if err!=nil {
 		panic(err)
@@ -189,7 +190,7 @@ func CreateTransaction(profileID string, paymentID string, item LineItem, amount
 			status = true
 			response = transxResponse
 		} else {
-			status = FindResultCode(outgoing)
+			status, _ = FindResultCode(outgoing)
 			approved = TransactionApproved(outgoing)
 			response = outgoing["transactionResponse"].(map[string]interface{})
 		}
@@ -208,7 +209,7 @@ func TestConnection() bool {
 	authnettest := AuthorizeNetTest{AuthenticateTestRequest:authToken}
 	jsoned, _ := json.Marshal(authnettest)
 	outgoing, _ := SendRequest(string(jsoned))
-	status := FindResultCode(outgoing)
+	status, _ := FindResultCode(outgoing)
 	return status
 }
 
@@ -219,7 +220,7 @@ func CreateShippingAddress(profileID string, address Address) (string, bool) {
 	customerShippingRequest := CustomerShippingAddressRequest{customerShipping}
 	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
-	success := FindResultCode(outgoing)
+	success, _ := FindResultCode(outgoing)
 	var new_address_id string
 	if !success {
 		new_address_id = "0"
@@ -235,7 +236,7 @@ func GetShippingAddress(profileID string, shippingID string) (map[string]interfa
 	customerShippingRequest := GetCustomerShippingAddressRequest{customerShipping}
 	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
-	success := FindResultCode(outgoing)
+	success, _ := FindResultCode(outgoing)
 	return outgoing["address"].(map[string]interface{}), success
 }
 
@@ -245,7 +246,7 @@ func DeleteShippingAddress(profileID string, shippingID string) bool {
 	customerShippingRequest := DeleteCustomerShippingAddressRequest{customerShipping}
 	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
-	status := FindResultCode(outgoing)
+	status, _ := FindResultCode(outgoing)
 	return status
 }
 
@@ -263,14 +264,21 @@ func GetTransactionDetails(tranID string) map[string]interface{} {
 }
 
 
-func FindResultCode(incoming map[string]interface{}) bool {
+func FindResultCode(incoming map[string]interface{}) (bool, string) {
 	messages, _ := incoming["messages"].(map[string]interface{})
+
 	if messages!=nil {
-		if messages["resultCode"] == "Ok" {
-			return true
+
+		if messages["resultCode"].(string) == "Ok" {
+			return true, ""
+		} else {
+			messagesInfo := messages["message"].(map[string]interface{})
+			return false, messagesInfo["text"].(string)
 		}
+
 	}
-	return false
+
+	return false, ""
 }
 
 func TransactionApproved(incoming map[string]interface{}) bool {
@@ -290,7 +298,7 @@ func CreateSubscription(newSubscription Subscription) (string, bool) {
 	jsoned, _ := json.Marshal(subscriptonSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
 	fmt.Println(outgoing)
-	status := FindResultCode(outgoing)
+	status, _ := FindResultCode(outgoing)
 	if status {
 		return outgoing["subscriptionId"].(string), status
 	}
@@ -304,7 +312,7 @@ func DeleteSubscription(subscriptionId string) bool {
 	jsoned, _ := json.Marshal(subscriptonSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
 	fmt.Println(outgoing)
-	status := FindResultCode(outgoing)
+	status, _ := FindResultCode(outgoing)
 	return status
 }
 
@@ -326,7 +334,7 @@ func RefundTransaction(transactionId string, amount string, creditCardLastFour s
 			status = true
 			response = transxResponse
 		} else {
-			status = FindResultCode(outgoing)
+			status, _ = FindResultCode(outgoing)
 			approved = TransactionApproved(outgoing)
 			response = outgoing["transactionResponse"].(map[string]interface{})
 		}
@@ -346,7 +354,7 @@ func VoidTransaction(transactionId string) bool {
 	jsoned, _ := json.Marshal(voidSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
 	fmt.Println(outgoing)
-	status := FindResultCode(outgoing)
+	status, _ := FindResultCode(outgoing)
 	return status
 }
 
@@ -369,7 +377,7 @@ func AuthorizeCard(creditCard CreditCardCVV, amount string) (map[string]interfac
 			status = true
 			response = transxResponse
 		} else {
-			status = FindResultCode(outgoing)
+			status, _ = FindResultCode(outgoing)
 			approved = TransactionApproved(outgoing)
 			response = outgoing["transactionResponse"].(map[string]interface{})
 		}

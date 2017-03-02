@@ -88,7 +88,7 @@ func TestCreatePaymentProfile(t *testing.T){
 
 
 func TestPaymentDelay(t *testing.T){
-	time.Sleep(10 * time.Second)
+	time.Sleep(15 * time.Second)
 	t.Log("Done sleeping \n")
 }
 
