@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"io/ioutil"
 	"encoding/json"
-	"fmt"
 )
 
 var api_endpoint string
@@ -116,11 +115,11 @@ func GetCustomerPaymentProfile(profileID string, paymentID string) (map[string]i
 	jsoned, _ := json.Marshal(input)
 	outgoing, _ := SendRequest(string(jsoned))
 	success, errMsg := FindResultCode(outgoing)
-	fmt.Println(outgoing["paymentProfile"])
+	//fmt.Println(outgoing["paymentProfile"])
 	if (success) {
 		return outgoing["paymentProfile"].(map[string]interface{}), success
 	} else {
-		fmt.Println(errMsg)
+		//fmt.Println(errMsg)
 		return map[string]interface{}{}, false
 	}
 }
@@ -161,7 +160,7 @@ func SendRequest(input string) (map[string]interface{}, interface{}) {
 	body, _ := ioutil.ReadAll(resp.Body)
 	body = bytes.TrimPrefix(body, []byte("\xef\xbb\xbf"))
 	var dat map[string]interface{}
-	fmt.Println(string(body))
+	//fmt.Println(string(body))
 	err = json.Unmarshal(body, &dat)
 	if err!=nil {
 		panic(err)
@@ -297,7 +296,7 @@ func CreateSubscription(newSubscription Subscription) (string, bool) {
 	subscriptonSubmit := CreateSubscriptionRequest{ARBCreateSubscription{authToken, newSubscription}}
 	jsoned, _ := json.Marshal(subscriptonSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
-	fmt.Println(outgoing)
+	//fmt.Println(outgoing)
 	status, _ := FindResultCode(outgoing)
 	if status {
 		return outgoing["subscriptionId"].(string), status
@@ -311,7 +310,7 @@ func DeleteSubscription(subscriptionId string) bool {
 	subscriptonSubmit := DeleteARBSubscriptionRequest{DeleteSubscriptionRequest{authToken, subscriptionId}}
 	jsoned, _ := json.Marshal(subscriptonSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
-	fmt.Println(outgoing)
+	//fmt.Println(outgoing)
 	status, _ := FindResultCode(outgoing)
 	return status
 }
@@ -353,7 +352,7 @@ func VoidTransaction(transactionId string) bool {
 	voidSubmit := VoidTransactionRequestARB{VoidTransactionRequest{authToken, MinTrans{"voidTransaction", transactionId}}}
 	jsoned, _ := json.Marshal(voidSubmit)
 	outgoing, _ := SendRequest(string(jsoned))
-	fmt.Println(outgoing)
+	//fmt.Println(outgoing)
 	status, _ := FindResultCode(outgoing)
 	return status
 }
