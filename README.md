@@ -1,7 +1,7 @@
 ![alt tag](http://pichoster.net/images/2016/05/30/authcimyjIpi.jpg)
 
 # Authorize.net CIM for golang
-[![Build Status](https://travis-ci.org/hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/hunterlong/AuthorizeCIM)  [![Code Climate](https://codeclimate.com/github/Hunterlong/AuthorizeCIM/badges/gpa.svg)](https://codeclimate.com/github/hunterlong/AuthorizeCIM)  [![Coverage Status](https://coveralls.io/repos/github/Hunterlong/AuthorizeCIM/badge.svg?branch=master)](https://coveralls.io/github/hunterlong/AuthorizeCIM?branch=master)  [![GoDoc](https://godoc.org/github.com/hunterlong/AuthorizeCIM?status.svg)](https://godoc.org/github.com/hunterlong/AuthorizeCIM)
+[![Build Status](https://travis-ci.org/hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/hunterlong/AuthorizeCIM)  [![Code Climate](https://codeclimate.com/github/Hunterlong/AuthorizeCIM/badges/gpa.svg)](https://codeclimate.com/github/hunterlong/AuthorizeCIM)  [![Coverage Status](https://coveralls.io/repos/github/Hunterlong/AuthorizeCIM/badge.svg?branch=master)](https://coveralls.io/github/hunterlong/AuthorizeCIM?branch=master)  [![GoDoc](https://godoc.org/github.com/hunterlong/AuthorizeCIM?status.svg)](https://godoc.org/github.com/hunterlong/AuthorizeCIM) [![Go Report Card](https://goreportcard.com/badge/github.com/hunterlong/AuthorizeCIM)](https://goreportcard.com/report/github.com/hunterlong/AuthorizeCIM)
 
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM API. 
 
