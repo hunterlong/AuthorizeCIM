@@ -1,37 +1,33 @@
 package AuthorizeCIM
 
 type MerchantAuthentication struct {
-	Name string `json:"name"`
+	Name           string `json:"name"`
 	TransactionKey string `json:"transactionKey"`
 }
 
-
 type User struct {
-	ID string
-	Email string
-	ProfileID string
-	BillingProfiles interface{}
+	ID               string
+	Email            string
+	ProfileID        string
+	BillingProfiles  interface{}
 	ShippingProfiles interface{}
-	Subscriptions map[string]interface{}
+	Subscriptions    map[string]interface{}
 }
 
-
 type AuthUser struct {
-	Uuid	string
-	Email	string
-	Description 	string
+	Uuid        string
+	Email       string
+	Description string
 }
 
 type DeleteARBSubscriptionRequest struct {
 	ARBCancelSubscriptionRequest DeleteSubscriptionRequest `json:"ARBCancelSubscriptionRequest"`
 }
 
-
 type DeleteSubscriptionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	SubscriptionId string `json:"subscriptionId"`
+	SubscriptionId         string                 `json:"subscriptionId"`
 }
-
 
 type DeleteCustomerShippingAddressRequest struct {
 	GetCustomerShippingAddress GetCustomerShippingAddress `json:"deleteCustomerShippingAddressRequest"`
@@ -43,8 +39,8 @@ type GetCustomerShippingAddressRequest struct {
 
 type GetCustomerShippingAddress struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileId string `json:"customerProfileId"`
-	CustomerShippingId string `json:"customerAddressId"`
+	CustomerProfileId      string                 `json:"customerProfileId"`
+	CustomerShippingId     string                 `json:"customerAddressId"`
 }
 
 type CustomerShippingAddressRequest struct {
@@ -53,19 +49,15 @@ type CustomerShippingAddressRequest struct {
 
 type CustomerShippingAddress struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileId string `json:"customerProfileId"`
-	Address Address		`json:"address"`
+	CustomerProfileId      string                 `json:"customerProfileId"`
+	Address                Address                `json:"address"`
 }
 
-
 type TransactionRecord struct {
-
 }
 
 type TransactionMessages struct {
-
 }
-
 
 type TransactionDetailsRequest struct {
 	TransactionDetails TransactionDetails `json:"getTransactionDetailsRequest"`
@@ -73,22 +65,21 @@ type TransactionDetailsRequest struct {
 
 type TransactionDetails struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	TransId string `json:"transId"`
+	TransId                string                 `json:"transId"`
 }
 
-
 type TransactionResponse struct {
-	ResponseCode string `json:"responseCode"`
-	AuthCode string `json:"authCode"`
-	AvsResultCode string `json:"avsResultCode"`
-	CvvResultCode string `json:"cvvResultCode"`
+	ResponseCode   string `json:"responseCode"`
+	AuthCode       string `json:"authCode"`
+	AvsResultCode  string `json:"avsResultCode"`
+	CvvResultCode  string `json:"cvvResultCode"`
 	CavvResultCode string `json:"cavvResultCode"`
-	TransID string `json:"transId"`
-	RefTransID string `json:"refTransID"`
-	TransHash string `json:"transHash"`
-	TestRequest string `json:"testRequest"`
-	AccountNumber string `json:"accountNumber"`
-	AccountType string `json:"accountType"`
+	TransID        string `json:"transId"`
+	RefTransID     string `json:"refTransID"`
+	TransHash      string `json:"transHash"`
+	TestRequest    string `json:"testRequest"`
+	AccountNumber  string `json:"accountNumber"`
+	AccountType    string `json:"accountType"`
 }
 
 type AuthorizeNetTest struct {
@@ -103,11 +94,9 @@ type DoCreateTransaction struct {
 	CreateTransactionRequest CreateTransactionRequest `json:"createTransactionRequest"`
 }
 
-
 type DoRefundTransaction struct {
 	CreateRefundTransactionRequest CreateRefundTransactionRequest `json:"createTransactionRequest"`
 }
-
 
 type VoidTransactionRequestARB struct {
 	VoidTransaction VoidTransactionRequest `json:"createTransactionRequest"`
@@ -118,57 +107,55 @@ type AuthorizeTransactionRequestARB struct {
 }
 
 type CreateAuthorizeTransactionRequest struct {
-	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	RefID string `json:"refId"`
-	AuthorizeTranx AuthorizeTransactionRequest `json:"transactionRequest"`
+	MerchantAuthentication MerchantAuthentication      `json:"merchantAuthentication"`
+	RefID                  string                      `json:"refId"`
+	AuthorizeTranx         AuthorizeTransactionRequest `json:"transactionRequest"`
 }
 
 type CreateRefundTransactionRequest struct {
-	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	MerchantAuthentication   MerchantAuthentication   `json:"merchantAuthentication"`
 	RefundTransactionRequest RefundTransactionRequest `json:"transactionRequest"`
 }
 
 type RefundTransactionRequest struct {
-	TransactionType string `json:"transactionType"`
-	Amount string `json:"amount"`
-	Payment Payment `json:"payment"`
-	TransxId string `json:"refTransId"`
+	TransactionType string  `json:"transactionType"`
+	Amount          string  `json:"amount"`
+	Payment         Payment `json:"payment"`
+	TransxId        string  `json:"refTransId"`
 }
 
 type AuthorizeTransactionRequest struct {
-	TransactionType string `json:"transactionType"`
-	Amount string `json:"amount"`
-	Payment PaymentCVV `json:"payment"`
+	TransactionType string     `json:"transactionType"`
+	Amount          string     `json:"amount"`
+	Payment         PaymentCVV `json:"payment"`
 }
 
 type VoidTransactionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	MinTrans MinTrans `json:"transactionRequest"`
+	MinTrans               MinTrans               `json:"transactionRequest"`
 }
 
 type MinTrans struct {
 	TransactionType string `json:"transactionType"`
-	TransxId string `json:"refTransId"`
+	TransxId        string `json:"refTransId"`
 }
-
 
 type CreateTransactionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	RefID string `json:"refId"`
-	TransactionRequest TransactionRequest `json:"transactionRequest"`
+	RefID                  string                 `json:"refId"`
+	TransactionRequest     TransactionRequest     `json:"transactionRequest"`
 }
 
-
 type TransactionRequest struct {
-	TransactionType string `json:"transactionType"`
-	Amount string `json:"amount"`
-	TranProfile TranProfile `json:"profile"`
-	LineItems LineItems `json:"lineItems"`
+	TransactionType string      `json:"transactionType"`
+	Amount          string      `json:"amount"`
+	TranProfile     TranProfile `json:"profile"`
+	LineItems       LineItems   `json:"lineItems"`
 }
 
 type TranProfile struct {
-	CustomerProfileId string `json:"customerProfileId"`
-	SubProfile SubProfile `json:"paymentProfile"`
+	CustomerProfileId string     `json:"customerProfileId"`
+	SubProfile        SubProfile `json:"paymentProfile"`
 }
 
 type SubProfile struct {
@@ -180,44 +167,38 @@ type LineItems struct {
 }
 
 type LineItem struct {
-	ItemID string `json:"itemId"`
-	Name string `json:"name"`
+	ItemID      string `json:"itemId"`
+	Name        string `json:"name"`
 	Description string `json:"description"`
-	Quantity string `json:"quantity"`
-	UnitPrice string `json:"unitPrice"`
+	Quantity    string `json:"quantity"`
+	UnitPrice   string `json:"unitPrice"`
 }
-
 
 type deleteCustomerPaymentProfileRequest struct {
 	DeleteCustomerPaymentProfileRequest deleteCustomerPaymentProfile `json:"deleteCustomerPaymentProfileRequest"`
 }
 
-
-
 type deleteCustomerPaymentProfile struct {
-	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileId string `json:"customerProfileId"`
-	CustomerPaymentProfileId string `json:"customerPaymentProfileId"`
+	MerchantAuthentication   MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileId        string                 `json:"customerProfileId"`
+	CustomerPaymentProfileId string                 `json:"customerPaymentProfileId"`
 }
-
-
 
 type changeCustomerPaymentProfileRequest struct {
 	UpdateCustomerPaymentProfileRequest updateCustomerPaymentProfileRequest `json:"updateCustomerPaymentProfileRequest"`
 }
 
-
 type updateCustomerPaymentProfileRequest struct {
-	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileId string `json:"customerProfileId"`
-	PaymentProfile UpdatePaymentBillingProfile `json:"paymentProfile"`
-	ValidationMode string `json:"validationMode"`
+	MerchantAuthentication MerchantAuthentication      `json:"merchantAuthentication"`
+	CustomerProfileId      string                      `json:"customerProfileId"`
+	PaymentProfile         UpdatePaymentBillingProfile `json:"paymentProfile"`
+	ValidationMode         string                      `json:"validationMode"`
 }
 
 type UpdatePaymentBillingProfile struct {
-	Address Address		`json:"billTo"`
-	Payment Payment `json:"payment"`
-	CustomerPaymentProfileId string `json:"customerPaymentProfileId"`
+	Address                  Address `json:"billTo"`
+	Payment                  Payment `json:"payment"`
+	CustomerPaymentProfileId string  `json:"customerPaymentProfileId"`
 }
 
 type getCustomerPaymentProfileRequest struct {
@@ -225,9 +206,9 @@ type getCustomerPaymentProfileRequest struct {
 }
 
 type CustomerPaymentProfileRequest struct {
-	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileId string `json:"customerProfileId"`
-	CustomerPaymentProfileId string `json:"customerPaymentProfileId"`
+	MerchantAuthentication   MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileId        string                 `json:"customerProfileId"`
+	CustomerPaymentProfileId string                 `json:"customerPaymentProfileId"`
 }
 
 type deleteCustomerProfile struct {
@@ -236,66 +217,60 @@ type deleteCustomerProfile struct {
 
 type deleteCustomerProfileRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileId string `json:"customerProfileId"`
+	CustomerProfileId      string                 `json:"customerProfileId"`
 }
 
 type AllCustomerProfileIds struct {
 	CustomerProfileIdsRequest getCustomerProfileIdsRequest `json:"getCustomerProfileIdsRequest"`
 }
 
-
 type getCustomerProfileIdsRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
 }
 
 type BillTo struct {
-	Address Address		`json:"billTo"`
+	Address Address `json:"billTo"`
 }
 
 type Address struct {
-	FirstName string	`json:"firstName"`
-	LastName string		`json:"lastName"`
-	Address string		`json:"address"`
-	City string		`json:"city"`
-	State string		`json:"state"`
-	Zip string		`json:"zip"`
-	Country string		`json:"country"`
-	PhoneNumber string	`json:"phoneNumber"`
+	FirstName   string `json:"firstName"`
+	LastName    string `json:"lastName"`
+	Address     string `json:"address"`
+	City        string `json:"city"`
+	State       string `json:"state"`
+	Zip         string `json:"zip"`
+	Country     string `json:"country"`
+	PhoneNumber string `json:"phoneNumber"`
 }
 
-
 type CustomerProfile struct {
-	CustomerProfileRequest getCustomerProfileRequest	`json:"getCustomerProfileRequest"`
-
+	CustomerProfileRequest getCustomerProfileRequest `json:"getCustomerProfileRequest"`
 }
 
 type getCustomerProfileRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileId string `json:"customerProfileId"`
+	CustomerProfileId      string                 `json:"customerProfileId"`
 }
 
 type BillingProfile struct {
-	Address Address		`json:"billTo"`
+	Address        Address               `json:"billTo"`
 	PaymentProfile PaymentBillingProfile `json:"paymentProfile"`
 }
 
-
 type Profile struct {
 	MerchantCustomerID string `json:"merchantCustomerId"`
-	Description string `json:"description"`
-	Email string `json:"email"`
+	Description        string `json:"description"`
+	Email              string `json:"email"`
 }
-
 
 type PaymentBillingProfile struct {
-	Address Address		`json:"billTo"`
+	Address Address `json:"billTo"`
 	Payment Payment `json:"payment"`
 }
 
-
 type PaymentProfiles struct {
-	CustomerType string `json:"customerType"`
-	Payment Payment `json:"payment"`
+	CustomerType string  `json:"customerType"`
+	Payment      Payment `json:"payment"`
 }
 
 type Payment struct {
@@ -307,26 +282,26 @@ type PaymentCVV struct {
 }
 
 type CreditCard struct {
-	CardNumber string `json:"cardNumber"`
+	CardNumber     string `json:"cardNumber"`
 	ExpirationDate string `json:"expirationDate"`
 }
 
 type CreditCardCVV struct {
-	CardNumber string `json:"cardNumber"`
+	CardNumber     string `json:"cardNumber"`
 	ExpirationDate string `json:"expirationDate"`
-	CardCode string `json:"cardCode"`
+	CardCode       string `json:"cardCode"`
 }
 
 type CreateCustomerProfileRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	Profile Profile `json:"profile"`
+	Profile                Profile                `json:"profile"`
 }
 
 type CreateCustomerBillingProfileRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileId string `json:"customerProfileId"`
-	Profile                PaymentBillingProfile `json:"paymentProfile"`
-	ValidationMode         string `json:"validationMode"`
+	CustomerProfileId      string                 `json:"customerProfileId"`
+	Profile                PaymentBillingProfile  `json:"paymentProfile"`
+	ValidationMode         string                 `json:"validationMode"`
 }
 
 type NewCustomerBillingProfile struct {
@@ -343,32 +318,31 @@ type CreateSubscriptionRequest struct {
 
 type ARBCreateSubscription struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	Subscription Subscription `json:"subscription"`
+	Subscription           Subscription           `json:"subscription"`
 }
 
 type Subscription struct {
-	Name string `json:"name"`
+	Name            string          `json:"name"`
 	PaymentSchedule PaymentSchedule `json:"paymentSchedule"`
-	Amount string `json:"amount"`
-	TrialAmount string `json:"trialAmount"`
-	FullProfile FullProfile `json:"profile"`
+	Amount          string          `json:"amount"`
+	TrialAmount     string          `json:"trialAmount"`
+	FullProfile     FullProfile     `json:"profile"`
 }
 
 type Interval struct {
 	Length string `json:"length"`
-	Unit string `json:"unit"`
+	Unit   string `json:"unit"`
 }
 
 type PaymentSchedule struct {
-	Interval Interval `json:"interval"`
-	StartDate string `json:"startDate"`
-	TotalOccurrences string `json:"totalOccurrences"`
-	TrialOccurrences string `json:"trialOccurrences"`
+	Interval         Interval `json:"interval"`
+	StartDate        string   `json:"startDate"`
+	TotalOccurrences string   `json:"totalOccurrences"`
+	TrialOccurrences string   `json:"trialOccurrences"`
 }
 
-
 type FullProfile struct {
-	CustomerProfileID string `json:"customerProfileId"`
+	CustomerProfileID        string `json:"customerProfileId"`
 	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
-	CustomerAddressID string `json:"customerAddressId"`
+	CustomerAddressID        string `json:"customerAddressId"`
 }

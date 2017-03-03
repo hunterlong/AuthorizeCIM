@@ -1,10 +1,10 @@
 package AuthorizeCIM
 
 import (
-	"net/http"
 	"bytes"
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
 )
 
 var api_endpoint string
@@ -26,7 +26,7 @@ func SetAPIInfo(name string, key string, mode string) {
 	}
 }
 
-func MakeUser (userID string) User {
+func MakeUser(userID string) User {
 	CurrentUser = User{ID: "55", Email: userID, ProfileID: "0"}
 	return CurrentUser
 }
@@ -50,15 +50,14 @@ func CreateCustomerProfile(userInfo AuthUser) (string, map[string]interface{}, b
 	return new_uuid, response, success
 }
 
-
 func GetCustomerProfile(profileID string) (map[string]interface{}, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	profile := getCustomerProfileRequest{authToken, profileID}
 	input := CustomerProfile{profile}
 	jsoned, _ := json.Marshal(input)
-	outgoing, _ :=SendRequest(string(jsoned))
+	outgoing, _ := SendRequest(string(jsoned))
 	success, _ := FindResultCode(outgoing)
-	if outgoing["profile"]==nil {
+	if outgoing["profile"] == nil {
 		return nil, success
 	} else {
 		userProfile := outgoing["profile"].(map[string]interface{})
@@ -66,16 +65,14 @@ func GetCustomerProfile(profileID string) (map[string]interface{}, bool) {
 	}
 }
 
-
 func GetAllProfiles() []interface{} {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	profilerequest := getCustomerProfileIdsRequest{authToken}
 	all := AllCustomerProfileIds{profilerequest}
 	jsoned, _ := json.Marshal(all)
-	outgoing, _ :=SendRequest(string(jsoned))
+	outgoing, _ := SendRequest(string(jsoned))
 	return outgoing["ids"].([]interface{})
 }
-
 
 func DeleteCustomerProfile(profileID string) bool {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
@@ -87,14 +84,13 @@ func DeleteCustomerProfile(profileID string) bool {
 	return status
 }
 
-
 func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, address Address) (string, map[string]interface{}, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
-	paymentProfile := PaymentBillingProfile{Address: address, Payment: Payment{CreditCard:creditCard}}
+	paymentProfile := PaymentBillingProfile{Address: address, Payment: Payment{CreditCard: creditCard}}
 	request := CreateCustomerBillingProfileRequest{authToken, profileID, paymentProfile, testMode}
 	newprofile := NewCustomerBillingProfile{request}
 	jsoned, _ := json.Marshal(newprofile)
-	outgoing, _ :=SendRequest(string(jsoned))
+	outgoing, _ := SendRequest(string(jsoned))
 	success, _ := FindResultCode(outgoing)
 	response := outgoing
 	var new_paymentID string
@@ -106,8 +102,6 @@ func CreateCustomerBillingProfile(profileID string, creditCard CreditCard, addre
 	return new_paymentID, response, success
 }
 
-
-
 func GetCustomerPaymentProfile(profileID string, paymentID string) (map[string]interface{}, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	profile := CustomerPaymentProfileRequest{authToken, profileID, paymentID}
@@ -116,7 +110,7 @@ func GetCustomerPaymentProfile(profileID string, paymentID string) (map[string]i
 	outgoing, _ := SendRequest(string(jsoned))
 	success, _ := FindResultCode(outgoing)
 	//fmt.Println(outgoing["paymentProfile"])
-	if (success) {
+	if success {
 		return outgoing["paymentProfile"].(map[string]interface{}), success
 	} else {
 		//fmt.Println(errMsg)
@@ -124,10 +118,9 @@ func GetCustomerPaymentProfile(profileID string, paymentID string) (map[string]i
 	}
 }
 
-
 func UpdateCustomerPaymentProfile(profileID string, paymentID string, creditCard CreditCard, address Address) bool {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
-	new_billing := UpdatePaymentBillingProfile{Address: address, Payment: Payment{CreditCard:creditCard}, CustomerPaymentProfileId: paymentID}
+	new_billing := UpdatePaymentBillingProfile{Address: address, Payment: Payment{CreditCard: creditCard}, CustomerPaymentProfileId: paymentID}
 	profile := updateCustomerPaymentProfileRequest{authToken, profileID, new_billing, testMode}
 	input := changeCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
@@ -136,13 +129,12 @@ func UpdateCustomerPaymentProfile(profileID string, paymentID string, creditCard
 	return status
 }
 
-
 func DeleteCustomerPaymentProfile(profileID string, paymentID string) bool {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	profile := deleteCustomerPaymentProfile{authToken, profileID, paymentID}
 	input := deleteCustomerPaymentProfileRequest{profile}
 	jsoned, _ := json.Marshal(input)
-	outgoing, _ :=SendRequest(string(jsoned))
+	outgoing, _ := SendRequest(string(jsoned))
 	status, _ := FindResultCode(outgoing)
 	return status
 }
@@ -162,13 +154,11 @@ func SendRequest(input string) (map[string]interface{}, interface{}) {
 	var dat map[string]interface{}
 	//fmt.Println(string(body))
 	err = json.Unmarshal(body, &dat)
-	if err!=nil {
+	if err != nil {
 		panic(err)
 	}
 	return dat, errors
 }
-
-
 
 func CreateTransaction(profileID string, paymentID string, item LineItem, amount string) (map[string]interface{}, bool, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
@@ -183,7 +173,7 @@ func CreateTransaction(profileID string, paymentID string, item LineItem, amount
 	var status, approved bool
 	var response map[string]interface{}
 	transxResponse := outgoing["transactionResponse"].(map[string]interface{})
-	if transxResponse["responseCode"]!=nil {
+	if transxResponse["responseCode"] != nil {
 		if transxResponse["responseCode"].(string) != "1" {
 			approved = false
 			status = true
@@ -202,20 +192,18 @@ func CreateTransaction(profileID string, paymentID string, item LineItem, amount
 	return response, approved, status
 }
 
-
 func TestConnection() bool {
 	authToken := AuthenticateTestRequest{MerchantAuthentication{Name: apiName, TransactionKey: apiKey}}
-	authnettest := AuthorizeNetTest{AuthenticateTestRequest:authToken}
+	authnettest := AuthorizeNetTest{AuthenticateTestRequest: authToken}
 	jsoned, _ := json.Marshal(authnettest)
 	outgoing, _ := SendRequest(string(jsoned))
 	status, _ := FindResultCode(outgoing)
 	return status
 }
 
-
 func CreateShippingAddress(profileID string, address Address) (string, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
-	customerShipping := CustomerShippingAddress{authToken,profileID,address}
+	customerShipping := CustomerShippingAddress{authToken, profileID, address}
 	customerShippingRequest := CustomerShippingAddressRequest{customerShipping}
 	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
@@ -231,7 +219,7 @@ func CreateShippingAddress(profileID string, address Address) (string, bool) {
 
 func GetShippingAddress(profileID string, shippingID string) (map[string]interface{}, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
-	customerShipping := GetCustomerShippingAddress{authToken,profileID,shippingID}
+	customerShipping := GetCustomerShippingAddress{authToken, profileID, shippingID}
 	customerShippingRequest := GetCustomerShippingAddressRequest{customerShipping}
 	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
@@ -241,7 +229,7 @@ func GetShippingAddress(profileID string, shippingID string) (map[string]interfa
 
 func DeleteShippingAddress(profileID string, shippingID string) bool {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
-	customerShipping := GetCustomerShippingAddress{authToken,profileID,shippingID}
+	customerShipping := GetCustomerShippingAddress{authToken, profileID, shippingID}
 	customerShippingRequest := DeleteCustomerShippingAddressRequest{customerShipping}
 	jsoned, _ := json.Marshal(customerShippingRequest)
 	outgoing, _ := SendRequest(string(jsoned))
@@ -249,24 +237,22 @@ func DeleteShippingAddress(profileID string, shippingID string) bool {
 	return status
 }
 
-
 func GetTransactionDetails(tranID string) map[string]interface{} {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
-	transDetails := TransactionDetails{authToken,tranID}
+	transDetails := TransactionDetails{authToken, tranID}
 	transactionRequest := TransactionDetailsRequest{transDetails}
 	jsoned, _ := json.Marshal(transactionRequest)
 	outgoing, _ := SendRequest(string(jsoned))
-	if outgoing["transaction"]!=nil {
+	if outgoing["transaction"] != nil {
 		return outgoing["transaction"].(map[string]interface{})
 	}
 	return map[string]interface{}{}
 }
 
-
 func FindResultCode(incoming map[string]interface{}) (bool, string) {
 	messages, _ := incoming["messages"].(map[string]interface{})
 
-	if messages!=nil {
+	if messages != nil {
 
 		if messages["resultCode"].(string) == "Ok" {
 			return true, ""
@@ -281,7 +267,7 @@ func FindResultCode(incoming map[string]interface{}) (bool, string) {
 }
 
 func TransactionApproved(incoming map[string]interface{}) bool {
-	if incoming!=nil {
+	if incoming != nil {
 		messages, _ := incoming["transactionResponse"].(map[string]interface{})
 		if messages["responseCode"] == "1" {
 			return true
@@ -289,7 +275,6 @@ func TransactionApproved(incoming map[string]interface{}) bool {
 	}
 	return false
 }
-
 
 func CreateSubscription(newSubscription Subscription) (string, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
@@ -304,7 +289,6 @@ func CreateSubscription(newSubscription Subscription) (string, bool) {
 	return "0", status
 }
 
-
 func DeleteSubscription(subscriptionId string) bool {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	subscriptonSubmit := DeleteARBSubscriptionRequest{DeleteSubscriptionRequest{authToken, subscriptionId}}
@@ -314,7 +298,6 @@ func DeleteSubscription(subscriptionId string) bool {
 	status, _ := FindResultCode(outgoing)
 	return status
 }
-
 
 func RefundTransaction(transactionId string, amount string, creditCardLastFour string, cardExp string) (map[string]interface{}, bool, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
@@ -327,7 +310,7 @@ func RefundTransaction(transactionId string, amount string, creditCardLastFour s
 	var status, approved bool
 	var response map[string]interface{}
 	transxResponse := outgoing["transactionResponse"].(map[string]interface{})
-	if transxResponse["responseCode"]!=nil {
+	if transxResponse["responseCode"] != nil {
 		if transxResponse["responseCode"].(string) != "1" {
 			approved = false
 			status = true
@@ -346,7 +329,6 @@ func RefundTransaction(transactionId string, amount string, creditCardLastFour s
 	return response, approved, status
 }
 
-
 func VoidTransaction(transactionId string) bool {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
 	voidSubmit := VoidTransactionRequestARB{VoidTransactionRequest{authToken, MinTrans{"voidTransaction", transactionId}}}
@@ -356,8 +338,6 @@ func VoidTransaction(transactionId string) bool {
 	status, _ := FindResultCode(outgoing)
 	return status
 }
-
-
 
 func AuthorizeCard(creditCard CreditCardCVV, amount string) (map[string]interface{}, bool, bool) {
 	authToken := MerchantAuthentication{Name: apiName, TransactionKey: apiKey}
@@ -370,7 +350,7 @@ func AuthorizeCard(creditCard CreditCardCVV, amount string) (map[string]interfac
 	var status, approved bool
 	var response map[string]interface{}
 	transxResponse := outgoing["transactionResponse"].(map[string]interface{})
-	if transxResponse["responseCode"]!=nil {
+	if transxResponse["responseCode"] != nil {
 		if transxResponse["responseCode"].(string) != "1" {
 			approved = false
 			status = true
@@ -389,13 +369,10 @@ func AuthorizeCard(creditCard CreditCardCVV, amount string) (map[string]interfac
 	return response, approved, status
 }
 
-
-
-func UpdateSubscription(){
+func UpdateSubscription() {
 
 }
 
-func GetSubscriptions(){
+func GetSubscriptions() {
 
 }
-
