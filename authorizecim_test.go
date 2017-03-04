@@ -249,13 +249,15 @@ func TestCreateSubscription(t *testing.T) {
 	paymentSchedule := PaymentSchedule{Interval: Interval{"1", "months"}, StartDate: startTime, TotalOccurrences: totalRuns, TrialOccurrences: trialRuns}
 	subscriptionInput := Subscription{"New Subscription", paymentSchedule, amount, "0.00", userFullProfile}
 
+	t.Log("Creating New Subscription for "+ subscriptionInput.Amount+". Duration: "+ subscriptionInput.PaymentSchedule.Interval.Length +" "+subscriptionInput.PaymentSchedule.Interval.Unit )
+
 	newSubscription, success := CreateSubscription(subscriptionInput)
 	newSubscriptionId = newSubscription
 	if success {
 		t.Log("User created a new Subscription id: " + newSubscription + "\n")
 	} else {
 		t.Fail()
-		t.Log("created the subscription failed, the user might not be fully inputed yet. \n")
+		t.Log("Creating the subscription failed, the user might not be fully inputed yet. \n")
 	}
 }
 
