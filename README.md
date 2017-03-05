@@ -216,5 +216,109 @@ http://developer.authorize.net/api/reference/#customer-profiles
 ### Authorize.net Sandbox Access
 https://developer.authorize.net/hello_world/sandbox/
 
+
+## Included API References
+
+Payment Transactions
+
+:white_check_mark: createTransactionRequest
+
+:white_medium_square: chargeCard
+
+:white_medium_square: authorizeCard
+
+:white_medium_square: capturePreviousCard
+
+:white_medium_square: captureAuthorizedCardChannel
+
+:white_medium_square: refundTransaction
+
+:white_medium_square: voidTransaction
+
+:white_medium_square: updateSplitTenderGround
+
+:white_medium_square: debitBankAccount
+
+:white_medium_square: creditBankAccount
+
+:white_medium_square: chargeCustomerProfile
+
+:white_medium_square: chargeTokenCard
+
+:white_medium_square: creditAcceptPaymentTransaction
+
+:white_medium_square: getAccessPaymentPage
+
+:white_medium_square: getHostedPaymentPageRequest
+
+Fraud Management
+
+:white_medium_square: getUnsettledTransactionListRequest
+
+:white_medium_square: updateHeldTransactionRequest
+
+Recurring Billing
+
+:white_check_mark: ARBCreateSubscriptionRequest
+
+:white_medium_square: ARBGetSubscriptionRequest
+
+:white_medium_square: ARBGetSubscriptionStatusRequest
+
+:white_medium_square: ARBUpdateSubscriptionRequest
+
+:white_check_mark: ARBCancelSubscriptionRequest
+
+:white_medium_square: ARBGetSubscriptionListRequest
+
+Customer Profile
+
+:white_check_mark: createCustomerProfileRequest
+
+:white_check_mark: getCustomerProfileRequest
+
+:white_medium_square: getCustomerProfileIdsRequest
+
+:white_medium_square: updateCustomerProfileRequest
+
+:white_check_mark: deleteCustomerProfileRequest
+
+Customer Payment Profile
+
+:white_check_mark: createCustomerPaymentProfileRequest
+
+:white_check_mark: getCustomerPaymentProfileRequest
+
+:white_medium_square: getCustomerPaymentProfileListRequest
+
+:white_medium_square: validateCustomerPaymentProfileRequest
+
+:white_check_mark: updateCustomerPaymentProfileRequest
+
+:white_check_mark: deleteCustomerPaymentProfileRequest
+
+Customer Shipping Address
+
+:white_check_mark: createCustomerShippingAddressRequest
+
+:white_check_mark: getCustomerShippingAddressRequest
+
+:white_check_mark: updateCustomerShippingAddressRequest
+
+:white_check_mark: deleteCustomerShippingAddressRequest
+
+:white_medium_square: getHostedProfilePageRequest
+
+:white_medium_square: createCustomerProfileFromTransactionRequest
+
+Transaction Reporting
+
+:white_medium_square: getSettledBatchListRequest
+
+:white_medium_square: getTransactionListRequest
+
+
 # License
 This golang package is release under MIT license. This software gets reponses in JSON, but Authorize.net currently says "JSON Support is in BETA, please contact us if you intend to use it in production." Make sure you test in sandbox mode!
+
+
