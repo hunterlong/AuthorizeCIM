@@ -95,10 +95,7 @@ func SendTransactionRequest(input TransactionRequest) (TransactionResponse, inte
 
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 			TransactionRequest: input,
 		},
 	}

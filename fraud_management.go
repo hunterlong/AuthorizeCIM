@@ -21,7 +21,7 @@ func updateHeldTransaction() {
 }
 
 func (input TransactionsList) Count() int {
-	return 0
+	return input.TotalNumInResultSet
 }
 
 type UnsettledTransactionsRequest struct {
@@ -67,10 +67,7 @@ type BatchTransaction struct {
 func SendGetUnsettled() (TransactionsList, interface{}) {
 	action := UnsettledTransactionsRequest{
 		GetUnsettledTransactionListRequest: GetUnsettledTransactionListRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 			Status: "pendingApproval",
 		},
 	}

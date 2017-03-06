@@ -11,7 +11,7 @@ func TestCreateCustomerProfile(t *testing.T) {
 	customer := Profile{
 		MerchantCustomerID: "86437",
 		Email:              "info@emailhereooooo.com",
-		PaymentProfiles: PaymentProfiles{
+		PaymentProfiles: &PaymentProfiles{
 			CustomerType: "individual",
 			Payment: Payment{
 				CreditCard: CreditCard{
@@ -46,5 +46,46 @@ func TestGetCustomerProfile(t *testing.T) {
 	t.Log("Customer Profile", response)
 
 	t.Log("Customer Payment Profiles", paymentProfiles)
+
+}
+
+func TestGetProfileIds(t *testing.T) {
+	profiles, _ := GetProfileIds()
+	t.Log(profiles)
+}
+
+
+func TestUpdateCustomerProfile(t *testing.T) {
+
+	customer := Profile{
+		MerchantCustomerID: newCustomerProfileId,
+		CustomerProfileId: newCustomerProfileId,
+		Description: "Updated Account",
+		Email:       "info@updatedemail.com",
+	}
+
+	response := customer.Update()
+
+	if response.Approved() {
+		t.Log("Customer Profile was Updated")
+	} else {
+		t.Log(response.ErrorMessage())
+	}
+
+}
+
+func TestDeleteCustomerProfile(t *testing.T) {
+
+	customer := Customer{
+		ID: "1810878365",
+	}
+
+	response := customer.Delete()
+
+	if response.Approved() {
+		t.Log("Customer was Deleted")
+	} else {
+		t.Log(response.ErrorMessage())
+	}
 
 }

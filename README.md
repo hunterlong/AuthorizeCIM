@@ -114,11 +114,11 @@ Customer Profile
 
 :white_check_mark: getCustomerProfileRequest
 
-:white_medium_square: getCustomerProfileIdsRequest
+:white_check_mark: getCustomerProfileIdsRequest
 
-:white_medium_square: updateCustomerProfileRequest
+:white_check_mark: updateCustomerProfileRequest
 
-:white_medium_square: deleteCustomerProfileRequest
+:white_check_mark: deleteCustomerProfileRequest
 
 :white_medium_square: createCustomerPaymentProfileRequest
 

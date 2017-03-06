@@ -26,10 +26,14 @@ func SetAPIInfo(name string, key string, mode string) {
 	}
 }
 
-//func MakeUser(userID string) User {
-//	CurrentUser = User{ID: "55", Email: userID, ProfileID: "0"}
-//	return CurrentUser
-//}
+
+func GetAuthentication() (MerchantAuthentication) {
+	auth := MerchantAuthentication{
+		Name:           "8v25DGQq9kf",
+		TransactionKey: "5KDX8Vz3mx334aJm",
+	}
+	return auth
+}
 
 func SendRequest(input []byte) []byte {
 	req, err := http.NewRequest("POST", api_endpoint, bytes.NewBuffer(input))
@@ -45,36 +49,5 @@ func SendRequest(input []byte) []byte {
 	return body
 }
 
-//func TestConnection() bool {
-//	authToken := AuthenticateTestRequest{MerchantAuthentication{Name: apiName, TransactionKey: apiKey}}
-//	authnettest := AuthorizeNetTest{AuthenticateTestRequest: authToken}
-//	jsoned, _ := json.Marshal(authnettest)
-//	outgoing, _ := SendRequest(string(jsoned))
-//	status, _ := FindResultCode(outgoing)
-//	return status
-//}
 
-//func FindResultCode(incoming map[string]interface{}) (bool, string) {
-//	messages, _ := incoming["messages"].(map[string]interface{})
-//
-//	if messages != nil {
-//
-//		if messages["resultCode"].(string) == "Ok" {
-//			return true, ""
-//		} else {
-//			messagesInfo := messages["message"].(map[string]interface{})
-//			return false, messagesInfo["text"].(string)
-//		}
-//
-//	}
-//
-//	return false, ""
-//}
-//
-//func UpdateSubscription() {
-//
-//}
 
-func GetSubscriptions() {
-
-}

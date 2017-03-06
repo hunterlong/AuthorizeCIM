@@ -127,10 +127,7 @@ type SubscriptionResponse struct {
 func SendSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	action := CreateSubscriptionRequest{
 		ARBCreateSubscriptionRequest: ARBCreateSubscriptionRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 			Subscription: sub,
 		},
 	}
@@ -152,10 +149,7 @@ func SendSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 func UpdateSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	action := UpdateSubscriptionRequest{
 		ARBUpdateSubscriptionRequest: ARBUpdateSubscriptionRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 			SubscriptionId: sub.SubscriptionId,
 			Subscription: Subscription{
 				Payment: Payment{
@@ -188,10 +182,7 @@ func (sub GetSubscriptionList) Count() int {
 func (sub SetSubscription) Info() GetSubscriptionResponse {
 	action := GetSubscriptionRequest{
 		ARBGetSubscriptionRequest: ARBGetSubscriptionRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 			SubscriptionID: sub.Id,
 		},
 	}
@@ -212,10 +203,7 @@ func (sub SetSubscription) Info() GetSubscriptionResponse {
 func (sub SetSubscription) Status() SubscriptionStatus {
 	action := GetSubscriptionStatusRequest{
 		ARBGetSubscriptionStatusRequest: ARBGetSubscriptionRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 			SubscriptionID: sub.Id,
 		},
 	}
@@ -236,10 +224,7 @@ func (sub SetSubscription) Status() SubscriptionStatus {
 func (sub SetSubscription) Cancel() SubscriptionCancel {
 	action := GetSubscriptionCancelRequest{
 		ARBCancelSubscriptionRequest: ARBGetSubscriptionRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 			SubscriptionID: sub.Id,
 		},
 	}
@@ -260,10 +245,7 @@ func (sub SetSubscription) Cancel() SubscriptionCancel {
 func SubscriptionList(search string) GetSubscriptionList {
 	action := GetSubscriptionListRequest{
 		ARBGetSubscriptionListRequest: ARBGetSubscriptionListRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 			SearchType: search,
 			Sorting: Sorting{
 				OrderBy:         "id",
