@@ -110,9 +110,9 @@ Recurring Billing
 
 Customer Profile
 
-:white_medium_square: createCustomerProfileRequest
+:white_check_mark: createCustomerProfileRequest
 
-:white_medium_square: getCustomerProfileRequest
+:white_check_mark: getCustomerProfileRequest
 
 :white_medium_square: getCustomerProfileIdsRequest
 
@@ -131,8 +131,6 @@ Customer Profile
 :white_medium_square: updateCustomerPaymentProfileRequest
 
 :white_medium_square: deleteCustomerPaymentProfileRequest
-
-Customer Shipping Address
 
 :white_medium_square: createCustomerShippingAddressRequest
 
