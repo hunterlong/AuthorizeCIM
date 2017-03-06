@@ -102,7 +102,7 @@ Recurring Billing
 
 :white_check_mark: ARBGetSubscriptionStatusRequest
 
-:white_medium_square: ARBUpdateSubscriptionRequest
+:white_check_mark: ARBUpdateSubscriptionRequest
 
 :white_check_mark: ARBCancelSubscriptionRequest
 

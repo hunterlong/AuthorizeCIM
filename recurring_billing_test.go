@@ -11,7 +11,7 @@ func TestCreateSubscription(t *testing.T) {
 		Name:        "New Subscription",
 		Amount:      "9.00",
 		TrialAmount: "0.00",
-		PaymentSchedule: PaymentSchedule{
+		PaymentSchedule: &PaymentSchedule{
 			StartDate:        CurrentTime(),
 			TotalOccurrences: "9999",
 			TrialOccurrences: "0",
@@ -26,7 +26,7 @@ func TestCreateSubscription(t *testing.T) {
 				ExpirationDate: "10/23",
 			},
 		},
-		BillTo: BillTo{
+		BillTo: &BillTo{
 			FirstName: "Hunter",
 			LastName:  "Long",
 		},
@@ -67,6 +67,28 @@ func TestGetSubscriptionStatus(t *testing.T) {
 
 }
 
+func TestUpdateSubscription(t *testing.T) {
+
+	subscription := Subscription{
+		Payment: Payment{
+			CreditCard: CreditCard{
+				CardNumber:     "5424000000000015",
+				ExpirationDate: "06/25",
+			},
+		},
+		SubscriptionId: newSubscriptionId,
+	}
+
+	response := subscription.Update()
+
+	if response.Approved() {
+		t.Log("Updated Subscription \n")
+	} else {
+		t.Log(response.ErrorMessage(), "\n")
+	}
+
+}
+
 func TestCancelSubscription(t *testing.T) {
 
 	sub := SetSubscription{
@@ -75,14 +97,23 @@ func TestCancelSubscription(t *testing.T) {
 
 	subscriptionInfo := sub.Cancel()
 
-	t.Log("Subscription ID has been canceled: ", subscriptionInfo.Messages.Message[0].Text)
+	t.Log("Subscription ID has been canceled: ", sub.Id, "\n")
+	t.Log(subscriptionInfo.Messages.Message[0].Text, "\n")
 
 }
 
-func TestGetSubscriptionList(t *testing.T) {
+func TestGetInactiveSubscriptionList(t *testing.T) {
 
 	subscriptionList := SubscriptionList("subscriptionInactive")
 
-	t.Log("Amount of Subscriptions: ", subscriptionList.Count())
+	t.Log("Amount of Inactive Subscriptions: ", subscriptionList.Count())
+
+}
+
+func TestGetActiveSubscriptionList(t *testing.T) {
+
+	subscriptionList := SubscriptionList("subscriptionActive")
+
+	t.Log("Amount of Active Subscriptions: ", subscriptionList.Count())
 
 }

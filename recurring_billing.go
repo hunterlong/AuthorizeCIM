@@ -30,8 +30,24 @@ func (sub Subscription) Charge() SubscriptionResponse {
 	return response
 }
 
+func (sub Subscription) Update() SubscriptionResponse {
+	response, _ := UpdateSubscription(sub)
+	return response
+}
+
 func (response SubscriptionResponse) Info() string {
 	return response.Messages.Message[0].Text
+}
+
+type UpdateSubscriptionRequest struct {
+	ARBUpdateSubscriptionRequest ARBUpdateSubscriptionRequest `json:"ARBUpdateSubscriptionRequest"`
+}
+
+type ARBUpdateSubscriptionRequest struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	RefID                  string                 `json:"refId,omitempty"`
+	SubscriptionId         string                 `json:"subscriptionId,omitempty"`
+	Subscription           Subscription           `json:"subscription,omitempty"`
 }
 
 type CreateSubscriptionRequest struct {
@@ -67,17 +83,18 @@ type SetSubscription struct {
 }
 
 type Subscription struct {
-	Name            string          `json:"name"`
-	PaymentSchedule PaymentSchedule `json:"paymentSchedule,omitempty"`
-	Amount          string          `json:"amount"`
-	TrialAmount     string          `json:"trialAmount,omitempty"`
-	Payment         Payment         `json:"payment"`
-	BillTo          BillTo          `json:"billTo"`
+	Name            string           `json:"name,omitempty"`
+	PaymentSchedule *PaymentSchedule `json:"paymentSchedule,omitempty"`
+	Amount          string           `json:"amount,omitempty"`
+	TrialAmount     string           `json:"trialAmount,omitempty"`
+	Payment         Payment          `json:"payment,omitempty"`
+	BillTo          *BillTo          `json:"billTo,omitempty"`
+	SubscriptionId  string           `json:"subscriptionId,omitempty"`
 }
 
 type BillTo struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	FirstName string `json:"firstName,omitempty"`
+	LastName  string `json:"lastName,omitempty"`
 }
 
 type PaymentSchedule struct {
@@ -88,8 +105,8 @@ type PaymentSchedule struct {
 }
 
 type Interval struct {
-	Length string `json:"length"`
-	Unit   string `json:"unit"`
+	Length string `json:"length,omitempty"`
+	Unit   string `json:"unit,omitempty"`
 }
 
 type SubscriptionResponse struct {
@@ -121,6 +138,38 @@ func SendSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
+
+	response := SendRequest(jsoned)
+	var dat SubscriptionResponse
+	fmt.Println(string(response))
+	err = json.Unmarshal(response, &dat)
+	if err != nil {
+		panic(err)
+	}
+	return dat, err
+}
+
+func UpdateSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
+	action := UpdateSubscriptionRequest{
+		ARBUpdateSubscriptionRequest: ARBUpdateSubscriptionRequest{
+			MerchantAuthentication: MerchantAuthentication{
+				Name:           "8v25DGQq9kf",
+				TransactionKey: "5KDX8Vz3mx334aJm",
+			},
+			SubscriptionId: sub.SubscriptionId,
+			Subscription: Subscription{
+				Payment: Payment{
+					CreditCard: sub.Payment.CreditCard,
+				},
+			},
+		},
+	}
+	jsoned, err := json.Marshal(action)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(jsoned))
 
 	response := SendRequest(jsoned)
 	var dat SubscriptionResponse
