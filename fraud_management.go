@@ -1,0 +1,89 @@
+package AuthorizeCIM
+
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
+func UnsettledBatchList() TransactionsList {
+	response, _ := SendGetUnsettled()
+	return response
+}
+
+func (input TransactionsList) List() []BatchTransaction {
+	response, _ := SendGetUnsettled()
+	return response.Transactions
+}
+
+func updateHeldTransaction() {
+
+}
+
+func (input TransactionsList) Count() int {
+	return 0
+}
+
+type UnsettledTransactionsRequest struct {
+	GetUnsettledTransactionListRequest GetUnsettledTransactionListRequest `json:"getUnsettledTransactionListRequest"`
+}
+
+type GetUnsettledTransactionListRequest struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication,omitempty"`
+	Status                 string                 `json:"status,omitempty"`
+}
+
+type TransactionsList struct {
+	Transactions        []BatchTransaction `json:"transactions"`
+	TotalNumInResultSet int                `json:"totalNumInResultSet"`
+	Messages            struct {
+		ResultCode string `json:"resultCode"`
+		Message    []struct {
+			Code string `json:"code"`
+			Text string `json:"text"`
+		} `json:"message"`
+	} `json:"messages"`
+}
+
+type BatchTransaction struct {
+	TransID           string    `json:"transId"`
+	SubmitTimeUTC     time.Time `json:"submitTimeUTC"`
+	SubmitTimeLocal   string    `json:"submitTimeLocal"`
+	TransactionStatus string    `json:"transactionStatus"`
+	InvoiceNumber     string    `json:"invoiceNumber"`
+	FirstName         string    `json:"firstName"`
+	LastName          string    `json:"lastName"`
+	AccountType       string    `json:"accountType"`
+	AccountNumber     string    `json:"accountNumber"`
+	SettleAmount      int       `json:"settleAmount"`
+	MarketType        string    `json:"marketType"`
+	Product           string    `json:"product"`
+	FraudInformation  struct {
+		FraudFilterList []string `json:"fraudFilterList"`
+		FraudAction     string   `json:"fraudAction"`
+	} `json:"fraudInformation"`
+}
+
+func SendGetUnsettled() (TransactionsList, interface{}) {
+	action := UnsettledTransactionsRequest{
+		GetUnsettledTransactionListRequest: GetUnsettledTransactionListRequest{
+			MerchantAuthentication: MerchantAuthentication{
+				Name:           "8v25DGQq9kf",
+				TransactionKey: "5KDX8Vz3mx334aJm",
+			},
+			Status: "pendingApproval",
+		},
+	}
+	jsoned, err := json.Marshal(action)
+	if err != nil {
+		panic(err)
+	}
+	response := SendRequest(jsoned)
+	var dat TransactionsList
+	fmt.Println(string(response))
+	err = json.Unmarshal(response, &dat)
+	if err != nil {
+		panic(err)
+	}
+	return dat, err
+}

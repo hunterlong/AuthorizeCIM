@@ -221,19 +221,17 @@ https://developer.authorize.net/hello_world/sandbox/
 
 Payment Transactions
 
-:white_check_mark: createTransactionRequest
+:white_check_mark: chargeCard
 
-:white_medium_square: chargeCard
+:white_check_mark: authorizeCard
 
-:white_medium_square: authorizeCard
+:white_check_mark: capturePreviousCard
 
-:white_medium_square: capturePreviousCard
+:white_check_mark: captureAuthorizedCardChannel
 
-:white_medium_square: captureAuthorizedCardChannel
+:white_check_mark: refundTransaction
 
-:white_medium_square: refundTransaction
-
-:white_medium_square: voidTransaction
+:white_check_mark: voidTransaction
 
 :white_medium_square: updateSplitTenderGround
 
@@ -253,7 +251,7 @@ Payment Transactions
 
 Fraud Management
 
-:white_medium_square: getUnsettledTransactionListRequest
+:white_check_mark: getUnsettledTransactionListRequest
 
 :white_medium_square: updateHeldTransactionRequest
 
@@ -261,51 +259,51 @@ Recurring Billing
 
 :white_check_mark: ARBCreateSubscriptionRequest
 
-:white_medium_square: ARBGetSubscriptionRequest
+:white_check_mark: ARBGetSubscriptionRequest
 
 :white_medium_square: ARBGetSubscriptionStatusRequest
 
 :white_medium_square: ARBUpdateSubscriptionRequest
 
-:white_check_mark: ARBCancelSubscriptionRequest
+:white_medium_square: ARBCancelSubscriptionRequest
 
 :white_medium_square: ARBGetSubscriptionListRequest
 
 Customer Profile
 
-:white_check_mark: createCustomerProfileRequest
+:white_medium_square: createCustomerProfileRequest
 
-:white_check_mark: getCustomerProfileRequest
+:white_medium_square: getCustomerProfileRequest
 
 :white_medium_square: getCustomerProfileIdsRequest
 
 :white_medium_square: updateCustomerProfileRequest
 
-:white_check_mark: deleteCustomerProfileRequest
+:white_medium_square: deleteCustomerProfileRequest
 
 Customer Payment Profile
 
-:white_check_mark: createCustomerPaymentProfileRequest
+:white_medium_square: createCustomerPaymentProfileRequest
 
-:white_check_mark: getCustomerPaymentProfileRequest
+:white_medium_square: getCustomerPaymentProfileRequest
 
 :white_medium_square: getCustomerPaymentProfileListRequest
 
 :white_medium_square: validateCustomerPaymentProfileRequest
 
-:white_check_mark: updateCustomerPaymentProfileRequest
+:white_medium_square: updateCustomerPaymentProfileRequest
 
-:white_check_mark: deleteCustomerPaymentProfileRequest
+:white_medium_square: deleteCustomerPaymentProfileRequest
 
 Customer Shipping Address
 
-:white_check_mark: createCustomerShippingAddressRequest
+:white_medium_square: createCustomerShippingAddressRequest
 
-:white_check_mark: getCustomerShippingAddressRequest
+:white_medium_square: getCustomerShippingAddressRequest
 
-:white_check_mark: updateCustomerShippingAddressRequest
+:white_medium_square: updateCustomerShippingAddressRequest
 
-:white_check_mark: deleteCustomerShippingAddressRequest
+:white_medium_square: deleteCustomerShippingAddressRequest
 
 :white_medium_square: getHostedProfilePageRequest
 
