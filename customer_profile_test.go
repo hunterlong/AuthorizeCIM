@@ -2,9 +2,19 @@ package AuthorizeCIM
 
 import (
 	"testing"
+	"os"
 )
 
 var newCustomerProfileId string
+
+
+func TestSetAPIInfo(t *testing.T) {
+	apiName := os.Getenv("apiName")
+	apiKey := os.Getenv("apiKey")
+	apiMode := os.Getenv("mode")
+	SetAPIInfo(apiName,apiKey,apiMode)
+	t.Log("API Info Set")
+}
 
 func TestCreateCustomerProfile(t *testing.T) {
 

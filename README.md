@@ -120,6 +120,8 @@ Customer Profile
 
 :white_check_mark: deleteCustomerProfileRequest
 
+Customer Payment Profile
+
 :white_medium_square: createCustomerPaymentProfileRequest
 
 :white_medium_square: getCustomerPaymentProfileRequest
@@ -131,6 +133,8 @@ Customer Profile
 :white_medium_square: updateCustomerPaymentProfileRequest
 
 :white_medium_square: deleteCustomerPaymentProfileRequest
+
+Customer Shipping Profile
 
 :white_medium_square: createCustomerShippingAddressRequest
 

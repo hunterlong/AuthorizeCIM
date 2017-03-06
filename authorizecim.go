@@ -7,16 +7,13 @@ import (
 )
 
 var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
-var apiName string
-var apiKey string
+var apiName *string
+var apiKey *string
 var testMode string
 
-//
-//var CurrentUser User
-
 func SetAPIInfo(name string, key string, mode string) {
-	apiKey = key
-	apiName = name
+	apiKey = &key
+	apiName = &name
 	if mode == "test" {
 		testMode = "testMode"
 		api_endpoint = "https://apitest.authorize.net/xml/v1/request.api"
@@ -29,11 +26,12 @@ func SetAPIInfo(name string, key string, mode string) {
 
 func GetAuthentication() (MerchantAuthentication) {
 	auth := MerchantAuthentication{
-		Name:           "8v25DGQq9kf",
-		TransactionKey: "5KDX8Vz3mx334aJm",
+		Name:           apiName,
+		TransactionKey: apiKey,
 	}
 	return auth
 }
+
 
 func SendRequest(input []byte) []byte {
 	req, err := http.NewRequest("POST", api_endpoint, bytes.NewBuffer(input))

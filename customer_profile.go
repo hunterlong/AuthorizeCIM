@@ -54,10 +54,7 @@ func (profile Profile) Update() MessageResponse {
 func GetProfileIds() ([]string, interface{}) {
 	action := GetCustomerProfileIdsRequest{
 		CustomerProfileIdsRequest: CustomerProfileIdsRequest{
-			MerchantAuthentication: MerchantAuthentication{
-				Name:           "8v25DGQq9kf",
-				TransactionKey: "5KDX8Vz3mx334aJm",
-			},
+			MerchantAuthentication: GetAuthentication(),
 		},
 	}
 	jsoned, err := json.Marshal(action)

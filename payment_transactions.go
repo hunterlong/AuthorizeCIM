@@ -159,8 +159,8 @@ type Message struct {
 }
 
 type MerchantAuthentication struct {
-	Name           string `json:"name,omitempty"`
-	TransactionKey string `json:"transactionKey,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	TransactionKey *string `json:"transactionKey,omitempty"`
 }
 
 type CreatePayment struct {
