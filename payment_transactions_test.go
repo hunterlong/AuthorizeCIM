@@ -21,7 +21,6 @@ func TestChargeCard(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
-		t.Fail()
 	}
 }
 
@@ -39,7 +38,6 @@ func TestAuthOnlyCard(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Transaction was AUTHORIZED $", newTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
-		t.Fail()
 	}
 }
 
