@@ -40,167 +40,6 @@ AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
 ## Examples
 Below you'll find useful functions to get you up and running in no time!
 
-
-#### Test Correct API Key
-```go
-connected := AuthorizeCIM.TestConnection()
-// true or false
-```
-
-
-#### Create new Customer Account
-```go
-customer_info := AuthorizeCIM.AuthUser{
-                  "54",
-                  "email@domain.com",
-                  "Test Account",
-                  }
-new_customer, success := AuthorizeCIM.CreateCustomerProfile(customer_info)
-// outputs new user profile ID, and true/false
-```
-
-#### Create Payment Profile for Customer
-```go
-address := AuthorizeCIM.Address{
-                  FirstName: "Test", 
-                  LastName: "User", 
-                  Address: "1234 Road St", 
-                  City: "City Name", 
-                  State:" California",
-                  Zip: "93063", 
-                  Country: "USA", 
-                  PhoneNumber: "5555555555",
-                  }
-credit_card := AuthorizeCIM.CreditCard{
-                  CardNumber: "4111111111111111", 
-                  ExpirationDate: "2020-12",
-                  }
-profile_id := "53"
-newPaymentID, success := AuthorizeCIM.CreateCustomerBillingProfile(profile_id, credit_card, address)
-// outputs new payment profile ID and true/false
-```
-
-#### Get Customers stored billing accounts
-```go
-profile_id := "30089822"
-profile, success := AuthorizeCIM.GetCustomerProfile(profile_id)
-// outputs array of user payment account, and true/false
-```
-
-#### Delete Customer Profile
-```go
-profile_id := "30089822"
-success = AuthorizeCIM.DeleteCustomerProfile(profile_id)
-// outputs true or false
-```
-
-#### Get detailed information about the Billing Profile from customer
-```go
-profile_id := "30089822"
-payment_id := "1200079812"
-stored_card, success := AuthorizeCIM.GetCustomerPaymentProfile(profile_id,payment_id)
-// outputs payment profiles, and true/false
-```
-
-#### Delete customers Billing Profile
-```go
-profile_id := "30089822"
-payment_id := "1200079812"
-success := AuthorizeCIM.DeleteCustomerPaymentProfile(profile_id,payment_id)
-// outputs true or false
-```
-
-#### Update a single Billing Profile with new information
-```go
-new_address := AuthorizeCIM.Address{
-                  FirstName: "Test", 
-                  LastName: "User", 
-                  Address: "1234 Road St", 
-                  City: "City Name", 
-                  State:" California",
-                  Zip: "93063", 
-                  Country: "USA", 
-                  PhoneNumber: "5555555555"
-                  }
-credit_card := AuthorizeCIM.CreditCard{
-                  CardNumber: "4111111111111111", 
-                  ExpirationDate: "2020-12"
-                  }
-profile_id := "53"
-payment_id := "416"
-success := AuthorizeCIM.UpdateCustomerPaymentProfile(profile_id,payment_id,new_address,credit_card)
-// outputs true or false
-```
-
-#### Create a Transaction that will be charged on Customers Billing Profile
-```go
-item := AuthorizeCIM.LineItem{
-                  ItemID: "S0897", 
-                  Name: "New Product", 
-                  Description: "brand new", 
-                  Quantity: "1", 
-                  UnitPrice: "14.43",
-                  }
-amount := "14.43"
-profile_id := "53"
-payment_id := "416"
-
-response, approved, success := AuthorizeCIM.CreateTransaction(profile_id, payment_id, item, amount)
-// outputs transaction response, approved status (true/false), and success status (true/false)
-
-var tranxID string
-if success {
-		tranxID = response["transId"].(string)
-		if approved {
-			fmt.Println("Transaction was approved! "+tranxID+"\n")
-		} else {
-			fmt.Println("Transaction was denied! "+tranxID+"\n")
-		}
-	} else {
-		fmt.Println("Transaction has failed! \n")
-	}
-```
-
-#### Create a Subscription
-```go
-startTime := time.Now().Format("2006-01-02")
-totalRuns := "9999" //means forever
-trialRuns := "0"
-profile_id := "53"
-payment_id := "416"
-shipping_id := "9503"
-
-userFullProfile := FullProfile{CustomerProfileID: profile_id,CustomerAddressID: shipping_id, CustomerPaymentProfileID: payment_id}
-
-paymentSchedule := PaymentSchedule{
-                        Interval: Interval{"1","months"}, 
-                        StartDate:startTime, 
-                        TotalOccurrences:totalRuns, 
-                        TrialOccurrences:trialRuns}
-                        
-subscriptionInput := Subscription{"Advanced Subscription",paymentSchedule,"7.98","0.00",userFullProfile}
-
-newSubscription, success := CreateSubscription(subscriptionInput)
-	if success {
-		fmt.Println("User created a new Subscription id: "+newSubscription+"\n")
-	} else {
-		fmt.Println("created the subscription failed, the user might not be fully inputed yet. \n")
-	}
-```
-###### Some transactions or subscriptions may not process if you do many functions in a short amount of time.
-
-
-## Testing 
-#### Include "apiName" and "apiKey" as environment variables
-```go
-go test -v 
-```
-```
-//apiName = os.Getenv("apiName")
-//apiKey = os.Getenv("apiKey")
-```
-##### This will run a test of each function, make sure you have correct API keys for Authorize.net
-
 ![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
 # ToDo
@@ -261,13 +100,13 @@ Recurring Billing
 
 :white_check_mark: ARBGetSubscriptionRequest
 
-:white_medium_square: ARBGetSubscriptionStatusRequest
+:white_check_mark: ARBGetSubscriptionStatusRequest
 
 :white_medium_square: ARBUpdateSubscriptionRequest
 
-:white_medium_square: ARBCancelSubscriptionRequest
+:white_check_mark: ARBCancelSubscriptionRequest
 
-:white_medium_square: ARBGetSubscriptionListRequest
+:white_check_mark: ARBGetSubscriptionListRequest
 
 Customer Profile
 
@@ -280,8 +119,6 @@ Customer Profile
 :white_medium_square: updateCustomerProfileRequest
 
 :white_medium_square: deleteCustomerProfileRequest
-
-Customer Payment Profile
 
 :white_medium_square: createCustomerPaymentProfileRequest
 

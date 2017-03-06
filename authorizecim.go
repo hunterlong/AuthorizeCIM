@@ -31,7 +31,7 @@ func SetAPIInfo(name string, key string, mode string) {
 //	return CurrentUser
 //}
 
-func SendRequest(input []byte) ([]byte) {
+func SendRequest(input []byte) []byte {
 	req, err := http.NewRequest("POST", api_endpoint, bytes.NewBuffer(input))
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
