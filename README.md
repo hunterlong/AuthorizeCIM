@@ -50,7 +50,7 @@ apiMode := "test"
 AuthorizeCIM.SetAPIInfo(apiName,apiKey,apiMode)
 ```
 
-Payment Transactions
+### Payment Transactions
 
 :white_check_mark: chargeCard
 ```go
@@ -153,7 +153,7 @@ if response.Approved() {
 
 :white_medium_square: getHostedPaymentPageRequest
 
-Fraud Management
+### Fraud Management
 
 :white_check_mark: getUnsettledTransactionListRequest
 ```go
@@ -163,7 +163,7 @@ fmt.Println("Unsettled Count: ", transactions.Count)
 
 :white_medium_square: updateHeldTransactionRequest
 
-Recurring Billing
+### Recurring Billing
 
 :white_check_mark: ARBCreateSubscriptionRequest
 ```go
@@ -258,7 +258,7 @@ active := AuthorizeCIM.SubscriptionList("subscriptionActive")
 fmt.Println("Amount of Active Subscriptions: ", active.Count())
 ```
 
-Customer Profile
+### Customer Profile
 
 :white_check_mark: createCustomerProfileRequest
 ```go
@@ -329,7 +329,7 @@ if response.Approved() {
 }
 ```
 
-Customer Payment Profile
+### Customer Payment Profile
 
 :white_medium_square: createCustomerPaymentProfileRequest
 

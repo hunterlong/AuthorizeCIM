@@ -60,6 +60,10 @@ func TestGetCustomerProfile(t *testing.T) {
 
 func TestGetProfileIds(t *testing.T) {
 	profiles, _ := GetProfileIds()
+
+	for _,p := range profiles {
+		t.Log("Profile ID #",p)
+	}
 	t.Log(profiles)
 }
 
