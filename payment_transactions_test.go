@@ -32,7 +32,7 @@ func TestAuthOnlyCard(t *testing.T) {
 			ExpirationDate: "10/27",
 		},
 	}
-	response := newTransaction.Charge()
+	response := newTransaction.AuthOnly()
 	if response.Approved() {
 		previousAuth = response.TransactionID()
 		t.Log("#", response.TransactionID(), "Transaction was AUTHORIZED $", newTransaction.Amount, "\n")

@@ -7,7 +7,6 @@ import (
 
 var newCustomerProfileId string
 
-
 func TestSetAPIInfo(t *testing.T) {
 	apiName := os.Getenv("apiName")
 	apiKey := os.Getenv("apiKey")

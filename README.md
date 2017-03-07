@@ -58,19 +58,101 @@ https://developer.authorize.net/hello_world/sandbox/
 
 ## Included API References
 
+:white_check_mark: Set API Creds
+```go
+apiName := "PQO38FSL"
+apiKey := "OQ8NFBAPA9DS"
+apiMode := "test"
+
+AuthorizeCIM.SetAPIInfo(apiName,apiKey,apiMode)
+```
+
 Payment Transactions
 
 :white_check_mark: chargeCard
+```go
+newTransaction := AuthorizeCIM.NewTransaction{
+		Amount: "15.90",
+		CreditCard: CreditCard{
+			CardNumber:     "4007000000027",
+			ExpirationDate: "10/23",
+		},
+	}
+	response := newTransaction.Charge()
+	if response.Approved() {
+
+	}
+```
 
 :white_check_mark: authorizeCard
+```go
+newTransaction := AuthorizeCIM.NewTransaction{
+		Amount: "100.00",
+		CreditCard: CreditCard{
+			CardNumber:     "4012888818888",
+			ExpirationDate: "10/27",
+		},
+	}
+	response := newTransaction.AuthOnly()
+	if response.Approved() {
+
+	}
+```
 
 :white_check_mark: capturePreviousCard
+```go
+oldTransaction := AuthorizeCIM.PreviousTransaction{
+		Amount: "49.99",
+		RefId:  "AUTHCODEHERE001",
+	}
+	response := oldTransaction.Capture()
+	if response.Approved() {
+
+	}
+```
 
 :white_check_mark: captureAuthorizedCardChannel
+```go
+newTransaction := AuthorizeCIM.NewTransaction{
+		Amount: "38.00",
+		CreditCard: CreditCard{
+			CardNumber:     "4012888818888",
+			ExpirationDate: "10/24",
+		},
+		AuthCode: "YOURAUTHCODE",
+	}
+	response := newTransaction.Charge()
+	if response.Approved() {
+
+	}
+```
 
 :white_check_mark: refundTransaction
+```go
+newTransaction := AuthorizeCIM.NewTransaction{
+		Amount: "15.00",
+		CreditCard: CreditCard{
+			CardNumber:     "4012888818888",
+			ExpirationDate: "10/24",
+		},
+		RefTransId: "0392482938402",
+	}
+	response := newTransaction.Refund()
+	if response.Approved() {
+
+	}
+```
 
 :white_check_mark: voidTransaction
+```go
+oldTransaction := AuthorizeCIM.PreviousTransaction{
+		RefId: "3987324293834",
+	}
+	response := oldTransaction.Void()
+	if response.Approved() {
+
+	}
+```
 
 :white_medium_square: updateSplitTenderGround
 
@@ -91,22 +173,107 @@ Payment Transactions
 Fraud Management
 
 :white_check_mark: getUnsettledTransactionListRequest
+```go
+transactions := AuthorizeCIM.UnsettledBatchList()
+fmt.Println("Unsettled Count: ", transactions.Count)
+```
 
 :white_medium_square: updateHeldTransactionRequest
 
 Recurring Billing
 
 :white_check_mark: ARBCreateSubscriptionRequest
+```go
+subscription := AuthorizeCIM.Subscription{
+		Name:        "New Subscription",
+		Amount:      "9.00",
+		TrialAmount: "0.00",
+		PaymentSchedule: &PaymentSchedule{
+			StartDate:        CurrentTime(),
+			TotalOccurrences: "9999",
+			TrialOccurrences: "0",
+			Interval: Interval{
+				Length: "1",
+				Unit:   "months",
+			},
+		},
+		Payment: Payment{
+			CreditCard: CreditCard{
+				CardNumber:     "4007000000027",
+				ExpirationDate: "10/23",
+			},
+		},
+		BillTo: &BillTo{
+			FirstName: "Test",
+			LastName:  "User",
+		},
+	}
+
+	response := subscription.Charge()
+
+	if response.Approved() {
+        fmt.Println("New Subscription ID: ",response.SubscriptionID)
+	}
+```
 
 :white_check_mark: ARBGetSubscriptionRequest
+```go
+sub := AuthorizeCIM.SetSubscription{
+		Id: "2973984693",
+	}
+
+	subscriptionInfo := sub.Info()
+```
 
 :white_check_mark: ARBGetSubscriptionStatusRequest
+```go
+sub := AuthorizeCIM.SetSubscription{
+		Id: "2973984693",
+	}
+
+subscriptionInfo := sub.Status()
+
+fmt.Println("Subscription ID has status: ",subscriptionInfo.Status)
+```
 
 :white_check_mark: ARBUpdateSubscriptionRequest
+```go
+subscription := AuthorizeCIM.Subscription{
+		Payment: Payment{
+			CreditCard: CreditCard{
+				CardNumber:     "5424000000000015",
+				ExpirationDate: "06/25",
+			},
+		},
+		SubscriptionId: newSubscriptionId,
+	}
+
+	response := subscription.Update()
+
+	if response.Approved() {
+
+	}
+```
 
 :white_check_mark: ARBCancelSubscriptionRequest
+```go
+sub := AuthorizeCIM.SetSubscription{
+		Id: "2973984693",
+	}
+
+	subscriptionInfo := sub.Cancel()
+
+	fmt.Println("Subscription ID has been canceled: ", sub.Id, "\n")
+```
 
 :white_check_mark: ARBGetSubscriptionListRequest
+```go
+inactive := AuthorizeCIM.SubscriptionList("subscriptionInactive")
+fmt.Println("Amount of Inactive Subscriptions: ", inactive.Count())
+
+active := AuthorizeCIM.SubscriptionList("subscriptionActive")
+fmt.Println("Amount of Active Subscriptions: ", active.Count())
+```
 
 Customer Profile
 
