@@ -40,22 +40,6 @@ AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
 ## Examples
 Below you'll find useful functions to get you up and running in no time!
 
-![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
-
-# ToDo
-* Make cleaner maps for outputs
-* Functions to search Subscriptions (active, expired, etc)
-* Void and Refund Transactions
-* Add Bank Account Support
-* Authorize Only methods
-
-### Authorize.net CIM Documentation
-http://developer.authorize.net/api/reference/#customer-profiles
-
-### Authorize.net Sandbox Access
-https://developer.authorize.net/hello_world/sandbox/
-
-
 ## Included API References
 
 :white_check_mark: Set API Creds
@@ -380,6 +364,21 @@ Transaction Reporting
 
 :white_medium_square: getTransactionListRequest
 
+
+![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
+
+# ToDo
+* Make cleaner maps for outputs
+* Functions to search Subscriptions (active, expired, etc)
+* Void and Refund Transactions
+* Add Bank Account Support
+* Authorize Only methods
+
+### Authorize.net CIM Documentation
+http://developer.authorize.net/api/reference/#customer-profiles
+
+### Authorize.net Sandbox Access
+https://developer.authorize.net/hello_world/sandbox/
 
 # License
 This golang package is release under MIT license. This software gets reponses in JSON, but Authorize.net currently says "JSON Support is in BETA, please contact us if you intend to use it in production." Make sure you test in sandbox mode!
