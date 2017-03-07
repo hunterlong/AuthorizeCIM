@@ -117,3 +117,19 @@ func TestGetActiveSubscriptionList(t *testing.T) {
 	t.Log("Amount of Active Subscriptions: ", subscriptionList.Count())
 
 }
+
+func TestGetExpiringSubscriptionList(t *testing.T) {
+
+	subscriptionList := SubscriptionList("subscriptionExpiringThisMonth")
+
+	t.Log("Amount of Subscriptions Expiring This Month: ", subscriptionList.Count())
+
+}
+
+func TestGetCardExpiringSubscriptionList(t *testing.T) {
+
+	subscriptionList := SubscriptionList("cardExpiringThisMonth")
+
+	t.Log("Amount of Cards Expiring This Month: ", subscriptionList.Count())
+
+}

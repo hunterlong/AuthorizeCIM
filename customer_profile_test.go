@@ -101,3 +101,53 @@ func TestDeleteCustomerProfile(t *testing.T) {
 	}
 
 }
+
+
+func TestCreateCustomerPaymentProfile(t *testing.T) {
+
+}
+
+func TestGetCustomerPaymentProfile(t *testing.T) {
+
+}
+
+func TestGetCustomerPaymentProfileList(t *testing.T) {
+
+}
+
+func TestValidateCustomerPaymentProfile(t *testing.T) {
+
+}
+
+func TestUpdateCustomerPaymentProfile(t *testing.T) {
+
+}
+
+func TestDeleteCustomerPaymentProfile(t *testing.T) {
+
+}
+
+
+func TestCreateCustomerShippingProfile(t *testing.T) {
+
+}
+
+func TestGetCustomerShippingProfile(t *testing.T) {
+
+}
+
+func TestUpdateCustomerShippingProfile(t *testing.T) {
+
+}
+
+func TestDeleteCustomerShippingProfile(t *testing.T) {
+
+}
+
+func TestAcceptProfilePage(t *testing.T) {
+
+}
+
+func TestCreateCustomerProfileFromTransaction(t *testing.T) {
+
+}

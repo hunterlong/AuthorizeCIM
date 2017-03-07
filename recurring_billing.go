@@ -376,7 +376,7 @@ type GetSubscriptionList struct {
 		Amount                    float64 `json:"amount"`
 		CurrencyCode              string  `json:"currencyCode"`
 		CustomerProfileID         int     `json:"customerProfileId"`
-		CustomerPaymentProfileID  int     `json:"customerPaymentProfileId"`
+		CustomerPaymentProfileID  int     `json:"customerPaymentProfileId,omitempty"`
 		CustomerShippingProfileID int     `json:"customerShippingProfileId,omitempty"`
 	} `json:"subscriptionDetails"`
 	Messages struct {
