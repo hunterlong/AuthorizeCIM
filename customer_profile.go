@@ -2,13 +2,55 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
+	"fmt"
 )
+
+
+func GetPaymentProfileIds(month string, method string) GetCustomerPaymentProfileListResponse {
+	action := GetCustomerPaymentProfileListRequest{
+		GetCustomerPaymentProfileList: GetCustomerPaymentProfileList{
+			MerchantAuthentication: GetAuthentication(),
+			SearchType: method,
+			Month: month,
+			Sorting: Sorting{
+				OrderBy:         "id",
+				OrderDescending: "false",
+			},
+			Paging: Paging{
+				Limit:  "1000",
+				Offset: "1",
+			},
+		},
+	}
+	jsoned, err := json.Marshal(action)
+	if err != nil {
+		panic(err)
+	}
+	response := SendRequest(jsoned)
+	var dat GetCustomerPaymentProfileListResponse
+	err = json.Unmarshal(response, &dat)
+	if err != nil {
+		panic(err)
+	}
+	return dat
+}
 
 func (response MessageResponse) Approved() bool {
 	if response.Messages.ResultCode == "Ok" {
 		return true
 	}
 	return false
+}
+
+func (response CustomerPaymentProfileResponse) Approved() bool {
+	if response.Messages.ResultCode == "Ok" {
+		return true
+	}
+	return false
+}
+
+func (response CustomerPaymentProfileResponse) ErrorMessage() string {
+	return response.Messages.Message[0].Text
 }
 
 func (response MessageResponse) ErrorMessage() string {
@@ -20,6 +62,17 @@ func (response CustomProfileResponse) Approved() bool {
 		return true
 	}
 	return false
+}
+
+func (response ValidateCustomerPaymentProfileResponse) Approved() bool {
+	if response.Messages.ResultCode == "Ok" {
+		return true
+	}
+	return false
+}
+
+func (response ValidateCustomerPaymentProfileResponse) ErrorMessage() string {
+	return response.Messages.Message[0].Text
 }
 
 func (response CustomProfileResponse) ErrorMessage() string {
@@ -36,8 +89,19 @@ func (customer Customer) Info() GetCustomerProfileResponse {
 	return response
 }
 
+func (customer Customer) Validate() ValidateCustomerPaymentProfileResponse {
+	response, _ := ValidatePaymentProfile(customer)
+	return response
+}
+
+
 func (customer Customer) Delete() MessageResponse {
 	response, _ := DeleteProfile(customer)
+	return response
+}
+
+func (payment CustomerPaymentProfile) Add() CustomerPaymentProfileResponse {
+	response, _ := CreatePaymentProfile(payment)
 	return response
 }
 
@@ -67,6 +131,29 @@ func GetProfileIds() ([]string, interface{}) {
 		panic(err)
 	}
 	return dat.Ids, err
+}
+
+
+func ValidatePaymentProfile(customer Customer) (ValidateCustomerPaymentProfileResponse, interface{}) {
+	action := ValidateCustomerPaymentProfileRequest{
+		ValidateCustomerPaymentProfile: ValidateCustomerPaymentProfile{
+			MerchantAuthentication: GetAuthentication(),
+			CustomerProfileID:      customer.ID,
+			CustomerPaymentProfileID: customer.PaymentID,
+			ValidationMode: testMode,
+		},
+	}
+	jsoned, err := json.Marshal(action)
+	if err != nil {
+		panic(err)
+	}
+	response := SendRequest(jsoned)
+	var dat ValidateCustomerPaymentProfileResponse
+	err = json.Unmarshal(response, &dat)
+	if err != nil {
+		panic(err)
+	}
+	return dat, err
 }
 
 func GetProfile(customer Customer) (GetCustomerProfileResponse, interface{}) {
@@ -143,6 +230,33 @@ func DeleteProfile(customer Customer) (MessageResponse, interface{}) {
 	}
 	response := SendRequest(jsoned)
 	var dat MessageResponse
+	err = json.Unmarshal(response, &dat)
+	if err != nil {
+		panic(err)
+	}
+	return dat, err
+}
+
+
+func CreatePaymentProfile(profile CustomerPaymentProfile) (CustomerPaymentProfileResponse, interface{}) {
+	action := CreateCustomerPaymentProfile{
+		CreateCustomerPaymentProfileRequest: CreateCustomerPaymentProfileRequest{
+			MerchantAuthentication: GetAuthentication(),
+			CustomerProfileID: profile.CustomerProfileID,
+			PaymentProfile: PaymentProfile{
+				BillTo: profile.PaymentProfile.BillTo,
+				Payment: profile.PaymentProfile.Payment,
+				DefaultPaymentProfile: profile.PaymentProfile.DefaultPaymentProfile,
+			},
+		},
+	}
+	jsoned, err := json.Marshal(action)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(jsoned))
+	response := SendRequest(jsoned)
+	var dat CustomerPaymentProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -276,4 +390,90 @@ type MessageResponse struct {
 			Text string `json:"text"`
 		} `json:"message"`
 	} `json:"messages"`
+}
+
+type CustomerPaymentProfile struct {
+	CustomerProfileID string `json:"customerProfileId"`
+	PaymentProfile PaymentProfile `json:"paymentProfile"`
+}
+
+
+type CreateCustomerPaymentProfile struct {
+	CreateCustomerPaymentProfileRequest CreateCustomerPaymentProfileRequest `json:"createCustomerPaymentProfileRequest"`
+}
+
+type CreateCustomerPaymentProfileRequest struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileID string `json:"customerProfileId"`
+	PaymentProfile PaymentProfile `json:"paymentProfile"`
+}
+
+type PaymentProfile struct {
+	BillTo BillTo `json:"billTo"`
+	Payment Payment `json:"payment"`
+	DefaultPaymentProfile string `json:"defaultPaymentProfile"`
+}
+
+type CustomerPaymentProfileResponse struct {
+	CustomerProfileId string `json:"customerProfileId"`
+	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
+	ValidationDirectResponse string `json:"validationDirectResponse"`
+	Messages struct {
+					 ResultCode string `json:"resultCode"`
+					 Message []struct {
+						 Code string `json:"code"`
+						 Text string `json:"text"`
+					 } `json:"message"`
+				 } `json:"messages"`
+}
+
+type GetCustomerPaymentProfileListRequest struct {
+	GetCustomerPaymentProfileList GetCustomerPaymentProfileList `json:"getCustomerPaymentProfileListRequest"`
+}
+
+type GetCustomerPaymentProfileList struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	SearchType string `json:"searchType"`
+	Month string `json:"month"`
+	Sorting Sorting `json:"sorting"`
+	Paging Paging `json:"paging"`
+}
+
+type GetCustomerPaymentProfileListResponse struct {
+	GetCustomerPaymentProfileList struct {
+						      Messages struct {
+								       ResultCode string `json:"resultCode"`
+								       Message struct {
+											  Code string `json:"code"`
+											  Text string `json:"text"`
+										  } `json:"message"`
+							       } `json:"messages"`
+						      TotalNumInResultSet string `json:"totalNumInResultSet"`
+						      PaymentProfiles struct {
+								       PaymentProfile []PaymentProfile `json:"paymentProfile"`
+							       } `json:"paymentProfiles"`
+					      } `json:"getCustomerPaymentProfileListResponse"`
+}
+
+
+type ValidateCustomerPaymentProfileRequest struct {
+	ValidateCustomerPaymentProfile ValidateCustomerPaymentProfile `json:"validateCustomerPaymentProfileRequest"`
+}
+
+type ValidateCustomerPaymentProfile struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileID string `json:"customerProfileId"`
+	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
+	ValidationMode string `json:"validationMode"`
+}
+
+type ValidateCustomerPaymentProfileResponse struct {
+	DirectResponse string `json:"directResponse"`
+	Messages struct {
+			       ResultCode string `json:"resultCode"`
+			       Message []struct {
+				       Code string `json:"code"`
+				       Text string `json:"text"`
+			       } `json:"message"`
+		       } `json:"messages"`
 }

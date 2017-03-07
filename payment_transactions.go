@@ -212,6 +212,7 @@ type Tax struct {
 
 type Customer struct {
 	ID string `json:"id,omitempty"`
+	PaymentID string `json:"id,omitempty"`
 }
 
 type TransactionSettings struct {

@@ -6,6 +6,7 @@ import (
 )
 
 var newCustomerProfileId string
+var newCustomerPaymentId string
 
 func TestSetAPIInfo(t *testing.T) {
 	apiName := os.Getenv("apiName")
@@ -86,36 +87,76 @@ func TestUpdateCustomerProfile(t *testing.T) {
 
 }
 
-func TestDeleteCustomerProfile(t *testing.T) {
 
-	customer := Customer{
-		ID: "1810878365",
+func TestCreateCustomerPaymentProfile(t *testing.T) {
+
+	paymentProfile := CustomerPaymentProfile{
+		CustomerProfileID: newCustomerProfileId,
+		PaymentProfile: PaymentProfile{
+			BillTo: BillTo{
+				FirstName: "okokk",
+				LastName: "okok",
+				Address: "1111 white ct",
+				City: "los angeles",
+				Country: "USA",
+				PhoneNumber: "8885555555",
+			},
+			Payment: Payment{
+				CreditCard: CreditCard{
+					CardNumber: "5424000000000015",
+					ExpirationDate: "04/22",
+				},
+			},
+			DefaultPaymentProfile: "true",
+		},
 	}
 
-	response := customer.Delete()
+	response := paymentProfile.Add()
 
 	if response.Approved() {
-		t.Log("Customer was Deleted")
+		newCustomerPaymentId = response.CustomerPaymentProfileID
+		t.Log("Created new Payment Profile #",response.CustomerPaymentProfileID, "for Customer ID: ",response.CustomerProfileId)
 	} else {
 		t.Log(response.ErrorMessage())
 	}
 
 }
 
-
-func TestCreateCustomerPaymentProfile(t *testing.T) {
-
-}
-
 func TestGetCustomerPaymentProfile(t *testing.T) {
+
+	customer := Customer{
+		ID: newCustomerProfileId,
+	}
+
+	response := customer.Info()
+
+	paymentProfiles := response.PaymentProfiles()
+
+	t.Log("Customer Payment Profiles", paymentProfiles)
 
 }
 
 func TestGetCustomerPaymentProfileList(t *testing.T) {
 
+	profileIds := GetPaymentProfileIds("2017-03","cardsExpiringInMonth")
+
+	t.Log(profileIds)
 }
 
 func TestValidateCustomerPaymentProfile(t *testing.T) {
+
+	customerProfile := Customer{
+		ID: newCustomerProfileId,
+		PaymentID: newCustomerPaymentId,
+	}
+
+	response := customerProfile.Validate()
+
+	if response.Approved() {
+		t.Log("Customer Payment Profile is VALID")
+	} else {
+		t.Log(response.ErrorMessage())
+	}
 
 }
 
@@ -149,5 +190,22 @@ func TestAcceptProfilePage(t *testing.T) {
 }
 
 func TestCreateCustomerProfileFromTransaction(t *testing.T) {
+
+}
+
+
+func TestDeleteCustomerProfile(t *testing.T) {
+
+	customer := Customer{
+		ID: "1810878365",
+	}
+
+	response := customer.Delete()
+
+	if response.Approved() {
+		t.Log("Customer was Deleted")
+	} else {
+		t.Log(response.ErrorMessage())
+	}
 
 }

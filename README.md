@@ -318,7 +318,7 @@ if response.Approved() {
 
 :white_check_mark: deleteCustomerProfileRequest
 ```go
-customer := Customer{
+customer := AuthorizeCIM.Customer{
 		ID: "13838",
 	}
 
@@ -331,13 +331,65 @@ if response.Approved() {
 
 ### Customer Payment Profile
 
-:white_medium_square: createCustomerPaymentProfileRequest
+:white_check_mark: createCustomerPaymentProfileRequest
+```go
+paymentProfile := AuthorizeCIM.CustomerPaymentProfile{
+		CustomerProfileID: newCustomerProfileId,
+		PaymentProfile: PaymentProfile{
+			BillTo: BillTo{
+				FirstName: "okokk",
+				LastName: "okok",
+				Address: "1111 white ct",
+				City: "los angeles",
+				Country: "USA",
+				PhoneNumber: "8885555555",
+			},
+			Payment: Payment{
+				CreditCard: CreditCard{
+					CardNumber: "5424000000000015",
+					ExpirationDate: "04/22",
+				},
+			},
+			DefaultPaymentProfile: "true",
+		},
+	}
 
-:white_medium_square: getCustomerPaymentProfileRequest
+	response := paymentProfile.Add()
 
-:white_medium_square: getCustomerPaymentProfileListRequest
+	if response.Approved() {
 
-:white_medium_square: validateCustomerPaymentProfileRequest
+	}
+```
+
+:white_check_mark: getCustomerPaymentProfileRequest
+```go
+customer := AuthorizeCIM.Customer{
+		ID: newCustomerProfileId,
+	}
+
+	response := customer.Info()
+
+	paymentProfiles := response.PaymentProfiles()
+```
+
+:white_check_mark: getCustomerPaymentProfileListRequest
+```go
+profileIds := AuthorizeCIM.GetPaymentProfileIds("2017-03","cardsExpiringInMonth")
+```
+
+:white_check_mark: validateCustomerPaymentProfileRequest
+```go
+customerProfile := AuthorizeCIM.Customer{
+		ID: "127723778",
+		PaymentID: "984583934",
+	}
+
+	response := customerProfile.Validate()
+
+	if response.Approved() {
+
+	}
+```
 
 :white_medium_square: updateCustomerPaymentProfileRequest
 
