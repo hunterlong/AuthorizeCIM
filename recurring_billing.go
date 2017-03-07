@@ -92,13 +92,13 @@ type Subscription struct {
 }
 
 type BillTo struct {
-	FirstName string `json:"firstName,omitempty"`
-	LastName  string `json:"lastName,omitempty"`
-	Address string `json:"address,omitempty"`
-	City string `json:"city,omitempty"`
-	State string `json:"state,omitempty"`
-	Zip string `json:"zip,omitempty"`
-	Country string `json:"country,omitempty"`
+	FirstName   string `json:"firstName,omitempty"`
+	LastName    string `json:"lastName,omitempty"`
+	Address     string `json:"address,omitempty"`
+	City        string `json:"city,omitempty"`
+	State       string `json:"state,omitempty"`
+	Zip         string `json:"zip,omitempty"`
+	Country     string `json:"country,omitempty"`
 	PhoneNumber string `json:"phoneNumber,omitempty"`
 }
 
@@ -277,46 +277,46 @@ func CurrentTime() string {
 
 type GetSubscriptionResponse struct {
 	Subscription struct {
-			     Name string `json:"name"`
-			     PaymentSchedule struct {
-					  Interval struct {
-							   Length int `json:"length"`
-							   Unit string `json:"unit"`
-						   } `json:"interval"`
-					  StartDate string `json:"startDate"`
-					  TotalOccurrences int `json:"totalOccurrences"`
-					  TrialOccurrences int `json:"trialOccurrences"`
-				  } `json:"paymentSchedule"`
-			     Amount float64 `json:"amount"`
-			     TrialAmount float64 `json:"trialAmount"`
-			     Status string `json:"status"`
-			     Profile struct {
-					  PaymentProfile struct {
-								 CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
-								 Payment struct {
-												  CreditCard struct {
-														     CardNumber string `json:"cardNumber"`
-														     ExpirationDate string `json:"expirationDate"`
-													     } `json:"creditCard"`
-											  } `json:"payment"`
-								 CustomerType string `json:"customerType"`
-								 BillTo struct {
-												  FirstName string `json:"firstName"`
-												  LastName string `json:"lastName"`
-											  } `json:"billTo"`
-							 } `json:"paymentProfile"`
-					  CustomerProfileID string `json:"customerProfileId"`
-					  Description string `json:"description"`
-				  } `json:"profile"`
-		     } `json:"subscription"`
-	RefID string `json:"refId"`
+		Name            string `json:"name"`
+		PaymentSchedule struct {
+			Interval struct {
+				Length int    `json:"length"`
+				Unit   string `json:"unit"`
+			} `json:"interval"`
+			StartDate        string `json:"startDate"`
+			TotalOccurrences int    `json:"totalOccurrences"`
+			TrialOccurrences int    `json:"trialOccurrences"`
+		} `json:"paymentSchedule"`
+		Amount      float64 `json:"amount"`
+		TrialAmount float64 `json:"trialAmount"`
+		Status      string  `json:"status"`
+		Profile     struct {
+			PaymentProfile struct {
+				CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
+				Payment                  struct {
+					CreditCard struct {
+						CardNumber     string `json:"cardNumber"`
+						ExpirationDate string `json:"expirationDate"`
+					} `json:"creditCard"`
+				} `json:"payment"`
+				CustomerType string `json:"customerType"`
+				BillTo       struct {
+					FirstName string `json:"firstName"`
+					LastName  string `json:"lastName"`
+				} `json:"billTo"`
+			} `json:"paymentProfile"`
+			CustomerProfileID string `json:"customerProfileId"`
+			Description       string `json:"description"`
+		} `json:"profile"`
+	} `json:"subscription"`
+	RefID    string `json:"refId"`
 	Messages struct {
-			     ResultCode string `json:"resultCode"`
-			     Message []struct {
-				     Code string `json:"code"`
-				     Text string `json:"text"`
-			     } `json:"message"`
-		     } `json:"messages"`
+		ResultCode string `json:"resultCode"`
+		Message    []struct {
+			Code string `json:"code"`
+			Text string `json:"text"`
+		} `json:"message"`
+	} `json:"messages"`
 }
 
 type SubscriptionStatus struct {

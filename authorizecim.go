@@ -2,9 +2,9 @@ package AuthorizeCIM
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"net/http"
-	"fmt"
 )
 
 var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
@@ -46,6 +46,8 @@ func SendRequest(input []byte) []byte {
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 	body = bytes.TrimPrefix(body, []byte("\xef\xbb\xbf"))
-	if showLogs { fmt.Println(string(body)) }
+	if showLogs {
+		fmt.Println(string(body))
+	}
 	return body
 }

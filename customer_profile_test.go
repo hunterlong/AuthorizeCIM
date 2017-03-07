@@ -62,8 +62,8 @@ func TestGetCustomerProfile(t *testing.T) {
 func TestGetProfileIds(t *testing.T) {
 	profiles, _ := GetProfileIds()
 
-	for _,p := range profiles {
-		t.Log("Profile ID #",p)
+	for _, p := range profiles {
+		t.Log("Profile ID #", p)
 	}
 	t.Log(profiles)
 }
@@ -87,23 +87,22 @@ func TestUpdateCustomerProfile(t *testing.T) {
 
 }
 
-
 func TestCreateCustomerPaymentProfile(t *testing.T) {
 
 	paymentProfile := CustomerPaymentProfile{
 		CustomerProfileID: newCustomerProfileId,
 		PaymentProfile: PaymentProfile{
 			BillTo: BillTo{
-				FirstName: "okokk",
-				LastName: "okok",
-				Address: "1111 white ct",
-				City: "los angeles",
-				Country: "USA",
+				FirstName:   "okokk",
+				LastName:    "okok",
+				Address:     "1111 white ct",
+				City:        "los angeles",
+				Country:     "USA",
 				PhoneNumber: "8885555555",
 			},
 			Payment: Payment{
 				CreditCard: CreditCard{
-					CardNumber: "5424000000000015",
+					CardNumber:     "5424000000000015",
 					ExpirationDate: "04/22",
 				},
 			},
@@ -115,7 +114,7 @@ func TestCreateCustomerPaymentProfile(t *testing.T) {
 
 	if response.Approved() {
 		newCustomerPaymentId = response.CustomerPaymentProfileID
-		t.Log("Created new Payment Profile #",response.CustomerPaymentProfileID, "for Customer ID: ",response.CustomerProfileId)
+		t.Log("Created new Payment Profile #", response.CustomerPaymentProfileID, "for Customer ID: ", response.CustomerProfileId)
 	} else {
 		t.Log(response.ErrorMessage())
 	}
@@ -138,7 +137,7 @@ func TestGetCustomerPaymentProfile(t *testing.T) {
 
 func TestGetCustomerPaymentProfileList(t *testing.T) {
 
-	profileIds := GetPaymentProfileIds("2017-03","cardsExpiringInMonth")
+	profileIds := GetPaymentProfileIds("2017-03", "cardsExpiringInMonth")
 
 	t.Log(profileIds)
 }
@@ -146,7 +145,7 @@ func TestGetCustomerPaymentProfileList(t *testing.T) {
 func TestValidateCustomerPaymentProfile(t *testing.T) {
 
 	customerProfile := Customer{
-		ID: newCustomerProfileId,
+		ID:        newCustomerProfileId,
 		PaymentID: newCustomerPaymentId,
 	}
 
@@ -167,7 +166,6 @@ func TestUpdateCustomerPaymentProfile(t *testing.T) {
 func TestDeleteCustomerPaymentProfile(t *testing.T) {
 
 }
-
 
 func TestCreateCustomerShippingProfile(t *testing.T) {
 
@@ -192,7 +190,6 @@ func TestAcceptProfilePage(t *testing.T) {
 func TestCreateCustomerProfileFromTransaction(t *testing.T) {
 
 }
-
 
 func TestDeleteCustomerProfile(t *testing.T) {
 

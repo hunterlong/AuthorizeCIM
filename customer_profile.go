@@ -5,13 +5,12 @@ import (
 	"fmt"
 )
 
-
 func GetPaymentProfileIds(month string, method string) GetCustomerPaymentProfileListResponse {
 	action := GetCustomerPaymentProfileListRequest{
 		GetCustomerPaymentProfileList: GetCustomerPaymentProfileList{
 			MerchantAuthentication: GetAuthentication(),
-			SearchType: method,
-			Month: month,
+			SearchType:             method,
+			Month:                  month,
 			Sorting: Sorting{
 				OrderBy:         "id",
 				OrderDescending: "false",
@@ -94,7 +93,6 @@ func (customer Customer) Validate() ValidateCustomerPaymentProfileResponse {
 	return response
 }
 
-
 func (customer Customer) Delete() MessageResponse {
 	response, _ := DeleteProfile(customer)
 	return response
@@ -133,14 +131,13 @@ func GetProfileIds() ([]string, interface{}) {
 	return dat.Ids, err
 }
 
-
 func ValidatePaymentProfile(customer Customer) (ValidateCustomerPaymentProfileResponse, interface{}) {
 	action := ValidateCustomerPaymentProfileRequest{
 		ValidateCustomerPaymentProfile: ValidateCustomerPaymentProfile{
-			MerchantAuthentication: GetAuthentication(),
-			CustomerProfileID:      customer.ID,
+			MerchantAuthentication:   GetAuthentication(),
+			CustomerProfileID:        customer.ID,
 			CustomerPaymentProfileID: customer.PaymentID,
-			ValidationMode: testMode,
+			ValidationMode:           testMode,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -237,15 +234,14 @@ func DeleteProfile(customer Customer) (MessageResponse, interface{}) {
 	return dat, err
 }
 
-
 func CreatePaymentProfile(profile CustomerPaymentProfile) (CustomerPaymentProfileResponse, interface{}) {
 	action := CreateCustomerPaymentProfile{
 		CreateCustomerPaymentProfileRequest: CreateCustomerPaymentProfileRequest{
 			MerchantAuthentication: GetAuthentication(),
-			CustomerProfileID: profile.CustomerProfileID,
+			CustomerProfileID:      profile.CustomerProfileID,
 			PaymentProfile: PaymentProfile{
-				BillTo: profile.PaymentProfile.BillTo,
-				Payment: profile.PaymentProfile.Payment,
+				BillTo:                profile.PaymentProfile.BillTo,
+				Payment:               profile.PaymentProfile.Payment,
 				DefaultPaymentProfile: profile.PaymentProfile.DefaultPaymentProfile,
 			},
 		},
@@ -393,10 +389,9 @@ type MessageResponse struct {
 }
 
 type CustomerPaymentProfile struct {
-	CustomerProfileID string `json:"customerProfileId"`
-	PaymentProfile PaymentProfile `json:"paymentProfile"`
+	CustomerProfileID string         `json:"customerProfileId"`
+	PaymentProfile    PaymentProfile `json:"paymentProfile"`
 }
-
 
 type CreateCustomerPaymentProfile struct {
 	CreateCustomerPaymentProfileRequest CreateCustomerPaymentProfileRequest `json:"createCustomerPaymentProfileRequest"`
@@ -404,27 +399,27 @@ type CreateCustomerPaymentProfile struct {
 
 type CreateCustomerPaymentProfileRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileID string `json:"customerProfileId"`
-	PaymentProfile PaymentProfile `json:"paymentProfile"`
+	CustomerProfileID      string                 `json:"customerProfileId"`
+	PaymentProfile         PaymentProfile         `json:"paymentProfile"`
 }
 
 type PaymentProfile struct {
-	BillTo BillTo `json:"billTo"`
-	Payment Payment `json:"payment"`
-	DefaultPaymentProfile string `json:"defaultPaymentProfile"`
+	BillTo                BillTo  `json:"billTo"`
+	Payment               Payment `json:"payment"`
+	DefaultPaymentProfile string  `json:"defaultPaymentProfile"`
 }
 
 type CustomerPaymentProfileResponse struct {
-	CustomerProfileId string `json:"customerProfileId"`
+	CustomerProfileId        string `json:"customerProfileId"`
 	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
 	ValidationDirectResponse string `json:"validationDirectResponse"`
-	Messages struct {
-					 ResultCode string `json:"resultCode"`
-					 Message []struct {
-						 Code string `json:"code"`
-						 Text string `json:"text"`
-					 } `json:"message"`
-				 } `json:"messages"`
+	Messages                 struct {
+		ResultCode string `json:"resultCode"`
+		Message    []struct {
+			Code string `json:"code"`
+			Text string `json:"text"`
+		} `json:"message"`
+	} `json:"messages"`
 }
 
 type GetCustomerPaymentProfileListRequest struct {
@@ -433,47 +428,46 @@ type GetCustomerPaymentProfileListRequest struct {
 
 type GetCustomerPaymentProfileList struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	SearchType string `json:"searchType"`
-	Month string `json:"month"`
-	Sorting Sorting `json:"sorting"`
-	Paging Paging `json:"paging"`
+	SearchType             string                 `json:"searchType"`
+	Month                  string                 `json:"month"`
+	Sorting                Sorting                `json:"sorting"`
+	Paging                 Paging                 `json:"paging"`
 }
 
 type GetCustomerPaymentProfileListResponse struct {
 	GetCustomerPaymentProfileList struct {
-						      Messages struct {
-								       ResultCode string `json:"resultCode"`
-								       Message struct {
-											  Code string `json:"code"`
-											  Text string `json:"text"`
-										  } `json:"message"`
-							       } `json:"messages"`
-						      TotalNumInResultSet string `json:"totalNumInResultSet"`
-						      PaymentProfiles struct {
-								       PaymentProfile []PaymentProfile `json:"paymentProfile"`
-							       } `json:"paymentProfiles"`
-					      } `json:"getCustomerPaymentProfileListResponse"`
+		Messages struct {
+			ResultCode string `json:"resultCode"`
+			Message    struct {
+				Code string `json:"code"`
+				Text string `json:"text"`
+			} `json:"message"`
+		} `json:"messages"`
+		TotalNumInResultSet string `json:"totalNumInResultSet"`
+		PaymentProfiles     struct {
+			PaymentProfile []PaymentProfile `json:"paymentProfile"`
+		} `json:"paymentProfiles"`
+	} `json:"getCustomerPaymentProfileListResponse"`
 }
-
 
 type ValidateCustomerPaymentProfileRequest struct {
 	ValidateCustomerPaymentProfile ValidateCustomerPaymentProfile `json:"validateCustomerPaymentProfileRequest"`
 }
 
 type ValidateCustomerPaymentProfile struct {
-	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileID string `json:"customerProfileId"`
-	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
-	ValidationMode string `json:"validationMode"`
+	MerchantAuthentication   MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileID        string                 `json:"customerProfileId"`
+	CustomerPaymentProfileID string                 `json:"customerPaymentProfileId"`
+	ValidationMode           string                 `json:"validationMode"`
 }
 
 type ValidateCustomerPaymentProfileResponse struct {
 	DirectResponse string `json:"directResponse"`
-	Messages struct {
-			       ResultCode string `json:"resultCode"`
-			       Message []struct {
-				       Code string `json:"code"`
-				       Text string `json:"text"`
-			       } `json:"message"`
-		       } `json:"messages"`
+	Messages       struct {
+		ResultCode string `json:"resultCode"`
+		Message    []struct {
+			Code string `json:"code"`
+			Text string `json:"text"`
+		} `json:"message"`
+	} `json:"messages"`
 }
