@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -135,10 +134,8 @@ func SendSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-
 	response := SendRequest(jsoned)
 	var dat SubscriptionResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -162,12 +159,8 @@ func UpdateSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println(string(jsoned))
-
 	response := SendRequest(jsoned)
 	var dat SubscriptionResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -192,7 +185,6 @@ func (sub SetSubscription) Info() GetSubscriptionResponse {
 	}
 	response := SendRequest(jsoned)
 	var dat GetSubscriptionResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -213,7 +205,6 @@ func (sub SetSubscription) Status() SubscriptionStatus {
 	}
 	response := SendRequest(jsoned)
 	var dat SubscriptionStatus
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -234,7 +225,6 @@ func (sub SetSubscription) Cancel() SubscriptionCancel {
 	}
 	response := SendRequest(jsoned)
 	var dat SubscriptionCancel
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -263,7 +253,6 @@ func SubscriptionList(search string) GetSubscriptionList {
 	}
 	response := SendRequest(jsoned)
 	var dat GetSubscriptionList
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)

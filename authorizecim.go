@@ -4,20 +4,24 @@ import (
 	"bytes"
 	"io/ioutil"
 	"net/http"
+	"fmt"
 )
 
 var api_endpoint string = "https://apitest.authorize.net/xml/v1/request.api"
 var apiName *string
 var apiKey *string
 var testMode string
+var showLogs bool = true
 
 func SetAPIInfo(name string, key string, mode string) {
 	apiKey = &key
 	apiName = &name
 	if mode == "test" {
+		showLogs = true
 		testMode = "testMode"
 		api_endpoint = "https://apitest.authorize.net/xml/v1/request.api"
 	} else {
+		showLogs = false
 		testMode = "liveMode"
 		api_endpoint = "https://api.authorize.net/xml/v1/request.api"
 	}
@@ -42,5 +46,6 @@ func SendRequest(input []byte) []byte {
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 	body = bytes.TrimPrefix(body, []byte("\xef\xbb\xbf"))
+	if showLogs { fmt.Println(string(body)) }
 	return body
 }

@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -77,7 +76,6 @@ func SendGetUnsettled() (TransactionsList, interface{}) {
 	}
 	response := SendRequest(jsoned)
 	var dat TransactionsList
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)

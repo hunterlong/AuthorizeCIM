@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 func (tranx NewTransaction) Charge() TransactionResponse {
@@ -92,7 +91,6 @@ func GetHostedPaymentPage() {
 }
 
 func SendTransactionRequest(input TransactionRequest) (TransactionResponse, interface{}) {
-
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: GetAuthentication(),
@@ -105,7 +103,6 @@ func SendTransactionRequest(input TransactionRequest) (TransactionResponse, inte
 	}
 	response := SendRequest(jsoned)
 	var dat TransactionResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)

@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 func (response MessageResponse) Approved() bool {
@@ -61,11 +60,8 @@ func GetProfileIds() ([]string, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
-
 	response := SendRequest(jsoned)
 	var dat CustomerProfileIdsResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -84,11 +80,8 @@ func GetProfile(customer Customer) (GetCustomerProfileResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
-
 	response := SendRequest(jsoned)
 	var dat GetCustomerProfileResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -101,18 +94,15 @@ func CreateProfile(profile Profile) (CustomProfileResponse, interface{}) {
 		CreateCustomerProfile: CreateCustomerProfile{
 			MerchantAuthentication: GetAuthentication(),
 			Profile:                profile,
-			ValidationMode:         "testMode",
+			ValidationMode:         testMode,
 		},
 	}
 	jsoned, err := json.Marshal(action)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
-
 	response := SendRequest(jsoned)
 	var dat CustomProfileResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -131,11 +121,8 @@ func UpdateProfile(profile Profile) (MessageResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
-
 	response := SendRequest(jsoned)
 	var dat MessageResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -154,11 +141,8 @@ func DeleteProfile(customer Customer) (MessageResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
-
 	response := SendRequest(jsoned)
 	var dat MessageResponse
-	fmt.Println(string(response))
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)

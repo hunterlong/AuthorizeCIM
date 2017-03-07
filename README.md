@@ -29,7 +29,6 @@ AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
 * Creating Users Accounts based on user's unique ID and/or email address
 * Store Billing Profiles (credit card) on Authorize.net using Customer Information Manager (CIM)
 * Create Subscriptions (monthly, weekly, days) with Automated Recurring Billing (ARB)
-* Fetch customers billing profiles in a simple["array"]
 * Process transactions using customers stored credit card
 * Delete and Updating billing profiles
 * Add Shipping Profiles into user accounts
