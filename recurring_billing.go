@@ -128,7 +128,7 @@ func SendSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	action := CreateSubscriptionRequest{
 		ARBCreateSubscriptionRequest: ARBCreateSubscriptionRequest{
 			MerchantAuthentication: GetAuthentication(),
-			Subscription: sub,
+			Subscription:           sub,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -150,7 +150,7 @@ func UpdateSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	action := UpdateSubscriptionRequest{
 		ARBUpdateSubscriptionRequest: ARBUpdateSubscriptionRequest{
 			MerchantAuthentication: GetAuthentication(),
-			SubscriptionId: sub.SubscriptionId,
+			SubscriptionId:         sub.SubscriptionId,
 			Subscription: Subscription{
 				Payment: Payment{
 					CreditCard: sub.Payment.CreditCard,
@@ -183,7 +183,7 @@ func (sub SetSubscription) Info() GetSubscriptionResponse {
 	action := GetSubscriptionRequest{
 		ARBGetSubscriptionRequest: ARBGetSubscriptionRequest{
 			MerchantAuthentication: GetAuthentication(),
-			SubscriptionID: sub.Id,
+			SubscriptionID:         sub.Id,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -204,7 +204,7 @@ func (sub SetSubscription) Status() SubscriptionStatus {
 	action := GetSubscriptionStatusRequest{
 		ARBGetSubscriptionStatusRequest: ARBGetSubscriptionRequest{
 			MerchantAuthentication: GetAuthentication(),
-			SubscriptionID: sub.Id,
+			SubscriptionID:         sub.Id,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -225,7 +225,7 @@ func (sub SetSubscription) Cancel() SubscriptionCancel {
 	action := GetSubscriptionCancelRequest{
 		ARBCancelSubscriptionRequest: ARBGetSubscriptionRequest{
 			MerchantAuthentication: GetAuthentication(),
-			SubscriptionID: sub.Id,
+			SubscriptionID:         sub.Id,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -246,7 +246,7 @@ func SubscriptionList(search string) GetSubscriptionList {
 	action := GetSubscriptionListRequest{
 		ARBGetSubscriptionListRequest: ARBGetSubscriptionListRequest{
 			MerchantAuthentication: GetAuthentication(),
-			SearchType: search,
+			SearchType:             search,
 			Sorting: Sorting{
 				OrderBy:         "id",
 				OrderDescending: "false",

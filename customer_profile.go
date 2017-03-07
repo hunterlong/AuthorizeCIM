@@ -77,7 +77,7 @@ func GetProfile(customer Customer) (GetCustomerProfileResponse, interface{}) {
 	action := CustomerProfileRequest{
 		GetCustomerProfile: GetCustomerProfile{
 			MerchantAuthentication: GetAuthentication(),
-			CustomerProfileID: customer.ID,
+			CustomerProfileID:      customer.ID,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -100,8 +100,8 @@ func CreateProfile(profile Profile) (CustomProfileResponse, interface{}) {
 	action := CreateCustomerProfileRequest{
 		CreateCustomerProfile: CreateCustomerProfile{
 			MerchantAuthentication: GetAuthentication(),
-			Profile:        profile,
-			ValidationMode: "testMode",
+			Profile:                profile,
+			ValidationMode:         "testMode",
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -120,12 +120,11 @@ func CreateProfile(profile Profile) (CustomProfileResponse, interface{}) {
 	return dat, err
 }
 
-
 func UpdateProfile(profile Profile) (MessageResponse, interface{}) {
 	action := UpdateCustomerProfileRequest{
 		UpdateCustomerProfile: UpdateCustomerProfile{
 			MerchantAuthentication: GetAuthentication(),
-			Profile:        profile,
+			Profile:                profile,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -143,13 +142,12 @@ func UpdateProfile(profile Profile) (MessageResponse, interface{}) {
 	}
 	return dat, err
 }
-
 
 func DeleteProfile(customer Customer) (MessageResponse, interface{}) {
 	action := DeleteCustomerProfileRequest{
 		DeleteCustomerProfile: DeleteCustomerProfile{
 			MerchantAuthentication: GetAuthentication(),
-			CustomerProfileID: customer.ID,
+			CustomerProfileID:      customer.ID,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -167,7 +165,6 @@ func DeleteProfile(customer Customer) (MessageResponse, interface{}) {
 	}
 	return dat, err
 }
-
 
 type CreateCustomerProfileRequest struct {
 	CreateCustomerProfile CreateCustomerProfile `json:"createCustomerProfileRequest"`
@@ -180,10 +177,10 @@ type CreateCustomerProfile struct {
 }
 
 type Profile struct {
-	MerchantCustomerID string          `json:"merchantCustomerId,omitempty"`
-	Description        string          `json:"description,omitempty"`
-	Email              string          `json:"email,omitempty"`
-	CustomerProfileId  string          `json:"customerProfileId,omitempty"`
+	MerchantCustomerID string           `json:"merchantCustomerId,omitempty"`
+	Description        string           `json:"description,omitempty"`
+	Email              string           `json:"email,omitempty"`
+	CustomerProfileId  string           `json:"customerProfileId,omitempty"`
 	PaymentProfiles    *PaymentProfiles `json:"paymentProfiles,omitempty"`
 }
 
@@ -193,14 +190,14 @@ type PaymentProfiles struct {
 }
 
 type CustomProfileResponse struct {
-	CustomerProfileID             string        `json:"customerProfileId"`
-	CustomerPaymentProfileIDList  []string      `json:"customerPaymentProfileIdList"`
-	CustomerShippingAddressIDList []interface{} `json:"customerShippingAddressIdList"`
-	ValidationDirectResponseList  []string      `json:"validationDirectResponseList"`
+	CustomerProfileID             string          `json:"customerProfileId"`
+	CustomerPaymentProfileIDList  []string        `json:"customerPaymentProfileIdList"`
+	CustomerShippingAddressIDList []interface{}   `json:"customerShippingAddressIdList"`
+	ValidationDirectResponseList  []string        `json:"validationDirectResponseList"`
 	Messages                      ProfileMessages `json:"messages"`
 }
 
-type ProfileMessages  struct {
+type ProfileMessages struct {
 	ResultCode string `json:"resultCode"`
 	Message    []struct {
 		Code string `json:"code"`
@@ -269,14 +266,13 @@ type CustomerProfileIdsResponse struct {
 	} `json:"messages"`
 }
 
-
 type UpdateCustomerProfileRequest struct {
 	UpdateCustomerProfile UpdateCustomerProfile `json:"updateCustomerProfileRequest"`
 }
 
 type UpdateCustomerProfile struct {
-	MerchantAuthentication MerchantAuthentication`json:"merchantAuthentication"`
-	Profile Profile `json:"profile"`
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	Profile                Profile                `json:"profile"`
 }
 
 type DeleteCustomerProfileRequest struct {
@@ -285,15 +281,15 @@ type DeleteCustomerProfileRequest struct {
 
 type DeleteCustomerProfile struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileID string `json:"customerProfileId"`
+	CustomerProfileID      string                 `json:"customerProfileId"`
 }
 
 type MessageResponse struct {
 	Messages struct {
-			 ResultCode string `json:"resultCode"`
-			 Message []struct {
-				 Code string `json:"code"`
-				 Text string `json:"text"`
-			 } `json:"message"`
-		 } `json:"messages"`
+		ResultCode string `json:"resultCode"`
+		Message    []struct {
+			Code string `json:"code"`
+			Text string `json:"text"`
+		} `json:"message"`
+	} `json:"messages"`
 }

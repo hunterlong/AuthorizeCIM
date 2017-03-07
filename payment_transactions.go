@@ -96,7 +96,7 @@ func SendTransactionRequest(input TransactionRequest) (TransactionResponse, inte
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: GetAuthentication(),
-			TransactionRequest: input,
+			TransactionRequest:     input,
 		},
 	}
 	jsoned, err := json.Marshal(action)

@@ -1,8 +1,8 @@
 package AuthorizeCIM
 
 import (
-	"testing"
 	"os"
+	"testing"
 )
 
 var newCustomerProfileId string
@@ -11,7 +11,7 @@ func TestSetAPIInfo(t *testing.T) {
 	apiName := os.Getenv("apiName")
 	apiKey := os.Getenv("apiKey")
 	apiMode := os.Getenv("mode")
-	SetAPIInfo(apiName,apiKey,apiMode)
+	SetAPIInfo(apiName, apiKey, apiMode)
 	t.Log("API Info Set")
 }
 
@@ -63,14 +63,13 @@ func TestGetProfileIds(t *testing.T) {
 	t.Log(profiles)
 }
 
-
 func TestUpdateCustomerProfile(t *testing.T) {
 
 	customer := Profile{
 		MerchantCustomerID: newCustomerProfileId,
-		CustomerProfileId: newCustomerProfileId,
-		Description: "Updated Account",
-		Email:       "info@updatedemail.com",
+		CustomerProfileId:  newCustomerProfileId,
+		Description:        "Updated Account",
+		Email:              "info@updatedemail.com",
 	}
 
 	response := customer.Update()

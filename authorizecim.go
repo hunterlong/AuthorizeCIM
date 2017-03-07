@@ -23,15 +23,13 @@ func SetAPIInfo(name string, key string, mode string) {
 	}
 }
 
-
-func GetAuthentication() (MerchantAuthentication) {
+func GetAuthentication() MerchantAuthentication {
 	auth := MerchantAuthentication{
 		Name:           apiName,
 		TransactionKey: apiKey,
 	}
 	return auth
 }
-
 
 func SendRequest(input []byte) []byte {
 	req, err := http.NewRequest("POST", api_endpoint, bytes.NewBuffer(input))
@@ -46,6 +44,3 @@ func SendRequest(input []byte) []byte {
 	body = bytes.TrimPrefix(body, []byte("\xef\xbb\xbf"))
 	return body
 }
-
-
-

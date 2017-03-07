@@ -68,7 +68,7 @@ func SendGetUnsettled() (TransactionsList, interface{}) {
 	action := UnsettledTransactionsRequest{
 		GetUnsettledTransactionListRequest: GetUnsettledTransactionListRequest{
 			MerchantAuthentication: GetAuthentication(),
-			Status: "pendingApproval",
+			Status:                 "pendingApproval",
 		},
 	}
 	jsoned, err := json.Marshal(action)

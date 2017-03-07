@@ -78,10 +78,10 @@ newTransaction := AuthorizeCIM.NewTransaction{
 			ExpirationDate: "10/23",
 		},
 	}
-	response := newTransaction.Charge()
-	if response.Approved() {
+response := newTransaction.Charge()
+if response.Approved() {
 
-	}
+}
 ```
 
 :white_check_mark: authorizeCard
@@ -93,10 +93,10 @@ newTransaction := AuthorizeCIM.NewTransaction{
 			ExpirationDate: "10/27",
 		},
 	}
-	response := newTransaction.AuthOnly()
-	if response.Approved() {
+response := newTransaction.AuthOnly()
+if response.Approved() {
 
-	}
+}
 ```
 
 :white_check_mark: capturePreviousCard
@@ -105,10 +105,10 @@ oldTransaction := AuthorizeCIM.PreviousTransaction{
 		Amount: "49.99",
 		RefId:  "AUTHCODEHERE001",
 	}
-	response := oldTransaction.Capture()
-	if response.Approved() {
+response := oldTransaction.Capture()
+if response.Approved() {
 
-	}
+}
 ```
 
 :white_check_mark: captureAuthorizedCardChannel
@@ -121,10 +121,10 @@ newTransaction := AuthorizeCIM.NewTransaction{
 		},
 		AuthCode: "YOURAUTHCODE",
 	}
-	response := newTransaction.Charge()
-	if response.Approved() {
+response := newTransaction.Charge()
+if response.Approved() {
 
-	}
+}
 ```
 
 :white_check_mark: refundTransaction
@@ -137,10 +137,10 @@ newTransaction := AuthorizeCIM.NewTransaction{
 		},
 		RefTransId: "0392482938402",
 	}
-	response := newTransaction.Refund()
-	if response.Approved() {
+response := newTransaction.Refund()
+if response.Approved() {
 
-	}
+}
 ```
 
 :white_check_mark: voidTransaction
@@ -148,10 +148,10 @@ newTransaction := AuthorizeCIM.NewTransaction{
 oldTransaction := AuthorizeCIM.PreviousTransaction{
 		RefId: "3987324293834",
 	}
-	response := oldTransaction.Void()
-	if response.Approved() {
+response := oldTransaction.Void()
+if response.Approved() {
 
-	}
+}
 ```
 
 :white_medium_square: updateSplitTenderGround
@@ -209,11 +209,11 @@ subscription := AuthorizeCIM.Subscription{
 		},
 	}
 
-	response := subscription.Charge()
+response := subscription.Charge()
 
-	if response.Approved() {
-        fmt.Println("New Subscription ID: ",response.SubscriptionID)
-	}
+if response.Approved() {
+    fmt.Println("New Subscription ID: ",response.SubscriptionID)
+}
 ```
 
 :white_check_mark: ARBGetSubscriptionRequest
@@ -222,7 +222,7 @@ sub := AuthorizeCIM.SetSubscription{
 		Id: "2973984693",
 	}
 
-	subscriptionInfo := sub.Info()
+subscriptionInfo := sub.Info()
 ```
 
 :white_check_mark: ARBGetSubscriptionStatusRequest
@@ -248,11 +248,11 @@ subscription := AuthorizeCIM.Subscription{
 		SubscriptionId: newSubscriptionId,
 	}
 
-	response := subscription.Update()
+response := subscription.Update()
 
-	if response.Approved() {
+if response.Approved() {
 
-	}
+}
 ```
 
 :white_check_mark: ARBCancelSubscriptionRequest
@@ -261,9 +261,9 @@ sub := AuthorizeCIM.SetSubscription{
 		Id: "2973984693",
 	}
 
-	subscriptionInfo := sub.Cancel()
+subscriptionInfo := sub.Cancel()
 
-	fmt.Println("Subscription ID has been canceled: ", sub.Id, "\n")
+fmt.Println("Subscription ID has been canceled: ", sub.Id, "\n")
 ```
 
 :white_check_mark: ARBGetSubscriptionListRequest
@@ -278,14 +278,73 @@ fmt.Println("Amount of Active Subscriptions: ", active.Count())
 Customer Profile
 
 :white_check_mark: createCustomerProfileRequest
+```go
+customer := AuthorizeCIM.Profile{
+		MerchantCustomerID: "86437",
+		Email:              "info@emailhereooooo.com",
+		PaymentProfiles: &PaymentProfiles{
+			CustomerType: "individual",
+			Payment: Payment{
+				CreditCard: CreditCard{
+					CardNumber:     "4007000000027",
+					ExpirationDate: "10/23",
+				},
+			},
+		},
+	}
+
+	response := customer.Create()
+
+if response.Approved() {
+    newCustomerProfileId = response.CustomerProfileID
+    fmt.Println("New Customer Profile Created #", response.CustomerProfileID)
+
+}
+```
 
 :white_check_mark: getCustomerProfileRequest
+```go
+customer := AuthorizeCIM.Customer{
+		ID: "13838",
+	}
+
+response := customer.Info()
+```
 
 :white_check_mark: getCustomerProfileIdsRequest
+```go
+profiles, _ := AuthorizeCIM.GetProfileIds()
+fmt.Println(profiles)
+```
 
 :white_check_mark: updateCustomerProfileRequest
+```go
+customer := AuthorizeCIM.Profile{
+		MerchantCustomerID: "13838",
+		CustomerProfileId: "13838",
+		Description: "Updated Account",
+		Email:       "info@updatedemail.com",
+	}
+
+	response := customer.Update()
+
+if response.Approved() {
+
+}
+```
 
 :white_check_mark: deleteCustomerProfileRequest
+```go
+customer := Customer{
+		ID: "13838",
+	}
+
+	response := customer.Delete()
+
+if response.Approved() {
+
+}
+```
 
 Customer Payment Profile
 
