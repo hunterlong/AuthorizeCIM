@@ -44,22 +44,6 @@ func TestCreateCustomerProfile(t *testing.T) {
 
 }
 
-func TestGetCustomerProfile(t *testing.T) {
-
-	customer := Customer{
-		ID: newCustomerProfileId,
-	}
-
-	response := customer.Info()
-
-	paymentProfiles := response.PaymentProfiles()
-
-	t.Log("Customer Profile", response)
-
-	t.Log("Customer Payment Profiles", paymentProfiles)
-
-}
-
 func TestGetProfileIds(t *testing.T) {
 	profiles, _ := GetProfileIds()
 
@@ -244,6 +228,26 @@ func TestCreateSubscriptionCustomerProfile(t *testing.T) {
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
 	}
+
+}
+
+func TestGetCustomerProfile(t *testing.T) {
+
+	customer := Customer{
+		ID: newCustomerProfileId,
+	}
+
+	response := customer.Info()
+
+	paymentProfiles := response.PaymentProfiles()
+	shippingProfiles := response.ShippingProfiles()
+	subscriptions := response.Subscriptions()
+
+	t.Log("Customer Profile", response)
+
+	t.Log("Customer Payment Profiles", paymentProfiles)
+	t.Log("Customer Shipping Profiles", shippingProfiles)
+	t.Log("Customer Subscription IDs", subscriptions)
 
 }
 

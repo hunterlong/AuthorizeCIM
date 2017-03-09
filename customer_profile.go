@@ -2,6 +2,7 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 func GetPaymentProfileIds(month string, method string) GetCustomerPaymentProfileListResponse {
@@ -118,6 +119,14 @@ func (response GetCustomerProfileResponse) PaymentProfiles() []GetPaymentProfile
 	return response.Profile.PaymentProfiles
 }
 
+func (response GetCustomerProfileResponse) ShippingProfiles() []GetShippingProfiles {
+	return response.Profile.ShippingProfiles
+}
+
+func (response GetCustomerProfileResponse) Subscriptions() []string {
+	return response.SubscriptionIds
+}
+
 func (profile Profile) UpdateProfile() MessageResponse {
 	response, _ := UpdateProfile(profile)
 	return response
@@ -176,6 +185,7 @@ func GetProfile(customer Customer) (GetCustomerProfileResponse, interface{}) {
 		panic(err)
 	}
 	response := SendRequest(jsoned)
+	fmt.Println(string(response))
 	var dat GetCustomerProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -349,11 +359,12 @@ type GetCustomerProfile struct {
 
 type GetCustomerProfileResponse struct {
 	Profile struct {
-		PaymentProfiles    []GetPaymentProfiles `json:"paymentProfiles"`
-		CustomerProfileID  string               `json:"customerProfileId"`
-		MerchantCustomerID string               `json:"merchantCustomerId"`
-		Description        string               `json:"description"`
-		Email              string               `json:"email"`
+		PaymentProfiles    []GetPaymentProfiles  `json:"paymentProfiles,omitempty"`
+		ShippingProfiles   []GetShippingProfiles `json:"shipToList,omitempty"`
+		CustomerProfileID  string                `json:"customerProfileId"`
+		MerchantCustomerID string                `json:"merchantCustomerId,omitempty"`
+		Description        string                `json:"description,omitempty"`
+		Email              string                `json:"email,omitempty"`
 	} `json:"profile"`
 	SubscriptionIds []string `json:"subscriptionIds"`
 	Messages        struct {
@@ -363,6 +374,19 @@ type GetCustomerProfileResponse struct {
 			Text string `json:"text"`
 		} `json:"message"`
 	} `json:"messages"`
+}
+
+type GetShippingProfiles struct {
+	CustomerAddressID string `json:"customerAddressId"`
+	FirstName         string `json:"firstName,omitempty"`
+	LastName          string `json:"lastName,omitempty"`
+	Company           string `json:"company,omitempty"`
+	Address           string `json:"address,omitempty"`
+	City              string `json:"city,omitempty"`
+	State             string `json:"state,omitempty"`
+	Zip               string `json:"zip,omitempty"`
+	Country           string `json:"country,omitempty"`
+	PhoneNumber       string `json:"phoneNumber,omitempty"`
 }
 
 type GetPaymentProfiles struct {
