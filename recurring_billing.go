@@ -2,6 +2,7 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -82,13 +83,14 @@ type SetSubscription struct {
 }
 
 type Subscription struct {
-	Name            string           `json:"name,omitempty"`
-	PaymentSchedule *PaymentSchedule `json:"paymentSchedule,omitempty"`
-	Amount          string           `json:"amount,omitempty"`
-	TrialAmount     string           `json:"trialAmount,omitempty"`
-	Payment         Payment          `json:"payment,omitempty"`
-	BillTo          *BillTo          `json:"billTo,omitempty"`
-	SubscriptionId  string           `json:"subscriptionId,omitempty"`
+	Name            string            `json:"name,omitempty"`
+	PaymentSchedule *PaymentSchedule  `json:"paymentSchedule,omitempty"`
+	Amount          string            `json:"amount,omitempty"`
+	TrialAmount     string            `json:"trialAmount,omitempty"`
+	Payment         *Payment          `json:"payment,omitempty"`
+	BillTo          *BillTo           `json:"billTo,omitempty"`
+	SubscriptionId  string            `json:"subscriptionId,omitempty"`
+	Profile         *CustomerProfiler `json:"profile,omitempty"`
 }
 
 type BillTo struct {
@@ -140,6 +142,7 @@ func SendSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(string(jsoned))
 	response := SendRequest(jsoned)
 	var dat SubscriptionResponse
 	err = json.Unmarshal(response, &dat)
@@ -155,7 +158,7 @@ func UpdateSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 			MerchantAuthentication: GetAuthentication(),
 			SubscriptionId:         sub.SubscriptionId,
 			Subscription: Subscription{
-				Payment: Payment{
+				Payment: &Payment{
 					CreditCard: sub.Payment.CreditCard,
 				},
 			},

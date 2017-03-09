@@ -20,7 +20,7 @@ func TestCreateSubscription(t *testing.T) {
 				Unit:   "months",
 			},
 		},
-		Payment: Payment{
+		Payment: &Payment{
 			CreditCard: CreditCard{
 				CardNumber:     "4007000000027",
 				ExpirationDate: "10/23",
@@ -70,7 +70,7 @@ func TestGetSubscriptionStatus(t *testing.T) {
 func TestUpdateSubscription(t *testing.T) {
 
 	subscription := Subscription{
-		Payment: Payment{
+		Payment: &Payment{
 			CreditCard: CreditCard{
 				CardNumber:     "5424000000000015",
 				ExpirationDate: "06/25",

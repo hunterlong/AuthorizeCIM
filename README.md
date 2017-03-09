@@ -199,6 +199,36 @@ if response.Approved() {
 }
 ```
 
+:white_check_mark: ARBCreateSubscriptionRequest from Customer Profile
+```go
+subscription := AuthorizeCIM.Subscription{
+		Name:        "New Customer Subscription",
+		Amount:      "12.00",
+		TrialAmount: "0.00",
+		PaymentSchedule: &PaymentSchedule{
+			StartDate:        CurrentTime(),
+			TotalOccurrences: "9999",
+			TrialOccurrences: "0",
+			Interval: Interval{
+				Length: "1",
+				Unit:   "months",
+			},
+		},
+		Profile: &CustomerProfiler{
+			CustomerProfileID: "823928379",
+			CustomerPaymentProfileID: "183949200",
+			//CustomerShippingProfileID: "310282443",
+		},
+	}
+
+	response := subscription.Charge()
+
+	if response.Approved() {
+		newSubscriptionId = response.SubscriptionID
+		fmt.Println("Customer #",response.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
+	}
+```
+
 :white_check_mark: ARBGetSubscriptionRequest
 ```go
 sub := AuthorizeCIM.SetSubscription{
@@ -398,6 +428,9 @@ customerProfile := AuthorizeCIM.Customer{
 Customer Shipping Profile
 
 :white_medium_square: createCustomerShippingAddressRequest
+```go
+
+```
 
 :white_medium_square: getCustomerShippingAddressRequest
 

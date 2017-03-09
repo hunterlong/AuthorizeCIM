@@ -7,6 +7,7 @@ import (
 
 var newCustomerProfileId string
 var newCustomerPaymentId string
+var newCustomerShippingId string
 
 func TestSetAPIInfo(t *testing.T) {
 	apiName := os.Getenv("apiName")
@@ -32,7 +33,7 @@ func TestCreateCustomerProfile(t *testing.T) {
 		},
 	}
 
-	response := customer.Create()
+	response := customer.CreateProfile()
 
 	if response.Approved() {
 		newCustomerProfileId = response.CustomerProfileID
@@ -77,7 +78,7 @@ func TestUpdateCustomerProfile(t *testing.T) {
 		Email:              "info@updatedemail.com",
 	}
 
-	response := customer.Update()
+	response := customer.UpdateProfile()
 
 	if response.Approved() {
 		t.Log("Customer Profile was Updated")
@@ -169,6 +170,29 @@ func TestDeleteCustomerPaymentProfile(t *testing.T) {
 
 func TestCreateCustomerShippingProfile(t *testing.T) {
 
+	customer := Profile{
+		MerchantCustomerID: "86437",
+		CustomerProfileId:  newCustomerProfileId,
+		Email:              "info@emailhereooooo.com",
+		Shipping: &Address{
+			FirstName:   "My",
+			LastName:    "Name",
+			Company:     "none",
+			Address:     "1111 yellow ave.",
+			City:        "Los Angeles",
+			State:       "CA",
+			Zip:         "92039",
+			Country:     "USA",
+			PhoneNumber: "8885555555",
+		},
+	}
+
+	response := customer.CreateShipping()
+
+	if response.Approved() {
+		newCustomerShippingId = response.CustomerAddressID
+		t.Log("New Shipping Added: #", response.CustomerAddressID)
+	}
 }
 
 func TestGetCustomerShippingProfile(t *testing.T) {
@@ -188,6 +212,38 @@ func TestAcceptProfilePage(t *testing.T) {
 }
 
 func TestCreateCustomerProfileFromTransaction(t *testing.T) {
+
+}
+
+func TestCreateSubscriptionCustomerProfile(t *testing.T) {
+	subscription := Subscription{
+		Name:        "New Customer Subscription",
+		Amount:      "12.00",
+		TrialAmount: "0.00",
+		PaymentSchedule: &PaymentSchedule{
+			StartDate:        CurrentTime(),
+			TotalOccurrences: "9999",
+			TrialOccurrences: "0",
+			Interval: Interval{
+				Length: "1",
+				Unit:   "months",
+			},
+		},
+		Profile: &CustomerProfiler{
+			CustomerProfileID:         newCustomerProfileId,
+			CustomerPaymentProfileID:  newCustomerPaymentId,
+			CustomerShippingProfileID: newCustomerShippingId,
+		},
+	}
+
+	response := subscription.Charge()
+
+	if response.Approved() {
+		newSubscriptionId = response.SubscriptionID
+		t.Log("Customer #", response.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
+	} else {
+		t.Log(response.ErrorMessage(), "\n")
+	}
 
 }
 
