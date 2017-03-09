@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -142,7 +141,6 @@ func SendSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
 	response := SendRequest(jsoned)
 	var dat SubscriptionResponse
 	err = json.Unmarshal(response, &dat)

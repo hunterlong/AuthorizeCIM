@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 func GetPaymentProfileIds(month string, method string) GetCustomerPaymentProfileListResponse {
@@ -197,7 +196,6 @@ func CreateProfile(profile Profile) (CustomProfileResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
 
 	response := SendRequest(jsoned)
 	var dat CustomProfileResponse
@@ -240,7 +238,6 @@ func UpdateProfile(profile Profile) (MessageResponse, interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
 	response := SendRequest(jsoned)
 	var dat MessageResponse
 	err = json.Unmarshal(response, &dat)
@@ -286,7 +283,6 @@ func CreatePaymentProfile(profile CustomerPaymentProfile) (CustomerPaymentProfil
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsoned))
 	response := SendRequest(jsoned)
 	var dat CustomerPaymentProfileResponse
 	err = json.Unmarshal(response, &dat)
