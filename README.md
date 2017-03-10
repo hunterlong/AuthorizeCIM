@@ -603,7 +603,9 @@ Transaction Reporting
 ![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
 # ToDo
+* Organize and refactor some areas
 * Add Bank Account Support
+* Make tests fail if transactions fail (skipping 'duplicate transaction')
 
 ### Authorize.net CIM Documentation
 http://developer.authorize.net/api/reference/#customer-profiles
@@ -612,6 +614,9 @@ http://developer.authorize.net/api/reference/#customer-profiles
 https://developer.authorize.net/hello_world/sandbox/
 
 # License
-This golang package is release under MIT license. This software gets reponses in JSON, but Authorize.net currently says "JSON Support is in BETA, please contact us if you intend to use it in production." Make sure you test in sandbox mode!
+This golang package is release under MIT license.
+Feel free to submit a Pull Request if you have updates!
+
+*This software gets reponses in JSON, but Authorize.net currently says "JSON Support is in BETA, please contact us if you intend to use it in production."* Make sure you test in sandbox mode!
 
 
