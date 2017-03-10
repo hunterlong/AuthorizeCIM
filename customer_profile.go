@@ -90,6 +90,11 @@ func (profile Profile) UpdateProfile() MessagesResponse {
 	return response
 }
 
+func (profile Profile) UpdatePaymentProfile() MessagesResponse {
+	response, _ := UpdatePaymentProfile(profile)
+	return response
+}
+
 func GetProfileIds() ([]string, interface{}) {
 	action := GetCustomerProfileIdsRequest{
 		CustomerProfileIdsRequest: CustomerProfileIdsRequest{
@@ -205,6 +210,23 @@ func UpdateProfile(profile Profile) (MessagesResponse, interface{}) {
 	return dat, err
 }
 
+func UpdatePaymentProfile(profile Profile) (MessagesResponse, interface{}) {
+	action := UpdateCustomerPaymentProfileRequest{
+		UpdateCustomerPaymentProfile: UpdateCustomerPaymentProfile{
+			CustomerProfileID:      profile.CustomerProfileId,
+			MerchantAuthentication: GetAuthentication(),
+			UpPaymentProfile: UpPaymentProfile{
+				BillTo:                   profile.PaymentProfiles.BillTo,
+				Payment:                  profile.PaymentProfiles.Payment,
+				CustomerPaymentProfileID: profile.PaymentProfileId,
+			},
+			ValidationMode: testMode,
+		},
+	}
+	dat, err := MessageResponder(action)
+	return dat, err
+}
+
 func DeleteProfile(customer Customer) (MessagesResponse, interface{}) {
 	action := DeleteCustomerProfileRequest{
 		DeleteCustomerProfile: DeleteCustomerProfile{
@@ -301,12 +323,14 @@ type Profile struct {
 	Email              string           `json:"email,omitempty"`
 	CustomerProfileId  string           `json:"customerProfileId,omitempty"`
 	PaymentProfiles    *PaymentProfiles `json:"paymentProfiles,omitempty"`
+	PaymentProfileId   string           `json:"customerPaymentProfileId,omitempty"`
 	Shipping           *Address         `json:"address,omitempty"`
 }
 
 type PaymentProfiles struct {
 	CustomerType string  `json:"customerType,omitempty"`
 	Payment      Payment `json:"payment,omitempty"`
+	BillTo       *BillTo `json:"billTo,omitempty"`
 }
 
 type CustomProfileResponse struct {
@@ -521,4 +545,21 @@ type CreateCustomerShippingAddress struct {
 type CreateCustomerShippingAddressResponse struct {
 	CustomerAddressID string `json:"customerAddressId,omitempty"`
 	MessagesResponse
+}
+
+type UpdateCustomerPaymentProfileRequest struct {
+	UpdateCustomerPaymentProfile UpdateCustomerPaymentProfile `json:"updateCustomerPaymentProfileRequest"`
+}
+
+type UpdateCustomerPaymentProfile struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileID      string                 `json:"customerProfileId"`
+	UpPaymentProfile       UpPaymentProfile       `json:"paymentProfile"`
+	ValidationMode         string                 `json:"validationMode"`
+}
+
+type UpPaymentProfile struct {
+	BillTo                   *BillTo `json:"billTo"`
+	Payment                  Payment `json:"payment"`
+	CustomerPaymentProfileID string  `json:"customerPaymentProfileId"`
 }

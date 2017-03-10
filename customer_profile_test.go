@@ -146,6 +146,38 @@ func TestValidateCustomerPaymentProfile(t *testing.T) {
 
 func TestUpdateCustomerPaymentProfile(t *testing.T) {
 
+	customer := Profile{
+		CustomerProfileId: newCustomerProfileId,
+		PaymentProfileId:  newCustomerPaymentId,
+		Description:       "Updated Account",
+		Email:             "info@updatedemail.com",
+		PaymentProfiles: &PaymentProfiles{
+			Payment: Payment{
+				CreditCard: CreditCard{
+					CardNumber:     "4007000000027",
+					ExpirationDate: "01/26",
+				},
+			},
+			BillTo: &BillTo{
+				FirstName:   "newname",
+				LastName:    "golang",
+				Address:     "2841 purple ct",
+				City:        "los angeles",
+				State:       "CA",
+				Country:     "USA",
+				PhoneNumber: "8885555555",
+			},
+		},
+	}
+
+	response := customer.UpdatePaymentProfile()
+
+	if response.Approved() {
+		t.Log("Customer Payment Profile was Updated")
+	} else {
+		t.Log(response.ErrorMessage())
+	}
+
 }
 
 func TestDeleteCustomerPaymentProfile(t *testing.T) {
