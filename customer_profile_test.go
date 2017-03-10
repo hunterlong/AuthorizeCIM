@@ -238,6 +238,28 @@ func TestGetCustomerShippingProfile(t *testing.T) {
 
 func TestUpdateCustomerShippingProfile(t *testing.T) {
 
+	customer := Profile{
+		CustomerProfileId: newCustomerProfileId,
+		CustomerAddressId: newCustomerShippingId,
+		Shipping: &Address{
+			FirstName:   "My",
+			LastName:    "Name",
+			Company:     "none",
+			Address:     "1111 yellow ave.",
+			City:        "Los Angeles",
+			State:       "CA",
+			Zip:         "92039",
+			Country:     "USA",
+			PhoneNumber: "8885555555",
+		},
+	}
+
+	response := customer.UpdateShippingProfile()
+
+	if response.Approved() {
+		t.Log("Shipping Address Profile was updated")
+	}
+
 }
 
 func TestDeleteCustomerShippingProfile(t *testing.T) {

@@ -421,13 +421,13 @@ paymentProfile := AuthorizeCIM.CustomerPaymentProfile{
 		},
 	}
 
-	response := paymentProfile.Add()
+response := paymentProfile.Add()
 
-	if response.Approved() {
+if response.Approved() {
 
-	} else {
-        fmt.Println(response.ErrorMessage())
-    }
+} else {
+    fmt.Println(response.ErrorMessage())
+}
 ```
 
 :white_check_mark: getCustomerPaymentProfileRequest
@@ -436,9 +436,9 @@ customer := AuthorizeCIM.Customer{
 		ID: "3923482487",
 	}
 
-	response := customer.Info()
+response := customer.Info()
 
-	paymentProfiles := response.PaymentProfiles()
+paymentProfiles := response.PaymentProfiles()
 ```
 
 :white_check_mark: getCustomerPaymentProfileListRequest
@@ -453,11 +453,11 @@ customerProfile := AuthorizeCIM.Customer{
 		PaymentID: "984583934",
 	}
 
-	response := customerProfile.Validate()
+response := customerProfile.Validate()
 
-	if response.Approved() {
+if response.Approved() {
 
-	}
+}
 ```
 
 :white_check_mark: updateCustomerPaymentProfileRequest
@@ -485,13 +485,13 @@ customer := AuthorizeCIM.Profile{
 		},
 	}
 
-	response := customer.UpdatePaymentProfile()
+response := customer.UpdatePaymentProfile()
 
-	if response.Approved() {
-		fmt.Println("Customer Payment Profile was Updated")
-	} else {
-		fmt.Println(response.ErrorMessage())
-	}
+if response.Approved() {
+    fmt.Println("Customer Payment Profile was Updated")
+} else {
+    fmt.Println(response.ErrorMessage())
+}
 ```
 :white_check_mark: deleteCustomerPaymentProfileRequest
 ```go
@@ -500,13 +500,13 @@ customer := AuthorizeCIM.Customer{
 		PaymentID: "98238472349",
 	}
 
-	response := customer.DeletePaymentProfile()
+response := customer.DeletePaymentProfile()
 
-	if response.Approved() {
-		fmt.Println("Payment Profile was Deleted")
-	} else {
-		fmt.Println(response.ErrorMessage())
-	}
+if response.Approved() {
+    fmt.Println("Payment Profile was Deleted")
+} else {
+    fmt.Println(response.ErrorMessage())
+}
 ```
 Customer Shipping Profile
 
@@ -529,13 +529,13 @@ customer := AuthorizeCIM.Profile{
 		},
 	}
 
-	response := customer.CreateShipping()
+response := customer.CreateShipping()
 
-	if response.Approved() {
-		fmt.Println("New Shipping Added: #",response.CustomerAddressID)
-	} else {
-      	fmt.Println(response.ErrorMessage())
-    }
+if response.Approved() {
+    fmt.Println("New Shipping Added: #",response.CustomerAddressID)
+} else {
+    fmt.Println(response.ErrorMessage())
+}
 ```
 
 :white_check_mark: getCustomerShippingAddressRequest
@@ -544,14 +544,36 @@ customer := AuthorizeCIM.Customer{
 		ID: "3842934233",
 	}
 
-	response := customer.Info()
+response := customer.Info()
 
-	shippingProfiles := response.ShippingProfiles()
+shippingProfiles := response.ShippingProfiles()
 
-	fmt.Println("Customer Shipping Profiles", shippingProfiles)
+fmt.Println("Customer Shipping Profiles", shippingProfiles)
 ```
-:white_medium_square: updateCustomerShippingAddressRequest
+:white_check_mark: updateCustomerShippingAddressRequest
+```go
+customer := AuthorizeCIM.Profile{
+		CustomerProfileId:  "398432389",
+		CustomerAddressId: "848388438",
+		Shipping: &Address{
+			FirstName:   "My",
+			LastName:    "Name",
+			Company:     "none",
+			Address:     "1111 yellow ave.",
+			City:        "Los Angeles",
+			State:       "CA",
+			Zip:         "92039",
+			Country:     "USA",
+			PhoneNumber: "8885555555",
+		},
+	}
 
+response := customer.UpdateShippingProfile()
+
+if response.Approved() {
+    fmt.Println("Shipping Profile was updated")
+}
+```
 :white_check_mark: deleteCustomerShippingAddressRequest
 ```go
 customer := AuthorizeCIM.Customer{

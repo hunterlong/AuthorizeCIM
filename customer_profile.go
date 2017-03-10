@@ -95,6 +95,11 @@ func (profile Profile) UpdatePaymentProfile() MessagesResponse {
 	return response
 }
 
+func (profile Profile) UpdateShippingProfile() MessagesResponse {
+	response, _ := UpdateShippingProfile(profile)
+	return response
+}
+
 func GetProfileIds() ([]string, interface{}) {
 	action := GetCustomerProfileIdsRequest{
 		CustomerProfileIdsRequest: CustomerProfileIdsRequest{
@@ -227,6 +232,28 @@ func UpdatePaymentProfile(profile Profile) (MessagesResponse, interface{}) {
 	return dat, err
 }
 
+func UpdateShippingProfile(profile Profile) (MessagesResponse, interface{}) {
+	action := UpdateCustomerShippingAddressRequest{
+		UpdateCustomerShippingAddress: UpdateCustomerShippingAddress{
+			CustomerProfileID:      profile.CustomerProfileId,
+			MerchantAuthentication: GetAuthentication(),
+			Address: Address{
+				FirstName:         "My",
+				LastName:          "Name",
+				Address:           "38485 New Road ave.",
+				City:              "Los Angeles",
+				State:             "CA",
+				Zip:               "283848",
+				Country:           "USA",
+				PhoneNumber:       "8885555555",
+				CustomerAddressID: profile.CustomerAddressId,
+			},
+		},
+	}
+	dat, err := MessageResponder(action)
+	return dat, err
+}
+
 func DeleteProfile(customer Customer) (MessagesResponse, interface{}) {
 	action := DeleteCustomerProfileRequest{
 		DeleteCustomerProfile: DeleteCustomerProfile{
@@ -325,6 +352,7 @@ type Profile struct {
 	PaymentProfiles    *PaymentProfiles `json:"paymentProfiles,omitempty"`
 	PaymentProfileId   string           `json:"customerPaymentProfileId,omitempty"`
 	Shipping           *Address         `json:"address,omitempty"`
+	CustomerAddressId  string           `json:"customerAddressId,omitempty"`
 }
 
 type PaymentProfiles struct {
@@ -562,4 +590,14 @@ type UpPaymentProfile struct {
 	BillTo                   *BillTo `json:"billTo"`
 	Payment                  Payment `json:"payment"`
 	CustomerPaymentProfileID string  `json:"customerPaymentProfileId"`
+}
+
+type UpdateCustomerShippingAddressRequest struct {
+	UpdateCustomerShippingAddress UpdateCustomerShippingAddress `json:"updateCustomerShippingAddressRequest"`
+}
+
+type UpdateCustomerShippingAddress struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileID      string                 `json:"customerProfileId"`
+	Address                Address                `json:"address"`
 }
