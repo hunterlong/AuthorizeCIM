@@ -311,13 +311,7 @@ type GetSubscriptionResponse struct {
 		} `json:"profile"`
 	} `json:"subscription"`
 	RefID    string `json:"refId"`
-	Messages struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
 
 type SubscriptionStatus struct {
@@ -325,24 +319,12 @@ type SubscriptionStatus struct {
 	Status          string `json:"status"`
 	StatusSpecified bool   `json:"statusSpecified"`
 	RefID           string `json:"refId"`
-	Messages        struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
 
 type SubscriptionCancel struct {
 	RefID    string `json:"refId"`
-	Messages struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
 
 type GetSubscriptionListRequest struct {
@@ -386,11 +368,5 @@ type GetSubscriptionList struct {
 		CustomerPaymentProfileID  int     `json:"customerPaymentProfileId,omitempty"`
 		CustomerShippingProfileID int     `json:"customerShippingProfileId,omitempty"`
 	} `json:"subscriptionDetails"`
-	Messages struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }

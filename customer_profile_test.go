@@ -181,6 +181,16 @@ func TestCreateCustomerShippingProfile(t *testing.T) {
 
 func TestGetCustomerShippingProfile(t *testing.T) {
 
+	customer := Customer{
+		ID: newCustomerProfileId,
+	}
+
+	response := customer.Info()
+
+	shippingProfiles := response.ShippingProfiles()
+
+	t.Log("Customer Shipping Profiles", shippingProfiles)
+
 }
 
 func TestUpdateCustomerShippingProfile(t *testing.T) {

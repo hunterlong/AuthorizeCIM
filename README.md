@@ -432,11 +432,42 @@ Customer Shipping Profile
 
 :white_medium_square: createCustomerShippingAddressRequest
 ```go
+customer := AuthorizeCIM.Profile{
+		MerchantCustomerID: "86437",
+		CustomerProfileId:  newCustomerProfileId,
+		Email:              "info@emailhereooooo.com",
+		Shipping: &Address{
+			FirstName:   "My",
+			LastName:    "Name",
+			Company:     "none",
+			Address:     "1111 yellow ave.",
+			City:        "Los Angeles",
+			State:       "CA",
+			Zip:         "92039",
+			Country:     "USA",
+			PhoneNumber: "8885555555",
+		},
+	}
 
+	response := customer.CreateShipping()
+
+	if response.Approved() {
+		fmt.Println("New Shipping Added: #",response.CustomerAddressID)
+	}
 ```
 
 :white_medium_square: getCustomerShippingAddressRequest
+```go
+customer := Customer{
+		ID: "3842934233",
+	}
 
+	response := customer.Info()
+
+	shippingProfiles := response.ShippingProfiles()
+
+	fmt.Println("Customer Shipping Profiles", shippingProfiles)
+```
 :white_medium_square: updateCustomerShippingAddressRequest
 
 :white_medium_square: deleteCustomerShippingAddressRequest
@@ -455,11 +486,7 @@ Transaction Reporting
 ![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
 # ToDo
-* Make cleaner maps for outputs
-* Functions to search Subscriptions (active, expired, etc)
-* Void and Refund Transactions
 * Add Bank Account Support
-* Authorize Only methods
 
 ### Authorize.net CIM Documentation
 http://developer.authorize.net/api/reference/#customer-profiles
