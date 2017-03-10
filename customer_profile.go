@@ -53,8 +53,18 @@ func (customer Customer) Validate() ValidateCustomerPaymentProfileResponse {
 	return response
 }
 
-func (customer Customer) Delete() MessagesResponse {
+func (customer Customer) DeleteProfile() MessagesResponse {
 	response, _ := DeleteProfile(customer)
+	return response
+}
+
+func (customer Customer) DeletePaymentProfile() MessagesResponse {
+	response, _ := DeletePaymentProfile(customer)
+	return response
+}
+
+func (customer Customer) DeleteShippingProfile() MessagesResponse {
+	response, _ := DeleteShippingProfile(customer)
 	return response
 }
 
@@ -191,7 +201,23 @@ func UpdateProfile(profile Profile) (MessagesResponse, interface{}) {
 			Profile:                profile,
 		},
 	}
-	jsoned, err := json.Marshal(action)
+	dat, err := MessageResponder(action)
+	return dat, err
+}
+
+func DeleteProfile(customer Customer) (MessagesResponse, interface{}) {
+	action := DeleteCustomerProfileRequest{
+		DeleteCustomerProfile: DeleteCustomerProfile{
+			MerchantAuthentication: GetAuthentication(),
+			CustomerProfileID:      customer.ID,
+		},
+	}
+	dat, err := MessageResponder(action)
+	return dat, err
+}
+
+func MessageResponder(d interface{}) (MessagesResponse, interface{}) {
+	jsoned, err := json.Marshal(d)
 	if err != nil {
 		panic(err)
 	}
@@ -204,23 +230,27 @@ func UpdateProfile(profile Profile) (MessagesResponse, interface{}) {
 	return dat, err
 }
 
-func DeleteProfile(customer Customer) (MessagesResponse, interface{}) {
-	action := DeleteCustomerProfileRequest{
-		DeleteCustomerProfile: DeleteCustomerProfile{
+func DeletePaymentProfile(customer Customer) (MessagesResponse, interface{}) {
+	action := DeleteCustomerPaymentProfileRequest{
+		DeleteCustomerPaymentProfile: DeleteCustomerPaymentProfile{
 			MerchantAuthentication: GetAuthentication(),
 			CustomerProfileID:      customer.ID,
+			CustomerPaymentProfileID: customer.PaymentID,
 		},
 	}
-	jsoned, err := json.Marshal(action)
-	if err != nil {
-		panic(err)
+	dat, err := MessageResponder(action)
+	return dat, err
+}
+
+func DeleteShippingProfile(customer Customer) (MessagesResponse, interface{}) {
+	action := DeleteCustomerShippingProfileRequest{
+		DeleteCustomerShippingProfile: DeleteCustomerShippingProfile{
+			MerchantAuthentication: GetAuthentication(),
+			CustomerProfileID:      customer.ID,
+			CustomerShippingID: customer.ShippingID,
+		},
 	}
-	response := SendRequest(jsoned)
-	var dat MessagesResponse
-	err = json.Unmarshal(response, &dat)
-	if err != nil {
-		panic(err)
-	}
+	dat, err := MessageResponder(action)
 	return dat, err
 }
 
@@ -308,6 +338,28 @@ type GetCustomerProfileResponse struct {
 	SubscriptionIds []string `json:"subscriptionIds"`
 	MessagesResponse
 }
+
+type DeleteCustomerPaymentProfileRequest struct {
+	DeleteCustomerPaymentProfile DeleteCustomerPaymentProfile `json:"deleteCustomerPaymentProfileRequest"`
+}
+
+type DeleteCustomerPaymentProfile struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileID string `json:"customerProfileId"`
+	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
+}
+
+
+type DeleteCustomerShippingProfileRequest struct {
+	DeleteCustomerShippingProfile DeleteCustomerShippingProfile `json:"deleteCustomerShippingAddressRequest"`
+}
+
+type DeleteCustomerShippingProfile struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileID string `json:"customerProfileId"`
+	CustomerShippingID string `json:"customerAddressId"`
+}
+
 
 type GetShippingProfiles struct {
 	CustomerAddressID string `json:"customerAddressId"`
@@ -434,13 +486,7 @@ type GetCustomerPaymentProfileList struct {
 
 type GetCustomerPaymentProfileListResponse struct {
 	GetCustomerPaymentProfileList struct {
-		Messages struct {
-			ResultCode string `json:"resultCode"`
-			Message    struct {
-				Code string `json:"code"`
-				Text string `json:"text"`
-			} `json:"message"`
-		} `json:"messages"`
+		MessagesResponse
 		TotalNumInResultSet string `json:"totalNumInResultSet"`
 		PaymentProfiles     struct {
 			PaymentProfile []PaymentProfile `json:"paymentProfile"`

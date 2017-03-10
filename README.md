@@ -426,11 +426,24 @@ customerProfile := AuthorizeCIM.Customer{
 
 :white_medium_square: updateCustomerPaymentProfileRequest
 
-:white_medium_square: deleteCustomerPaymentProfileRequest
+:white_check_mark: deleteCustomerPaymentProfileRequest
+```go
+customer := AuthorizeCIM.Customer{
+		ID: newCustomerProfileId,
+		PaymentID: newCustomerPaymentId,
+	}
 
+	response := customer.DeletePaymentProfile()
+
+	if response.Approved() {
+		fmt.Println("Payment Profile was Deleted")
+	} else {
+		fmt.Println(response.ErrorMessage())
+	}
+```
 Customer Shipping Profile
 
-:white_medium_square: createCustomerShippingAddressRequest
+:white_check_mark: createCustomerShippingAddressRequest
 ```go
 customer := AuthorizeCIM.Profile{
 		MerchantCustomerID: "86437",
@@ -456,9 +469,9 @@ customer := AuthorizeCIM.Profile{
 	}
 ```
 
-:white_medium_square: getCustomerShippingAddressRequest
+:white_check_mark: getCustomerShippingAddressRequest
 ```go
-customer := Customer{
+customer := AuthorizeCIM.Customer{
 		ID: "3842934233",
 	}
 
@@ -470,8 +483,21 @@ customer := Customer{
 ```
 :white_medium_square: updateCustomerShippingAddressRequest
 
-:white_medium_square: deleteCustomerShippingAddressRequest
+:white_check_mark: deleteCustomerShippingAddressRequest
+```go
+customer := AuthorizeCIM.Customer{
+		ID: newCustomerProfileId,
+		ShippingID: newCustomerShippingId,
+	}
 
+	response := customer.DeleteShippingProfile()
+
+	if response.Approved() {
+		fmt.Println("Shipping Profile was Deleted")
+	} else {
+		fmt.Println(response.ErrorMessage())
+	}
+```
 :white_medium_square: getHostedProfilePageRequest
 
 :white_medium_square: createCustomerProfileFromTransactionRequest

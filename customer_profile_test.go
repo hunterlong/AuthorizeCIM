@@ -149,7 +149,18 @@ func TestUpdateCustomerPaymentProfile(t *testing.T) {
 }
 
 func TestDeleteCustomerPaymentProfile(t *testing.T) {
+	customer := Customer{
+		ID: newCustomerProfileId,
+		PaymentID: newCustomerPaymentId,
+	}
 
+	response := customer.DeletePaymentProfile()
+
+	if response.Approved() {
+		t.Log("Payment Profile was Deleted")
+	} else {
+		t.Log(response.ErrorMessage())
+	}
 }
 
 func TestCreateCustomerShippingProfile(t *testing.T) {
@@ -175,7 +186,7 @@ func TestCreateCustomerShippingProfile(t *testing.T) {
 
 	if response.Approved() {
 		newCustomerShippingId = response.CustomerAddressID
-		t.Log("New Shipping Added: #", response.CustomerAddressID)
+		t.Log("New Shipping Added: #",response.CustomerAddressID)
 	}
 }
 
@@ -198,7 +209,18 @@ func TestUpdateCustomerShippingProfile(t *testing.T) {
 }
 
 func TestDeleteCustomerShippingProfile(t *testing.T) {
+	customer := Customer{
+		ID: newCustomerProfileId,
+		ShippingID: newCustomerShippingId,
+	}
 
+	response := customer.DeleteShippingProfile()
+
+	if response.Approved() {
+		t.Log("Shipping Profile was Deleted")
+	} else {
+		t.Log(response.ErrorMessage())
+	}
 }
 
 func TestAcceptProfilePage(t *testing.T) {
@@ -267,7 +289,7 @@ func TestDeleteCustomerProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	response := customer.Delete()
+	response := customer.DeleteProfile()
 
 	if response.Approved() {
 		t.Log("Customer was Deleted")
