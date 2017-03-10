@@ -16,14 +16,14 @@ var showLogs bool = true
 func SetAPIInfo(name string, key string, mode string) {
 	apiKey = &key
 	apiName = &name
-	if mode == "test" {
-		showLogs = true
-		testMode = "testMode"
-		api_endpoint = "https://apitest.authorize.net/xml/v1/request.api"
-	} else {
+	if mode == "live" {
 		showLogs = false
 		testMode = "liveMode"
 		api_endpoint = "https://api.authorize.net/xml/v1/request.api"
+	} else {
+		showLogs = true
+		testMode = "testMode"
+		api_endpoint = "https://apitest.authorize.net/xml/v1/request.api"
 	}
 }
 

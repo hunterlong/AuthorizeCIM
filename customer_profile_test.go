@@ -12,8 +12,8 @@ var newCustomerShippingId string
 func TestSetAPIInfo(t *testing.T) {
 	apiName := os.Getenv("apiName")
 	apiKey := os.Getenv("apiKey")
-	apiMode := os.Getenv("mode")
-	SetAPIInfo(apiName, apiKey, apiMode)
+	//apiMode := os.Getenv("mode")
+	SetAPIInfo(apiName, apiKey, "test")
 	t.Log("API Info Set")
 }
 
