@@ -310,7 +310,7 @@ type GetSubscriptionResponse struct {
 			Description       string `json:"description"`
 		} `json:"profile"`
 	} `json:"subscription"`
-	RefID    string `json:"refId"`
+	RefID string `json:"refId"`
 	MessagesResponse
 }
 
@@ -323,7 +323,7 @@ type SubscriptionStatus struct {
 }
 
 type SubscriptionCancel struct {
-	RefID    string `json:"refId"`
+	RefID string `json:"refId"`
 	MessagesResponse
 }
 

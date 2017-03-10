@@ -209,8 +209,8 @@ type Tax struct {
 }
 
 type Customer struct {
-	ID        string `json:"id,omitempty"`
-	PaymentID string `json:"id,omitempty"`
+	ID         string `json:"id,omitempty"`
+	PaymentID  string `json:"id,omitempty"`
 	ShippingID string `json:"id,omitempty"`
 }
 

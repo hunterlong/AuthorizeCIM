@@ -233,8 +233,8 @@ func MessageResponder(d interface{}) (MessagesResponse, interface{}) {
 func DeletePaymentProfile(customer Customer) (MessagesResponse, interface{}) {
 	action := DeleteCustomerPaymentProfileRequest{
 		DeleteCustomerPaymentProfile: DeleteCustomerPaymentProfile{
-			MerchantAuthentication: GetAuthentication(),
-			CustomerProfileID:      customer.ID,
+			MerchantAuthentication:   GetAuthentication(),
+			CustomerProfileID:        customer.ID,
 			CustomerPaymentProfileID: customer.PaymentID,
 		},
 	}
@@ -247,7 +247,7 @@ func DeleteShippingProfile(customer Customer) (MessagesResponse, interface{}) {
 		DeleteCustomerShippingProfile: DeleteCustomerShippingProfile{
 			MerchantAuthentication: GetAuthentication(),
 			CustomerProfileID:      customer.ID,
-			CustomerShippingID: customer.ShippingID,
+			CustomerShippingID:     customer.ShippingID,
 		},
 	}
 	dat, err := MessageResponder(action)
@@ -344,11 +344,10 @@ type DeleteCustomerPaymentProfileRequest struct {
 }
 
 type DeleteCustomerPaymentProfile struct {
-	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileID string `json:"customerProfileId"`
-	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
+	MerchantAuthentication   MerchantAuthentication `json:"merchantAuthentication"`
+	CustomerProfileID        string                 `json:"customerProfileId"`
+	CustomerPaymentProfileID string                 `json:"customerPaymentProfileId"`
 }
-
 
 type DeleteCustomerShippingProfileRequest struct {
 	DeleteCustomerShippingProfile DeleteCustomerShippingProfile `json:"deleteCustomerShippingAddressRequest"`
@@ -356,10 +355,9 @@ type DeleteCustomerShippingProfileRequest struct {
 
 type DeleteCustomerShippingProfile struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
-	CustomerProfileID string `json:"customerProfileId"`
-	CustomerShippingID string `json:"customerAddressId"`
+	CustomerProfileID      string                 `json:"customerProfileId"`
+	CustomerShippingID     string                 `json:"customerAddressId"`
 }
-
 
 type GetShippingProfiles struct {
 	CustomerAddressID string `json:"customerAddressId"`

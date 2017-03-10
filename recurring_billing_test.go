@@ -97,7 +97,6 @@ func TestCancelSubscription(t *testing.T) {
 
 	subscriptionInfo := sub.Cancel()
 
-
 	t.Log("Subscription ID has been canceled: ", sub.Id, "\n")
 	t.Log(subscriptionInfo.ErrorMessage(), "\n")
 

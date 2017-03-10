@@ -1,7 +1,7 @@
 ![alt tag](http://pichoster.net/images/2016/05/30/authcimyjIpi.jpg)
 
 # Authorize.net CIM, AIM, and ARB for Go Language
-[![Build Status](https://travis-ci.org/hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/hunterlong/AuthorizeCIM)  [![Code Climate](https://codeclimate.com/github/Hunterlong/AuthorizeCIM/badges/gpa.svg)](https://codeclimate.com/github/hunterlong/AuthorizeCIM) [![Coverage Status](https://coveralls.io/repos/github/hunterlong/AuthorizeCIM/badge.svg?branch=master)](https://coveralls.io/github/hunterlong/AuthorizeCIM?branch=master) [![GoDoc](https://godoc.org/github.com/hunterlong/AuthorizeCIM?status.svg)](https://godoc.org/github.com/hunterlong/AuthorizeCIM) [![Go Report Card](https://goreportcard.com/badge/github.com/hunterlong/AuthorizeCIM)](https://goreportcard.com/report/github.com/hunterlong/AuthorizeCIM)
+[![Build Status](https://travis-ci.org/hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/hunterlong/AuthorizeCIM)  [![Code Climate](https://lima.codeclimate.com/github/Hunterlong/AuthorizeCIM/badges/gpa.svg)](https://lima.codeclimate.com/github/Hunterlong/AuthorizeCIM) [![Coverage Status](https://coveralls.io/repos/github/hunterlong/AuthorizeCIM/badge.svg?branch=master)](https://coveralls.io/github/hunterlong/AuthorizeCIM?branch=master) [![GoDoc](https://godoc.org/github.com/hunterlong/AuthorizeCIM?status.svg)](https://godoc.org/github.com/hunterlong/AuthorizeCIM) [![Go Report Card](https://goreportcard.com/badge/github.com/hunterlong/AuthorizeCIM)](https://goreportcard.com/report/github.com/hunterlong/AuthorizeCIM)
 
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM API. This golang package lets you create recurring subscriptions, AUTH only transactions, voids, refunds, and other functionality connected to the Authorize.net API.
 
@@ -26,7 +26,9 @@ AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
 ```
 
 ## Features
-* AIM Payment Transactions
+* [AIM Payment Transactions](https://github.com/hunterlong/AuthorizeCIM#payment-transactions)
+* [CIM Store Customer Payment Accounts](https://github.com/hunterlong/AuthorizeCIM#customer-profile)
+* [ARB Automatic Recurring Billing](https://github.com/hunterlong/AuthorizeCIM#recurring-billing) (Subscriptions)
 * Creating Users Accounts based on user's unique ID and/or email address
 * Store Payment Profiles (credit card) on Authorize.net using Customer Information Manager (CIM)
 * Create Subscriptions (monthly, weekly, days) with Automated Recurring Billing (ARB)

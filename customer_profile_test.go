@@ -150,7 +150,7 @@ func TestUpdateCustomerPaymentProfile(t *testing.T) {
 
 func TestDeleteCustomerPaymentProfile(t *testing.T) {
 	customer := Customer{
-		ID: newCustomerProfileId,
+		ID:        newCustomerProfileId,
 		PaymentID: newCustomerPaymentId,
 	}
 
@@ -186,7 +186,7 @@ func TestCreateCustomerShippingProfile(t *testing.T) {
 
 	if response.Approved() {
 		newCustomerShippingId = response.CustomerAddressID
-		t.Log("New Shipping Added: #",response.CustomerAddressID)
+		t.Log("New Shipping Added: #", response.CustomerAddressID)
 	}
 }
 
@@ -210,7 +210,7 @@ func TestUpdateCustomerShippingProfile(t *testing.T) {
 
 func TestDeleteCustomerShippingProfile(t *testing.T) {
 	customer := Customer{
-		ID: newCustomerProfileId,
+		ID:         newCustomerProfileId,
 		ShippingID: newCustomerShippingId,
 	}
 
