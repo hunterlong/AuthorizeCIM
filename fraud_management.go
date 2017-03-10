@@ -35,13 +35,7 @@ type GetUnsettledTransactionListRequest struct {
 type TransactionsList struct {
 	Transactions        []BatchTransaction `json:"transactions"`
 	TotalNumInResultSet int                `json:"totalNumInResultSet"`
-	Messages            struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
 
 type BatchTransaction struct {

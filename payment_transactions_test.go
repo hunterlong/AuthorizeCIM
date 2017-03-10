@@ -19,6 +19,9 @@ func TestChargeCard(t *testing.T) {
 	if response.Approved() {
 		previousCharged = response.TransactionID()
 		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
+		t.Log("AVS Result Code: ", response.AVS().avsResultCode+"\n")
+		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode+"\n")
+		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode+"\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
 	}
@@ -64,6 +67,7 @@ func TestChargeCardChannel(t *testing.T) {
 		AuthCode: "RANDOMAUTHCODE",
 	}
 	response := newTransaction.Charge()
+
 	if response.Approved() {
 		previousAuth = response.TransactionID()
 		t.Log("#", response.TransactionID(), "Transaction was Charged Through Channel (AuthCode) $", newTransaction.Amount, "\n")

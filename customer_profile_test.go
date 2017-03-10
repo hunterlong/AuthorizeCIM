@@ -254,7 +254,7 @@ func TestGetCustomerProfile(t *testing.T) {
 func TestDeleteCustomerProfile(t *testing.T) {
 
 	customer := Customer{
-		ID: "1810878365",
+		ID: newCustomerProfileId,
 	}
 
 	response := customer.Delete()

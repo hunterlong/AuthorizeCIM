@@ -138,11 +138,9 @@ type TransactionResponse struct {
 		AccountType    string          `json:"accountType"`
 		Errors         []AuthNetErrors `json:"errors"`
 		TransHashSha2  string          `json:"transHashSha2"`
+		Message        MessagesResponse
 	} `json:"transactionResponse"`
-	Messages struct {
-		ResultCode string    `json:"resultCode"`
-		Message    []Message `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
 
 type AuthNetErrors struct {

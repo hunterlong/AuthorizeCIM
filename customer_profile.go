@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 func GetPaymentProfileIds(month string, method string) GetCustomerPaymentProfileListResponse {
@@ -34,57 +33,6 @@ func GetPaymentProfileIds(month string, method string) GetCustomerPaymentProfile
 	return dat
 }
 
-func (response MessageResponse) Approved() bool {
-	if response.Messages.ResultCode == "Ok" {
-		return true
-	}
-	return false
-}
-
-func (response CustomerPaymentProfileResponse) Approved() bool {
-	if response.Messages.ResultCode == "Ok" {
-		return true
-	}
-	return false
-}
-
-func (response CreateCustomerShippingAddressResponse) Approved() bool {
-	if response.Messages.ResultCode == "Ok" {
-		return true
-	}
-	return false
-}
-
-func (response CustomerPaymentProfileResponse) ErrorMessage() string {
-	return response.Messages.Message[0].Text
-}
-
-func (response MessageResponse) ErrorMessage() string {
-	return response.Messages.Message[0].Text
-}
-
-func (response CustomProfileResponse) Approved() bool {
-	if response.Messages.ResultCode == "Ok" {
-		return true
-	}
-	return false
-}
-
-func (response ValidateCustomerPaymentProfileResponse) Approved() bool {
-	if response.Messages.ResultCode == "Ok" {
-		return true
-	}
-	return false
-}
-
-func (response ValidateCustomerPaymentProfileResponse) ErrorMessage() string {
-	return response.Messages.Message[0].Text
-}
-
-func (response CustomProfileResponse) ErrorMessage() string {
-	return response.Messages.Message[0].Text
-}
-
 func (profile Profile) CreateProfile() CustomProfileResponse {
 	response, _ := CreateProfile(profile)
 	return response
@@ -105,7 +53,7 @@ func (customer Customer) Validate() ValidateCustomerPaymentProfileResponse {
 	return response
 }
 
-func (customer Customer) Delete() MessageResponse {
+func (customer Customer) Delete() MessagesResponse {
 	response, _ := DeleteProfile(customer)
 	return response
 }
@@ -127,7 +75,7 @@ func (response GetCustomerProfileResponse) Subscriptions() []string {
 	return response.SubscriptionIds
 }
 
-func (profile Profile) UpdateProfile() MessageResponse {
+func (profile Profile) UpdateProfile() MessagesResponse {
 	response, _ := UpdateProfile(profile)
 	return response
 }
@@ -185,7 +133,6 @@ func GetProfile(customer Customer) (GetCustomerProfileResponse, interface{}) {
 		panic(err)
 	}
 	response := SendRequest(jsoned)
-	fmt.Println(string(response))
 	var dat GetCustomerProfileResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -237,7 +184,7 @@ func CreateShipping(profile Profile) (CreateCustomerShippingAddressResponse, int
 	return dat, err
 }
 
-func UpdateProfile(profile Profile) (MessageResponse, interface{}) {
+func UpdateProfile(profile Profile) (MessagesResponse, interface{}) {
 	action := UpdateCustomerProfileRequest{
 		UpdateCustomerProfile: UpdateCustomerProfile{
 			MerchantAuthentication: GetAuthentication(),
@@ -249,7 +196,7 @@ func UpdateProfile(profile Profile) (MessageResponse, interface{}) {
 		panic(err)
 	}
 	response := SendRequest(jsoned)
-	var dat MessageResponse
+	var dat MessagesResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -257,7 +204,7 @@ func UpdateProfile(profile Profile) (MessageResponse, interface{}) {
 	return dat, err
 }
 
-func DeleteProfile(customer Customer) (MessageResponse, interface{}) {
+func DeleteProfile(customer Customer) (MessagesResponse, interface{}) {
 	action := DeleteCustomerProfileRequest{
 		DeleteCustomerProfile: DeleteCustomerProfile{
 			MerchantAuthentication: GetAuthentication(),
@@ -269,7 +216,7 @@ func DeleteProfile(customer Customer) (MessageResponse, interface{}) {
 		panic(err)
 	}
 	response := SendRequest(jsoned)
-	var dat MessageResponse
+	var dat MessagesResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
 		panic(err)
@@ -333,19 +280,11 @@ type PaymentProfiles struct {
 }
 
 type CustomProfileResponse struct {
-	CustomerProfileID             string          `json:"customerProfileId"`
-	CustomerPaymentProfileIDList  []string        `json:"customerPaymentProfileIdList"`
-	CustomerShippingAddressIDList []interface{}   `json:"customerShippingAddressIdList"`
-	ValidationDirectResponseList  []string        `json:"validationDirectResponseList"`
-	Messages                      ProfileMessages `json:"messages"`
-}
-
-type ProfileMessages struct {
-	ResultCode string `json:"resultCode"`
-	Message    []struct {
-		Code string `json:"code"`
-		Text string `json:"text"`
-	} `json:"message"`
+	CustomerProfileID             string        `json:"customerProfileId"`
+	CustomerPaymentProfileIDList  []string      `json:"customerPaymentProfileIdList"`
+	CustomerShippingAddressIDList []interface{} `json:"customerShippingAddressIdList"`
+	ValidationDirectResponseList  []string      `json:"validationDirectResponseList"`
+	MessagesResponse
 }
 
 type CustomerProfileRequest struct {
@@ -367,13 +306,7 @@ type GetCustomerProfileResponse struct {
 		Email              string                `json:"email,omitempty"`
 	} `json:"profile"`
 	SubscriptionIds []string `json:"subscriptionIds"`
-	Messages        struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
 
 type GetShippingProfiles struct {
@@ -441,7 +374,7 @@ type DeleteCustomerProfile struct {
 	CustomerProfileID      string                 `json:"customerProfileId"`
 }
 
-type MessageResponse struct {
+type MessagesResponse struct {
 	Messages struct {
 		ResultCode string `json:"resultCode"`
 		Message    []struct {
@@ -449,6 +382,14 @@ type MessageResponse struct {
 			Text string `json:"text"`
 		} `json:"message"`
 	} `json:"messages"`
+}
+
+type MessageResponse struct {
+	ResultCode string `json:"resultCode"`
+	Message    struct {
+		Code string `json:"code"`
+		Text string `json:"text"`
+	} `json:"message"`
 }
 
 type CustomerPaymentProfile struct {
@@ -476,13 +417,7 @@ type CustomerPaymentProfileResponse struct {
 	CustomerProfileId        string `json:"customerProfileId"`
 	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
 	ValidationDirectResponse string `json:"validationDirectResponse"`
-	Messages                 struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
 
 type GetCustomerPaymentProfileListRequest struct {
@@ -526,13 +461,7 @@ type ValidateCustomerPaymentProfile struct {
 
 type ValidateCustomerPaymentProfileResponse struct {
 	DirectResponse string `json:"directResponse"`
-	Messages       struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
 
 type CreateCustomerShippingAddressRequest struct {
@@ -547,11 +476,5 @@ type CreateCustomerShippingAddress struct {
 
 type CreateCustomerShippingAddressResponse struct {
 	CustomerAddressID string `json:"customerAddressId,omitempty"`
-	Messages          struct {
-		ResultCode string `json:"resultCode"`
-		Message    []struct {
-			Code string `json:"code"`
-			Text string `json:"text"`
-		} `json:"message"`
-	} `json:"messages"`
+	MessagesResponse
 }
