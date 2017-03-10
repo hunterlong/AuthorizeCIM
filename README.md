@@ -314,10 +314,11 @@ customer := AuthorizeCIM.Profile{
 	response := customer.Create()
 
 if response.Approved() {
-    newCustomerProfileId = response.CustomerProfileID
-    fmt.Println("New Customer Profile Created #", response.CustomerProfileID)
-
-}
+    fmt.Println("New Customer Profile Created #",response.CustomerProfileID)
+    fmt.Println("New Customer Payment Profile Created #",response.CustomerPaymentProfileID)
+} else {
+       fmt.Println(response.ErrorMessage())
+   }
 ```
 
 :white_check_mark: getCustomerProfileRequest
@@ -326,7 +327,11 @@ customer := AuthorizeCIM.Customer{
 		ID: "13838",
 	}
 
-response := customer.Info()
+customerInfo := customer.Info()
+
+paymentProfiles := customerInfo.PaymentProfiles()
+shippingProfiles := customerInfo.ShippingProfiles()
+subscriptions := customerInfo.Subscriptions()
 ```
 
 :white_check_mark: getCustomerProfileIdsRequest
@@ -369,7 +374,7 @@ if response.Approved() {
 :white_check_mark: createCustomerPaymentProfileRequest
 ```go
 paymentProfile := AuthorizeCIM.CustomerPaymentProfile{
-		CustomerProfileID: newCustomerProfileId,
+		CustomerProfileID: "32948234232",
 		PaymentProfile: PaymentProfile{
 			BillTo: BillTo{
 				FirstName: "okokk",
@@ -393,13 +398,15 @@ paymentProfile := AuthorizeCIM.CustomerPaymentProfile{
 
 	if response.Approved() {
 
-	}
+	} else {
+        fmt.Println(response.ErrorMessage())
+    }
 ```
 
 :white_check_mark: getCustomerPaymentProfileRequest
 ```go
 customer := AuthorizeCIM.Customer{
-		ID: newCustomerProfileId,
+		ID: "3923482487",
 	}
 
 	response := customer.Info()
@@ -431,8 +438,8 @@ customerProfile := AuthorizeCIM.Customer{
 :white_check_mark: deleteCustomerPaymentProfileRequest
 ```go
 customer := AuthorizeCIM.Customer{
-		ID: newCustomerProfileId,
-		PaymentID: newCustomerPaymentId,
+		ID: "3724823472",
+		PaymentID: "98238472349",
 	}
 
 	response := customer.DeletePaymentProfile()
@@ -449,7 +456,7 @@ Customer Shipping Profile
 ```go
 customer := AuthorizeCIM.Profile{
 		MerchantCustomerID: "86437",
-		CustomerProfileId:  newCustomerProfileId,
+		CustomerProfileId:  "7832642387",
 		Email:              "info@emailhereooooo.com",
 		Shipping: &Address{
 			FirstName:   "My",
@@ -468,7 +475,9 @@ customer := AuthorizeCIM.Profile{
 
 	if response.Approved() {
 		fmt.Println("New Shipping Added: #",response.CustomerAddressID)
-	}
+	} else {
+      	fmt.Println(response.ErrorMessage())
+    }
 ```
 
 :white_check_mark: getCustomerShippingAddressRequest
@@ -488,8 +497,8 @@ customer := AuthorizeCIM.Customer{
 :white_check_mark: deleteCustomerShippingAddressRequest
 ```go
 customer := AuthorizeCIM.Customer{
-		ID: newCustomerProfileId,
-		ShippingID: newCustomerShippingId,
+		ID: "128749382",
+		ShippingID: "34892734829",
 	}
 
 	response := customer.DeleteShippingProfile()
