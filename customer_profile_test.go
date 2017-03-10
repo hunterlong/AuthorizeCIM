@@ -98,8 +98,6 @@ func TestCreateCustomerPaymentProfile(t *testing.T) {
 	response := paymentProfile.Add()
 
 	if response.Approved() {
-
-		response.CustomerPaymentProfileID
 		newCustomerPaymentId = response.CustomerPaymentProfileID
 		t.Log("Created new Payment Profile #", response.CustomerPaymentProfileID, "for Customer ID: ", response.CustomerProfileId)
 	} else {

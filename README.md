@@ -3,8 +3,21 @@
 # Authorize.net CIM, AIM, and ARB for Go Language
 [![Build Status](https://travis-ci.org/hunterlong/AuthorizeCIM.svg?branch=master)](https://travis-ci.org/hunterlong/AuthorizeCIM)  [![Code Climate](https://lima.codeclimate.com/github/Hunterlong/AuthorizeCIM/badges/gpa.svg)](https://lima.codeclimate.com/github/Hunterlong/AuthorizeCIM) [![Coverage Status](https://coveralls.io/repos/github/hunterlong/AuthorizeCIM/badge.svg?branch=master)](https://coveralls.io/github/hunterlong/AuthorizeCIM?branch=master) [![GoDoc](https://godoc.org/github.com/hunterlong/AuthorizeCIM?status.svg)](https://godoc.org/github.com/hunterlong/AuthorizeCIM) [![Go Report Card](https://goreportcard.com/badge/github.com/hunterlong/AuthorizeCIM)](https://goreportcard.com/report/github.com/hunterlong/AuthorizeCIM)
 
-Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM API. This golang package lets you create recurring subscriptions, AUTH only transactions, voids, refunds, and other functionality connected to the Authorize.net API.
+Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM, AIM, and ARB API.
+This golang package lets you create recurring subscriptions, AUTH only transactions, voids, refunds, and other functionality connected to the Authorize.net API.
 
+Includes easy to use methods to tell you exactly what you need to know about transactions in your Authorize.net account.
+```go
+customer := AuthorizeCIM.Customer{
+        ID: "13838",
+    }
+
+customerInfo := customer.Info()
+
+paymentProfiles := customerInfo.PaymentProfiles()
+shippingProfiles := customerInfo.ShippingProfiles()
+subscriptions := customerInfo.Subscriptions()
+```
 
 ## Usage
 * Import package
