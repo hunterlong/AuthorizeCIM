@@ -57,6 +57,55 @@ type BatchTransaction struct {
 	} `json:"fraudInformation"`
 }
 
+type UpdateHeldTransactionRequest struct {
+	UpdateHeldTransaction UpdateHeldTransaction `json:"updateHeldTransactionRequest"`
+}
+
+type UpdateHeldTransaction struct {
+	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
+	RefID                  string                 `json:"refId"`
+	HeldTransactionRequest HeldTransactionRequest `json:"heldTransactionRequest"`
+}
+
+type HeldTransactionRequest struct {
+	Action     string `json:"action"`
+	RefTransID string `json:"refTransId"`
+}
+
+func SendTransactionUpdate(tranx PreviousTransaction, method string) (TransactionResponse, interface{}) {
+	action := UpdateHeldTransactionRequest{
+		UpdateHeldTransaction: UpdateHeldTransaction{
+			MerchantAuthentication: GetAuthentication(),
+			RefID: tranx.RefId,
+			HeldTransactionRequest: HeldTransactionRequest{
+				Action:     method,
+				RefTransID: tranx.RefId,
+			},
+		},
+	}
+	jsoned, err := json.Marshal(action)
+	if err != nil {
+		panic(err)
+	}
+	response := SendRequest(jsoned)
+	var dat TransactionResponse
+	err = json.Unmarshal(response, &dat)
+	if err != nil {
+		panic(err)
+	}
+	return dat, err
+}
+
+func (t PreviousTransaction) Approve() TransactionResponse {
+	response, _ := SendTransactionUpdate(t, "approve")
+	return response
+}
+
+func (t PreviousTransaction) Decline() TransactionResponse {
+	response, _ := SendTransactionUpdate(t, "decline")
+	return response
+}
+
 func SendGetUnsettled() (TransactionsList, interface{}) {
 	action := UnsettledTransactionsRequest{
 		GetUnsettledTransactionListRequest: GetUnsettledTransactionListRequest{

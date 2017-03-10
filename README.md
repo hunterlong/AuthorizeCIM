@@ -42,6 +42,7 @@ AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
 * [AIM Payment Transactions](https://github.com/hunterlong/AuthorizeCIM#payment-transactions)
 * [CIM Store Customer Payment Accounts](https://github.com/hunterlong/AuthorizeCIM#customer-profile)
 * [ARB Automatic Recurring Billing](https://github.com/hunterlong/AuthorizeCIM#recurring-billing) (Subscriptions)
+* [Fraud Management](https://github.com/hunterlong/AuthorizeCIM#fraud-management)
 * Creating Users Accounts based on user's unique ID and/or email address
 * Store Payment Profiles (credit card) on Authorize.net using Customer Information Manager (CIM)
 * Create Subscriptions (monthly, weekly, days) with Automated Recurring Billing (ARB)
@@ -179,7 +180,20 @@ transactions := AuthorizeCIM.UnsettledBatchList()
 fmt.Println("Unsettled Count: ", transactions.Count)
 ```
 
-:white_medium_square: updateHeldTransactionRequest
+:white_check_mark: updateHeldTransactionRequest
+```go
+oldTransaction := AuthorizeCIM.PreviousTransaction{
+		Amount: "49.99",
+		RefId:  "39824723983",
+	}
+
+	response := oldTransaction.Approve()
+	//response := oldTransaction.Decline()
+
+	if response.Approved() {
+
+	}
+```
 
 ### Recurring Billing
 
