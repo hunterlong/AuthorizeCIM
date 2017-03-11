@@ -27,6 +27,14 @@ func SetAPIInfo(name string, key string, mode string) {
 	}
 }
 
+func IntervalMonthly() Interval {
+	interval := Interval{
+		Length: "1",
+		Unit:   "months",
+	}
+	return interval
+}
+
 func GetAuthentication() MerchantAuthentication {
 	auth := MerchantAuthentication{
 		Name:           apiName,

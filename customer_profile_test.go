@@ -77,7 +77,7 @@ func TestCreateCustomerPaymentProfile(t *testing.T) {
 	paymentProfile := CustomerPaymentProfile{
 		CustomerProfileID: newCustomerProfileId,
 		PaymentProfile: PaymentProfile{
-			BillTo: BillTo{
+			BillTo: &BillTo{
 				FirstName:   "okokk",
 				LastName:    "okok",
 				Address:     "1111 white ct",
@@ -85,7 +85,7 @@ func TestCreateCustomerPaymentProfile(t *testing.T) {
 				Country:     "USA",
 				PhoneNumber: "8885555555",
 			},
-			Payment: Payment{
+			Payment: &Payment{
 				CreditCard: CreditCard{
 					CardNumber:     "5424000000000015",
 					ExpirationDate: "04/22",
@@ -122,7 +122,7 @@ func TestGetCustomerPaymentProfile(t *testing.T) {
 
 func TestGetCustomerPaymentProfileList(t *testing.T) {
 
-	profileIds := GetPaymentProfileIds("2017-03", "cardsExpiringInMonth")
+	profileIds := GetPaymentProfileIds("2020-03", "cardsExpiringInMonth")
 
 	t.Log(profileIds)
 }
@@ -291,13 +291,10 @@ func TestCreateSubscriptionCustomerProfile(t *testing.T) {
 		Amount:      "12.00",
 		TrialAmount: "0.00",
 		PaymentSchedule: &PaymentSchedule{
-			StartDate:        CurrentTime(),
+			StartDate:        CurrentDate(),
 			TotalOccurrences: "9999",
 			TrialOccurrences: "0",
-			Interval: Interval{
-				Length: "1",
-				Unit:   "months",
-			},
+			Interval:         IntervalMonthly(),
 		},
 		Profile: &CustomerProfiler{
 			CustomerProfileID:         newCustomerProfileId,

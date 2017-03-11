@@ -104,3 +104,26 @@ func TestVoidCard(t *testing.T) {
 		t.Log(response.ErrorMessage(), "\n")
 	}
 }
+
+func TestChargeCustomerProfile(t *testing.T) {
+
+	oldProfileId := "1810921101"
+	oldPaymentId := "1805617738"
+
+	customer := Customer{
+		ID:        oldProfileId,
+		PaymentID: oldPaymentId,
+	}
+
+	newTransaction := NewTransaction{
+		Amount: "35.00",
+	}
+
+	response := newTransaction.ChargeProfile(customer)
+
+	if response.Approved() {
+		t.Log("#", response.TransactionID(), "Customer was Charged $", newTransaction.Amount, "\n")
+	} else {
+		t.Log(response.ErrorMessage(), "\n")
+	}
+}

@@ -271,7 +271,7 @@ func (sub GetSubscriptionResponse) ErrorMessage() string {
 	return sub.Messages.Message[0].Text
 }
 
-func CurrentTime() string {
+func CurrentDate() string {
 	current_time := time.Now().UTC()
 	return current_time.Format("2006-01-02")
 }

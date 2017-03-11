@@ -12,13 +12,10 @@ func TestCreateSubscription(t *testing.T) {
 		Amount:      "9.00",
 		TrialAmount: "0.00",
 		PaymentSchedule: &PaymentSchedule{
-			StartDate:        CurrentTime(),
+			StartDate:        CurrentDate(),
 			TotalOccurrences: "9999",
 			TrialOccurrences: "0",
-			Interval: Interval{
-				Length: "1",
-				Unit:   "months",
-			},
+			Interval:         IntervalMonthly(),
 		},
 		Payment: &Payment{
 			CreditCard: CreditCard{
@@ -51,7 +48,8 @@ func TestGetSubscription(t *testing.T) {
 
 	subscriptionInfo := sub.Info()
 
-	t.Log(subscriptionInfo)
+	t.Log("Subscription Name: #", subscriptionInfo.Subscription.Name, "\n")
+	t.Log("Subscription Status: ", subscriptionInfo.Subscription.Status, "\n")
 
 }
 

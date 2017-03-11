@@ -353,12 +353,14 @@ type Profile struct {
 	PaymentProfileId   string           `json:"customerPaymentProfileId,omitempty"`
 	Shipping           *Address         `json:"address,omitempty"`
 	CustomerAddressId  string           `json:"customerAddressId,omitempty"`
+	PaymentProfile     *PaymentProfile  `json:"paymentProfile,omitempty"`
 }
 
 type PaymentProfiles struct {
 	CustomerType string  `json:"customerType,omitempty"`
 	Payment      Payment `json:"payment,omitempty"`
 	BillTo       *BillTo `json:"billTo,omitempty"`
+	PaymentId    string  `json:"paymentProfileId,omitempty"`
 }
 
 type CustomProfileResponse struct {
@@ -510,9 +512,10 @@ type CreateCustomerPaymentProfileRequest struct {
 }
 
 type PaymentProfile struct {
-	BillTo                BillTo  `json:"billTo"`
-	Payment               Payment `json:"payment"`
-	DefaultPaymentProfile string  `json:"defaultPaymentProfile"`
+	BillTo                *BillTo  `json:"billTo,omitempty"`
+	Payment               *Payment `json:"payment,omitempty"`
+	DefaultPaymentProfile string   `json:"defaultPaymentProfile,omitempty"`
+	PaymentProfileId      string   `json:"paymentProfileId,omitempty"`
 }
 
 type CustomerPaymentProfileResponse struct {

@@ -162,8 +162,23 @@ if response.Approved() {
 
 :white_medium_square: creditBankAccount
 
-:white_medium_square: chargeCustomerProfile
+:white_check_mark: chargeCustomerProfile
+```go
+customer := AuthorizeCIM.Customer{
+		ID: oldProfileId,
+		PaymentID: oldPaymentId,
+	}
 
+newTransaction := AuthorizeCIM.NewTransaction{
+		Amount: "35.00",
+	}
+
+response := newTransaction.ChargeProfile(customer)
+
+if response.Approved() {
+
+}
+```
 :white_medium_square: chargeTokenCard
 
 :white_medium_square: creditAcceptPaymentTransaction

@@ -18,6 +18,22 @@ func (tranx NewTransaction) Charge() TransactionResponse {
 	return response
 }
 
+func (tranx NewTransaction) ChargeProfile(profile Customer) TransactionResponse {
+	var new TransactionRequest
+	new = TransactionRequest{
+		TransactionType: "authCaptureTransaction",
+		Amount:          tranx.Amount,
+		Profile: &Profile{
+			CustomerProfileId: profile.ID,
+			PaymentProfile: &PaymentProfile{
+				PaymentProfileId: profile.PaymentID,
+			},
+		},
+	}
+	response, _ := SendTransactionRequest(new)
+	return response
+}
+
 func (tranx NewTransaction) AuthOnly() TransactionResponse {
 	var new TransactionRequest
 	new = TransactionRequest{
@@ -233,12 +249,13 @@ type UserField struct {
 }
 
 type TransactionRequest struct {
-	TransactionType string   `json:"transactionType,omitempty"`
-	Amount          string   `json:"amount,omitempty"`
-	Payment         *Payment `json:"payment,omitempty"`
-	RefTransId      string   `json:"refTransId,omitempty"`
-	AuthCode        string   `json:"authCode,omitempty"`
-	//LineItems           LineItems           `json:"lineItems,omitempty"`
+	TransactionType string     `json:"transactionType,omitempty"`
+	Amount          string     `json:"amount,omitempty"`
+	Payment         *Payment   `json:"payment,omitempty"`
+	RefTransId      string     `json:"refTransId,omitempty"`
+	AuthCode        string     `json:"authCode,omitempty"`
+	Profile         *Profile   `json:"profile,omitempty"`
+	LineItems       *LineItems `json:"lineItems,omitempty"`
 	//Tax                 Tax                 `json:"tax,omitempty"`
 	//Duty                Duty                `json:"duty,omitempty"`
 	//Shipping            Shipping            `json:"shipping,omitempty"`
