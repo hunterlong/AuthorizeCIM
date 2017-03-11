@@ -165,8 +165,8 @@ if response.Approved() {
 :white_check_mark: chargeCustomerProfile
 ```go
 customer := AuthorizeCIM.Customer{
-		ID: oldProfileId,
-		PaymentID: oldPaymentId,
+		ID: "49587345",
+		PaymentID: "84392124324",
 	}
 
 newTransaction := AuthorizeCIM.NewTransaction{
@@ -222,12 +222,9 @@ subscription := AuthorizeCIM.Subscription{
 			StartDate:        CurrentTime(),
 			TotalOccurrences: "9999",
 			TrialOccurrences: "0",
-			Interval: Interval{
-				Length: "1",
-				Unit:   "months",
-			},
+			Interval: AuthorizeCIM.IntervalMonthly(),
 		},
-		Payment: Payment{
+		Payment: &Payment{
 			CreditCard: CreditCard{
 				CardNumber:     "4007000000027",
 				ExpirationDate: "10/23",

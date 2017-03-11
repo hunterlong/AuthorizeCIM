@@ -261,9 +261,9 @@ type TransactionRequest struct {
 	//Shipping            Shipping            `json:"shipping,omitempty"`
 	//PoNumber            string              `json:"poNumber,omitempty"`
 	//Customer            Customer            `json:"customer,omitempty"`
-	//BillTo              Address             `json:"billTo,omitempty"`
-	//ShipTo              Address             `json:"shipTo,omitempty"`
-	//CustomerIP          string              `json:"customerIP,omitempty"`
+	BillTo     *Address `json:"billTo,omitempty"`
+	ShipTo     *Address `json:"shipTo,omitempty"`
+	CustomerIP string   `json:"customerIP,omitempty"`
 	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"`
 	//UserFields          UserFields          `json:"userFields,omitempty"`
 }
