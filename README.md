@@ -674,9 +674,9 @@ fmt.PrintLn("Refund Amount: ", batch.RefundAmount, "\n")
 ```go
 info := AuthorizeCIM.GetMerchantDetails()
 
-t.Log("Test Mode: ", info.IsTestMode, "\n")
-t.Log("Merchant Name: ", info.MerchantName, "\n")
-t.Log("Gateway ID: ", info.GatewayID, "\n")
+fmt.PrintLn("Test Mode: ", info.IsTestMode, "\n")
+fmt.PrintLn("Merchant Name: ", info.MerchantName, "\n")
+fmt.PrintLn("Gateway ID: ", info.GatewayID, "\n")
 ```
 
 ![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
