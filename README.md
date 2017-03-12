@@ -8,8 +8,9 @@ This golang package lets you create recurring subscriptions, AUTH only transacti
 
 # Features
 * [AIM Payment Transactions](https://github.com/hunterlong/AuthorizeCIM#payment-transactions)
-* [CIM Store Customer Payment Accounts](https://github.com/hunterlong/AuthorizeCIM#customer-profile)
+* [CIM Customer Information Manager](https://github.com/hunterlong/AuthorizeCIM#customer-profile)
 * [ARB Automatic Recurring Billing](https://github.com/hunterlong/AuthorizeCIM#recurring-billing) (Subscriptions)
+* [Transaction Reporting](https://github.com/hunterlong/AuthorizeCIM#transaction-reporting)
 * [Fraud Management](https://github.com/hunterlong/AuthorizeCIM#fraud-management)
 * Creating Users Accounts based on user's unique ID and/or email address
 * Store Payment Profiles (credit card) on Authorize.net using Customer Information Manager (CIM)
@@ -73,15 +74,6 @@ func main() {
 ```
 
 # Payment Transactions
-
-## Responses
-```go
-response.Approved()             // bool
-response.Message()              // string
-response.ErrorMessage()         // string
-response.TransactionID()        // string
-response.AVS()                  // [avsResultCode,cavvResultCode,cvvResultCode]
-```
 
 :white_check_mark: chargeCard
 ```go
@@ -199,7 +191,16 @@ if response.Approved() {
 
 :white_medium_square: getHostedPaymentPageRequest
 
-### Fraud Management
+## Transaction Responses
+```go
+response.Approved()             // bool
+response.Message()              // string
+response.ErrorMessage()         // string
+response.TransactionID()        // string
+response.AVS()                  // [avsResultCode,cavvResultCode,cvvResultCode]
+```
+
+# Fraud Management
 
 :white_check_mark: getUnsettledTransactionListRequest
 ```go
@@ -222,7 +223,7 @@ oldTransaction := AuthorizeCIM.PreviousTransaction{
 	}
 ```
 
-### Recurring Billing
+# Recurring Billing
 
 :white_check_mark: ARBCreateSubscriptionRequest
 ```go
@@ -350,7 +351,7 @@ active := AuthorizeCIM.SubscriptionList("subscriptionActive")
 fmt.Println("Amount of Active Subscriptions: ", active.Count())
 ```
 
-### Customer Profile
+# Customer Profile (CIM)
 
 :white_check_mark: createCustomerProfileRequest
 ```go
@@ -426,7 +427,7 @@ if response.Approved() {
 }
 ```
 
-### Customer Payment Profile
+# Customer Payment Profile
 
 :white_check_mark: createCustomerPaymentProfileRequest
 ```go
@@ -538,7 +539,8 @@ if response.Approved() {
     fmt.Println(response.ErrorMessage())
 }
 ```
-Customer Shipping Profile
+
+# Customer Shipping Profile
 
 :white_check_mark: createCustomerShippingAddressRequest
 ```go
@@ -623,7 +625,7 @@ customer := AuthorizeCIM.Customer{
 
 :white_medium_square: createCustomerProfileFromTransactionRequest
 
-Transaction Reporting
+# Transaction Reporting
 
 :white_check_mark: getSettledBatchListRequest
 ```go
