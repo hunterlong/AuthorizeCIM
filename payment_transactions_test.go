@@ -120,9 +120,7 @@ func TestChargeCustomerProfile(t *testing.T) {
 	}
 
 	response := newTransaction.ChargeProfile(customer)
-
-	response.AVS().cvvResultCode
-
+	
 	if response.Approved() {
 		t.Log("#", response.TransactionID(), "Customer was Charged $", newTransaction.Amount, "\n")
 	} else {
