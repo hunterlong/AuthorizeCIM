@@ -6,7 +6,20 @@
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM, AIM, and ARB API.
 This golang package lets you create recurring subscriptions, AUTH only transactions, voids, refunds, and other functionality connected to the Authorize.net API.
 
-Includes easy to use methods to tell you exactly what you need to know about transactions in your Authorize.net account.
+# Features
+* [AIM Payment Transactions](https://github.com/hunterlong/AuthorizeCIM#payment-transactions)
+* [CIM Store Customer Payment Accounts](https://github.com/hunterlong/AuthorizeCIM#customer-profile)
+* [ARB Automatic Recurring Billing](https://github.com/hunterlong/AuthorizeCIM#recurring-billing) (Subscriptions)
+* [Fraud Management](https://github.com/hunterlong/AuthorizeCIM#fraud-management)
+* Creating Users Accounts based on user's unique ID and/or email address
+* Store Payment Profiles (credit card) on Authorize.net using Customer Information Manager (CIM)
+* Create Subscriptions (monthly, weekly, days) with Automated Recurring Billing (ARB)
+* Process transactions using customers stored credit card
+* Delete and Updating payment profiles
+* Add Shipping Profiles into user accounts
+* Delete a customers entire account
+* Tests included and examples below
+
 ```go
 customer := AuthorizeCIM.Customer{
         ID: "13838",
@@ -19,7 +32,7 @@ shippingProfiles := customerInfo.ShippingProfiles()
 subscriptions := customerInfo.Subscriptions()
 ```
 
-## Usage
+# Usage
 * Import package
 ```
 go get github.com/hunterlong/authorizecim
@@ -37,20 +50,6 @@ apiKey := "auth_transaction_key_here"
 AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
 // use "live" to do transactions on production server
 ```
-
-## Features
-* [AIM Payment Transactions](https://github.com/hunterlong/AuthorizeCIM#payment-transactions)
-* [CIM Store Customer Payment Accounts](https://github.com/hunterlong/AuthorizeCIM#customer-profile)
-* [ARB Automatic Recurring Billing](https://github.com/hunterlong/AuthorizeCIM#recurring-billing) (Subscriptions)
-* [Fraud Management](https://github.com/hunterlong/AuthorizeCIM#fraud-management)
-* Creating Users Accounts based on user's unique ID and/or email address
-* Store Payment Profiles (credit card) on Authorize.net using Customer Information Manager (CIM)
-* Create Subscriptions (monthly, weekly, days) with Automated Recurring Billing (ARB)
-* Process transactions using customers stored credit card
-* Delete and Updating payment profiles
-* Add Shipping Profiles into user accounts
-* Delete a customers entire account
-* Tests included and examples below
 
 ![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
