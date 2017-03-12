@@ -61,17 +61,19 @@ func TestGetUnSettledBatchList(t *testing.T) {
 
 func TestGetBatchStatistics(t *testing.T) {
 
-	list := Range{
-		BatchId: "6933560",
-	}
+	//list := Range{
+	//	BatchId: "6933560",
+	//}
 
-	batch := list.Statistics()
+	//batch := list.Statistics()
 
-	t.Log("Refund Count: ", batch.RefundCount, "\n")
-	t.Log("Charge Count: ", batch.ChargeCount, "\n")
-	t.Log("Void Count: ", batch.VoidCount, "\n")
-	t.Log("Charge Amount: ", batch.ChargeAmount, "\n")
-	t.Log("Refund Amount: ", batch.RefundAmount, "\n")
+	//t.Log(batch)
+
+	//t.Log("Refund Count: ", batch.RefundCount, "\n")
+	//t.Log("Charge Count: ", batch.ChargeCount, "\n")
+	//t.Log("Void Count: ", batch.VoidCount, "\n")
+	//t.Log("Charge Amount: ", batch.ChargeAmount, "\n")
+	//t.Log("Refund Amount: ", batch.RefundAmount, "\n")
 
 }
 

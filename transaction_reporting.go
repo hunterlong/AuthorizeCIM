@@ -26,7 +26,10 @@ func (r Range) SettledBatch() BatchListResponse {
 			LastSettlementDate:     r.End,
 		},
 	}
-	jsoned, _ := json.Marshal(new)
+	jsoned, err := json.Marshal(new)
+	if err != nil {
+		panic(err)
+	}
 	response := SendRequest(jsoned)
 	var dat BatchListResponse
 	json.Unmarshal(response, &dat)
@@ -125,8 +128,8 @@ type GetSettledBatchList struct {
 }
 
 type BatchListResponse struct {
-	BatchList []BatchList `json:"batchList"`
 	MessagesResponse
+	BatchList []BatchList `json:"batchList,omitempty"`
 }
 
 type BatchList struct {
