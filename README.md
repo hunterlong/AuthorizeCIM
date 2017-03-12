@@ -40,6 +40,10 @@ go get github.com/hunterlong/authorizecim
 ```go
 import "github.com/hunterlong/authorizecim"
 ```
+###### Or Shorten the Package Name
+```go
+import auth "github.com/hunterlong/authorizecim"
+```
 
 * Set Authorize.net API Keys
 ```go
@@ -68,7 +72,13 @@ func main() {
 }
 ```
 
-### Payment Transactions
+# Payment Transactions
+
+## Responses
+```go
+response.Approved() // bool
+
+```
 
 :white_check_mark: chargeCard
 ```go
