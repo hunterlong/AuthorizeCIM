@@ -27,26 +27,6 @@ func SetAPIInfo(name string, key string, mode string) {
 	}
 }
 
-func IntervalMonthly() Interval {
-	interval := Interval{Length: "1", Unit: "months"}
-	return interval
-}
-
-func IntervalQuarterly() Interval {
-	interval := Interval{Length: "3", Unit: "months"}
-	return interval
-}
-
-func IntervalWeekly() Interval {
-	interval := Interval{Length: "7", Unit: "days"}
-	return interval
-}
-
-func IntervalYearly() Interval {
-	interval := Interval{Length: "365", Unit: "days"}
-	return interval
-}
-
 func GetAuthentication() MerchantAuthentication {
 	auth := MerchantAuthentication{
 		Name:           apiName,

@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
-	"time"
 )
 
 func (response SubscriptionResponse) Approved() bool {
@@ -269,11 +268,6 @@ func SubscriptionList(search string) GetSubscriptionList {
 
 func (sub GetSubscriptionResponse) ErrorMessage() string {
 	return sub.Messages.Message[0].Text
-}
-
-func CurrentDate() string {
-	current_time := time.Now().UTC()
-	return current_time.Format("2006-01-02")
 }
 
 type GetSubscriptionResponse struct {

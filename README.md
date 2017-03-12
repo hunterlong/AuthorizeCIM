@@ -607,10 +607,77 @@ customer := AuthorizeCIM.Customer{
 
 Transaction Reporting
 
-:white_medium_square: getSettledBatchListRequest
+:white_check_mark: getSettledBatchListRequest
+```go
+list := AuthorizeCIM.Range{
+		Start: LastWeek(),
+		End:   Now(),
+	}
 
-:white_medium_square: getTransactionListRequest
+batches := list.SettledBatch().List()
 
+for _, v := range batches {
+    t.Log("Batch ID: ", v.BatchID, "\n")
+    t.Log("Payment Method: ", v.PaymentMethod, "\n")
+    t.Log("State: ", v.SettlementState, "\n")
+}
+```
+:white_check_mark: getUnSettledBatchListRequest
+```go
+batches := AuthorizeCIM.UnSettledBatch().List()
+
+for _, v := range batches {
+    t.Log("Status: ",v.TransactionStatus, "\n")
+    t.Log("Amount: ",v.Amount, "\n")
+    t.Log("Transaction ID: #",v.TransID, "\n")
+}
+
+```
+:white_check_mark: getTransactionListRequest
+```go
+list := AuthorizeCIM.Range{
+		BatchId: "6933560",
+	}
+
+batches := list.Transactions().List()
+
+for _, v := range batches {
+    t.Log("Transaction ID: ", v.TransID, "\n")
+    t.Log("Amount: ", v.Amount, "\n")
+    t.Log("Account: ", v.AccountNumber, "\n")
+}
+```
+:white_check_mark: getTransactionDetails
+```go
+oldTransaction := AuthorizeCIM.PreviousTransaction{
+		RefId: "60019493304",
+	}
+response := oldTransaction.Info()
+
+fmt.PrintLn("Transaction Status: ",response.TransactionStatus,"\n")
+```
+:white_check_mark: getBatchStatistics
+```go
+list := AuthorizeCIM.Range{
+		BatchId: "6933560",
+	}
+
+batch := list.Statistics()
+
+fmt.PrintLn("Refund Count: ", batch.RefundCount, "\n")
+fmt.PrintLn("Charge Count: ", batch.ChargeCount, "\n")
+fmt.PrintLn("Void Count: ", batch.VoidCount, "\n")
+fmt.PrintLn("Charge Amount: ", batch.ChargeAmount, "\n")
+fmt.PrintLn("Refund Amount: ", batch.RefundAmount, "\n")
+```
+:white_medium_square: getMerchantDetails
+```go
+info := AuthorizeCIM.GetMerchantDetails()
+
+t.Log("Test Mode: ", info.IsTestMode, "\n")
+t.Log("Merchant Name: ", info.MerchantName, "\n")
+t.Log("Gateway ID: ", info.GatewayID, "\n")
+```
 
 ![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
 
