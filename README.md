@@ -219,7 +219,7 @@ subscription := AuthorizeCIM.Subscription{
 		Amount:      "9.00",
 		TrialAmount: "0.00",
 		PaymentSchedule: &PaymentSchedule{
-			StartDate:        CurrentTime(),
+			StartDate:        CurrentDate(),
 			TotalOccurrences: "9999",
 			TrialOccurrences: "0",
 			Interval: AuthorizeCIM.IntervalMonthly(),
@@ -242,6 +242,15 @@ if response.Approved() {
     fmt.Println("New Subscription ID: ",response.SubscriptionID)
 }
 ```
+###### For Intervals, you can use simple methods
+```go
+AuthorizeCIM.IntervalWeekly()      // runs every week (7 days)
+AuthorizeCIM.IntervalMonthly()     // runs every Month
+AuthorizeCIM.IntervalQuarterly()   // runs every 3 months
+AuthorizeCIM.IntervalYearly()      // runs every 1 year
+AuthorizeCIM.IntervalDays("15")    // runs every 15 days
+AuthorizeCIM.IntervalMonths("6")   // runs every 6 months
+```
 
 :white_check_mark: ARBCreateSubscriptionRequest from Customer Profile
 ```go
@@ -250,13 +259,10 @@ subscription := AuthorizeCIM.Subscription{
 		Amount:      "12.00",
 		TrialAmount: "0.00",
 		PaymentSchedule: &PaymentSchedule{
-			StartDate:        CurrentTime(),
+			StartDate:        CurrentDate(),
 			TotalOccurrences: "9999",
 			TrialOccurrences: "0",
-			Interval: Interval{
-				Length: "1",
-				Unit:   "months",
-			},
+			Interval: AuthorizeCIM.IntervalDays("15"),
 		},
 		Profile: &CustomerProfiler{
 			CustomerProfileID: "823928379",

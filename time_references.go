@@ -28,21 +28,25 @@ func CurrentDate() string {
 }
 
 func IntervalMonthly() Interval {
-	interval := Interval{Length: "1", Unit: "months"}
-	return interval
+	return Interval{Length: "1", Unit: "months"}
 }
 
 func IntervalQuarterly() Interval {
-	interval := Interval{Length: "3", Unit: "months"}
-	return interval
+	return Interval{Length: "3", Unit: "months"}
 }
 
 func IntervalWeekly() Interval {
-	interval := Interval{Length: "7", Unit: "days"}
-	return interval
+	return Interval{Length: "7", Unit: "days"}
+}
+
+func IntervalDays(amount string) Interval {
+	return Interval{Length: amount, Unit: "days"}
+}
+
+func IntervalMonths(amount string) Interval {
+	return Interval{Length: amount, Unit: "months"}
 }
 
 func IntervalYearly() Interval {
-	interval := Interval{Length: "365", Unit: "days"}
-	return interval
+	return Interval{Length: "365", Unit: "days"}
 }
