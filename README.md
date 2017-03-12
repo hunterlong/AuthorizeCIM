@@ -670,7 +670,7 @@ fmt.PrintLn("Void Count: ", batch.VoidCount, "\n")
 fmt.PrintLn("Charge Amount: ", batch.ChargeAmount, "\n")
 fmt.PrintLn("Refund Amount: ", batch.RefundAmount, "\n")
 ```
-:white_medium_square: getMerchantDetails
+:white_check_mark: getMerchantDetails
 ```go
 info := AuthorizeCIM.GetMerchantDetails()
 
