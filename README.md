@@ -76,8 +76,11 @@ func main() {
 
 ## Responses
 ```go
-response.Approved() // bool
-
+response.Approved()             // bool
+response.Message()              // string
+response.ErrorMessage()         // string
+response.TransactionID()        // string
+response.AVS()                  // [avsResultCode,cavvResultCode,cvvResultCode]
 ```
 
 :white_check_mark: chargeCard
