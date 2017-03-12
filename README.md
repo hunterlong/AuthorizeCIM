@@ -44,12 +44,12 @@ import "github.com/hunterlong/authorizecim"
 ###### Or Shorten the Package Name
 ```go
 import auth "github.com/hunterlong/authorizecim"
+// auth.SetAPIInfo(apiName,apiKey,"test")
 ```
 
-* Set Authorize.net API Keys
+## Set Authorize.net API Keys
+You can get Sandbox Access at:  https://developer.authorize.net/hello_world/sandbox/
 ```go
-// Set your Authorize API name and key here
-// You can get Sandbox Access at:  https://developer.authorize.net/hello_world/sandbox/
 apiName := "auth_name_here"
 apiKey := "auth_transaction_key_here"
 AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
