@@ -17,6 +17,7 @@ func TestChargeCard(t *testing.T) {
 		},
 	}
 	response := newTransaction.Charge()
+
 	if response.Approved() {
 		previousCharged = response.TransactionID()
 		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")

@@ -14,7 +14,6 @@ var newSecondCustomerProfileId string
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
-	showLogs = false
 }
 
 func TestSetAPIInfo(t *testing.T) {

@@ -193,7 +193,8 @@ if response.Ok() {
 
 ## Transaction Responses
 ```go
-response.Ok()             // bool
+response.Ok()                   // bool
+response.Approved()             // bool
 response.Message()              // string
 response.ErrorMessage()         // string
 response.TransactionID()        // string
