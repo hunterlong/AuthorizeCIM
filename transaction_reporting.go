@@ -86,7 +86,10 @@ func (r Range) Statistics() Statistics {
 	response := SendRequest(jsoned)
 	var dat BatchStatisticsResponse
 	json.Unmarshal(response, &dat)
-	return dat.Batch.Statistics[0]
+	if dat.Messages.ResultCode == "ok" {
+		return dat.Batch.Statistics[0]
+	}
+	return Statistics{}
 }
 
 func GetMerchantDetails() MerchantDetailsResponse {
