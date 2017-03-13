@@ -27,6 +27,14 @@ func SetAPIInfo(name string, key string, mode string) {
 	}
 }
 
+func IsConnected() bool {
+	info := GetMerchantDetails()
+	if info.Approved() {
+		return true
+	}
+	return false
+}
+
 func GetAuthentication() MerchantAuthentication {
 	auth := MerchantAuthentication{
 		Name:           apiName,

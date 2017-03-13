@@ -17,17 +17,25 @@ func TestSetAPIInfo(t *testing.T) {
 	t.Log("API Info Set")
 }
 
+func TestIsConnected(t *testing.T) {
+	authenticated := IsConnected()
+	if !authenticated {
+		t.Fail()
+	}
+}
+
 func TestCreateCustomerProfile(t *testing.T) {
 
 	customer := Profile{
-		MerchantCustomerID: "86437",
-		Email:              "info@emailhereooooo.com",
+		MerchantCustomerID: "21232",
+		Email:              "info@brandnewuser.com",
 		PaymentProfiles: &PaymentProfiles{
 			CustomerType: "individual",
 			Payment: Payment{
 				CreditCard: CreditCard{
 					CardNumber:     "4007000000027",
-					ExpirationDate: "10/23",
+					ExpirationDate: "10/26",
+					//CardCode: "384",
 				},
 			},
 		},

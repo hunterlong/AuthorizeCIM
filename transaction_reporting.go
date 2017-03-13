@@ -42,10 +42,13 @@ func UnSettledBatch() UnsettledTransactionListResponse {
 			MerchantAuthentication: GetAuthentication(),
 		},
 	}
-	jsoned, _ := json.Marshal(new)
+	jsoned, err := json.Marshal(new)
 	response := SendRequest(jsoned)
 	var dat UnsettledTransactionListResponse
-	json.Unmarshal(response, &dat)
+	err = json.Unmarshal(response, &dat)
+	if err != nil {
+		panic(err)
+	}
 	return dat
 }
 
@@ -160,7 +163,7 @@ type GetTransactionListResponse struct {
 	GetTransactionList struct {
 		MessagesResponse
 		Transactions        Transactions `json:"transactions"`
-		TotalNumInResultSet int          `json:"totalNumInResultSet"`
+		TotalNumInResultSet int          `json:"totalNumInResultSet,omitempty"`
 	} `json:"getTransactionListResponse"`
 }
 
@@ -169,20 +172,20 @@ type Transactions struct {
 }
 
 type Transaction struct {
-	TransID           string `json:"transId"`
-	SubmitTimeUTC     string `json:"submitTimeUTC"`
-	SubmitTimeLocal   string `json:"submitTimeLocal"`
-	TransactionStatus string `json:"transactionStatus"`
-	Invoice           string `json:"invoice"`
-	FirstName         string `json:"firstName"`
-	LastName          string `json:"lastName"`
-	Amount            string `json:"amount"`
-	AccountType       string `json:"accountType"`
-	AccountNumber     string `json:"accountNumber"`
-	SettleAmount      string `json:"settleAmount,omitempty"`
+	TransID           string  `json:"transId,omitempty"`
+	SubmitTimeUTC     string  `json:"submitTimeUTC,omitempty"`
+	SubmitTimeLocal   string  `json:"submitTimeLocal,omitempty"`
+	TransactionStatus string  `json:"transactionStatus,omitempty"`
+	Invoice           string  `json:"invoice,omitempty"`
+	FirstName         string  `json:"firstName,omitempty"`
+	LastName          string  `json:"lastName,omitempty"`
+	Amount            string  `json:"amount,omitempty"`
+	AccountType       string  `json:"accountType,omitempty"`
+	AccountNumber     string  `json:"accountNumber,omitempty"`
+	SettleAmount      float64 `json:"settleAmount,omitempty"`
 	Subscription      struct {
-		ID     string `json:"id"`
-		PayNum string `json:"payNum"`
+		ID     string `json:"id,omitempty"`
+		PayNum string `json:"payNum,omitempty"`
 	} `json:"subscription,omitempty"`
 	MarketType     string `json:"marketType,omitempty"`
 	Product        string `json:"product,omitempty"`
@@ -264,7 +267,8 @@ type GetUnsettledTransactionList struct {
 }
 
 type UnsettledTransactionListResponse struct {
-	Transactions []Transaction `json:"transactions"`
+	Transactions        []Transaction `json:"transactions,omitempty"`
+	TotalNumInResultSet int           `json:"totalNumInResultSet,omitempty"`
 	MessagesResponse
 }
 
