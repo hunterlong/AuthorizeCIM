@@ -27,10 +27,6 @@ func TestCreateSubscription(t *testing.T) {
 			FirstName: "Hunter",
 			LastName:  "Long",
 		},
-		Customer: &Customer{
-			ID:    "273287",
-			Email: "info@newemailuser.com",
-		},
 	}
 
 	response := subscription.Charge()
