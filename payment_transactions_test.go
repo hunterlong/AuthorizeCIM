@@ -33,6 +33,7 @@ func TestChargeCard(t *testing.T) {
 		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode+"\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
 		t.SkipNow()
 	}
 }
@@ -60,7 +61,8 @@ func TestDeclinedChargeCard(t *testing.T) {
 		t.Fail()
 	} else {
 		previousCharged = response.TransactionID()
-		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
+		t.Log("#", response.TransactionID(), "Transaction was DECLINED!!!", "\n")
+		t.Log(response.Message(), "\n")
 		t.Log("AVS Result Code: ", response.AVS().avsResultCode+"\n")
 		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode+"\n")
 		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode+"\n")
