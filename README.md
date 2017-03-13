@@ -179,7 +179,7 @@ newTransaction := AuthorizeCIM.NewTransaction{
 
 response := newTransaction.ChargeProfile(customer)
 
-if response.Approved() {
+if response.Ok() {
 
 }
 ```
@@ -193,7 +193,7 @@ if response.Approved() {
 
 ## Transaction Responses
 ```go
-response.Approved()             // bool
+response.Ok()             // bool
 response.Message()              // string
 response.ErrorMessage()         // string
 response.TransactionID()        // string
@@ -218,7 +218,7 @@ oldTransaction := AuthorizeCIM.PreviousTransaction{
 	response := oldTransaction.Approve()
 	//response := oldTransaction.Decline()
 
-	if response.Approved() {
+	if response.Ok() {
 
 	}
 ```
@@ -326,7 +326,7 @@ subscription := AuthorizeCIM.Subscription{
 
 response := subscription.Update()
 
-if response.Approved() {
+if response.Ok() {
 
 }
 ```
@@ -371,7 +371,7 @@ customer := AuthorizeCIM.Profile{
 
 	response := customer.Create()
 
-if response.Approved() {
+if response.Ok() {
     fmt.Println("New Customer Profile Created #",response.CustomerProfileID)
     fmt.Println("New Customer Payment Profile Created #",response.CustomerPaymentProfileID)
 } else {
@@ -409,7 +409,7 @@ customer := AuthorizeCIM.Profile{
 
 	response := customer.Update()
 
-if response.Approved() {
+if response.Ok() {
 
 }
 ```
@@ -422,7 +422,7 @@ customer := AuthorizeCIM.Customer{
 
 	response := customer.Delete()
 
-if response.Approved() {
+if response.Ok() {
 
 }
 ```
@@ -454,7 +454,7 @@ paymentProfile := AuthorizeCIM.CustomerPaymentProfile{
 
 response := paymentProfile.Add()
 
-if response.Approved() {
+if response.Ok() {
 
 } else {
     fmt.Println(response.ErrorMessage())
@@ -486,7 +486,7 @@ customerProfile := AuthorizeCIM.Customer{
 
 response := customerProfile.Validate()
 
-if response.Approved() {
+if response.Ok() {
 
 }
 ```
@@ -510,6 +510,7 @@ customer := AuthorizeCIM.Profile{
 				Address:     "2841 purple ct",
 				City:        "los angeles",
 				State:		  "CA",
+				Zip:            "93939",
 				Country:     "USA",
 				PhoneNumber: "8885555555",
 			},
@@ -518,7 +519,7 @@ customer := AuthorizeCIM.Profile{
 
 response := customer.UpdatePaymentProfile()
 
-if response.Approved() {
+if response.Ok() {
     fmt.Println("Customer Payment Profile was Updated")
 } else {
     fmt.Println(response.ErrorMessage())
@@ -533,7 +534,7 @@ customer := AuthorizeCIM.Customer{
 
 response := customer.DeletePaymentProfile()
 
-if response.Approved() {
+if response.Ok() {
     fmt.Println("Payment Profile was Deleted")
 } else {
     fmt.Println(response.ErrorMessage())
@@ -563,7 +564,7 @@ customer := AuthorizeCIM.Profile{
 
 response := customer.CreateShipping()
 
-if response.Approved() {
+if response.Ok() {
     fmt.Println("New Shipping Added: #",response.CustomerAddressID)
 } else {
     fmt.Println(response.ErrorMessage())
@@ -602,7 +603,7 @@ customer := AuthorizeCIM.Profile{
 
 response := customer.UpdateShippingProfile()
 
-if response.Approved() {
+if response.Ok() {
     fmt.Println("Shipping Profile was updated")
 }
 ```
@@ -615,7 +616,7 @@ customer := AuthorizeCIM.Customer{
 
 	response := customer.DeleteShippingProfile()
 
-	if response.Approved() {
+	if response.Ok() {
 		fmt.Println("Shipping Profile was Deleted")
 	} else {
 		fmt.Println(response.ErrorMessage())

@@ -12,15 +12,16 @@ func TestChargeCard(t *testing.T) {
 		Amount: RandomNumber(5, 99) + ".90",
 		CreditCard: CreditCard{
 			CardNumber:     "4007000000027",
-			ExpirationDate: "10/23",
+			ExpirationDate: "08/" + RandomNumber(20, 27),
 		},
 		BillTo: &BillTo{
-			FirstName:   "okokk",
-			LastName:    "okok",
+			FirstName:   RandomString(7),
+			LastName:    RandomString(9),
 			Address:     "1111 white ct",
 			City:        "los angeles",
-			Country:     "USA",
+			State:       "CA",
 			Zip:         "29292",
+			Country:     "USA",
 			PhoneNumber: "8885555555",
 		},
 	}
@@ -149,7 +150,7 @@ func TestVoidCard(t *testing.T) {
 	}
 	response := newTransaction.Void()
 	if response.Approved() {
-		t.Log("#", response.TransactionID(), "Transaction was VOIDED $", newTransaction.Amount, "\n")
+		t.Log("#", response.TransactionID(), "Transaction was VOIDED", "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
 		t.Log(response.Message(), "\n")
