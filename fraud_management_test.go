@@ -19,22 +19,7 @@ func TestApproveTransaction(t *testing.T) {
 
 	response := oldTransaction.Approve()
 
-	if response.Ok() {
-		t.Log(response.ErrorMessage())
-	} else {
-		t.Log(response.ErrorMessage())
-	}
-}
-
-func TestDeclineTransaction(t *testing.T) {
-	oldTransaction := PreviousTransaction{
-		Amount: "49.99",
-		RefId:  "39824723983",
-	}
-
-	response := oldTransaction.Decline()
-
-	if response.Ok() {
+	if response.Approved() {
 		t.Log(response.ErrorMessage())
 	} else {
 		t.Log(response.ErrorMessage())

@@ -2,6 +2,7 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 func (tranx NewTransaction) Charge() TransactionResponse {
@@ -118,6 +119,7 @@ func SendTransactionRequest(input TransactionRequest) (TransactionResponse, inte
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(string(jsoned))
 	response := SendRequest(jsoned)
 	var dat TransactionResponse
 	err = json.Unmarshal(response, &dat)

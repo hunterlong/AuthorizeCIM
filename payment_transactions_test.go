@@ -6,6 +6,7 @@ import (
 
 var previousAuth string
 var previousCharged string
+var heldTransactionId string
 
 func TestChargeCard(t *testing.T) {
 	newTransaction := NewTransaction{
@@ -14,28 +15,89 @@ func TestChargeCard(t *testing.T) {
 			CardNumber:     "4007000000027",
 			ExpirationDate: "08/" + RandomNumber(20, 27),
 		},
+	}
+	response := newTransaction.Charge()
+	if response.Approved() {
+		previousCharged = response.TransactionID()
+		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
+	} else {
+		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
+		t.SkipNow()
+	}
+}
+
+func TestAVSDeclinedChargeCard(t *testing.T) {
+	newTransaction := NewTransaction{
+		Amount: RandomNumber(5, 99) + ".75",
+		CreditCard: CreditCard{
+			CardNumber:     "5424000000000015",
+			ExpirationDate: "08/" + RandomNumber(20, 27),
+		},
 		BillTo: &BillTo{
 			FirstName:   RandomString(7),
 			LastName:    RandomString(9),
 			Address:     "1111 white ct",
 			City:        "los angeles",
 			State:       "CA",
-			Zip:         "29292",
+			Zip:         "46205",
 			Country:     "USA",
 			PhoneNumber: "8885555555",
 		},
 	}
 	response := newTransaction.Charge()
-	if response.Approved() {
-		previousCharged = response.TransactionID()
-		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
-		t.Log("AVS Result Code: ", response.AVS().avsResultCode+"\n")
-		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode+"\n")
-		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode+"\n")
+
+	if response.AVS().avsResultCode == "N" {
+		t.Log("#", response.TransactionID(), "AVS Transaction was DECLINED due to AVS Code. $", newTransaction.Amount, "\n")
+		t.Log("AVS Result Text: ", response.AVS().Text(), "\n")
+		t.Log("AVS Result Code: ", response.AVS().avsResultCode, "\n")
+		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode, "\n")
+		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
 		t.Log(response.Message(), "\n")
-		t.SkipNow()
+		t.Fail()
+	}
+}
+
+func TestAVSChargeCard(t *testing.T) {
+	newTransaction := NewTransaction{
+		Amount: RandomNumber(5, 99) + ".75",
+		CreditCard: CreditCard{
+			CardNumber:     "4012888818888",
+			ExpirationDate: "08/" + RandomNumber(20, 27),
+		},
+		BillTo: &BillTo{
+			FirstName:   RandomString(7),
+			LastName:    RandomString(9),
+			Address:     "1111 green ct",
+			City:        "los angeles",
+			State:       "CA",
+			Zip:         "46203",
+			Country:     "USA",
+			PhoneNumber: "8885555555",
+		},
+	}
+	response := newTransaction.Charge()
+
+	if response.Approved() {
+		heldTransactionId = response.TransactionID()
+	}
+
+	if response.Held() {
+		t.Log("Transaction is being Held for Review", "\n")
+	}
+
+	if response.AVS().avsResultCode == "E" {
+		t.Log("#", response.TransactionID(), "AVS Transaction was CHARGED is now on HOLD$", newTransaction.Amount, "\n")
+		t.Log("AVS Result Text: ", response.AVS().Text(), "\n")
+		t.Log("AVS Result Code: ", response.AVS().avsResultCode, "\n")
+		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode, "\n")
+		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode, "\n")
+	} else {
+		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
+		t.Fail()
 	}
 }
 
@@ -47,7 +109,7 @@ func TestDeclinedChargeCard(t *testing.T) {
 			ExpirationDate: "10/23",
 		},
 		BillTo: &BillTo{
-			FirstName:   "Fraud",
+			FirstName:   "Declined",
 			LastName:    "User",
 			Address:     "1337 Yolo Ln.",
 			City:        "Beverly Hills",
@@ -64,9 +126,10 @@ func TestDeclinedChargeCard(t *testing.T) {
 		previousCharged = response.TransactionID()
 		t.Log("#", response.TransactionID(), "Transaction was DECLINED!!!", "\n")
 		t.Log(response.Message(), "\n")
-		t.Log("AVS Result Code: ", response.AVS().avsResultCode+"\n")
-		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode+"\n")
-		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode+"\n")
+		t.Log("AVS Result Text: ", response.AVS().Text(), "\n")
+		t.Log("AVS Result Code: ", response.AVS().avsResultCode, "\n")
+		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode, "\n")
+		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode, "\n")
 	}
 }
 

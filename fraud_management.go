@@ -48,7 +48,7 @@ type BatchTransaction struct {
 	LastName          string    `json:"lastName"`
 	AccountType       string    `json:"accountType"`
 	AccountNumber     string    `json:"accountNumber"`
-	SettleAmount      int       `json:"settleAmount"`
+	SettleAmount      float64   `json:"settleAmount"`
 	MarketType        string    `json:"marketType"`
 	Product           string    `json:"product"`
 	FraudInformation  struct {

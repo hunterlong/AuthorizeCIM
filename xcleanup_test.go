@@ -108,6 +108,23 @@ func TestDeleteSecondCustomerProfile(t *testing.T) {
 
 }
 
+func TestDeclineTransaction(t *testing.T) {
+	oldTransaction := PreviousTransaction{
+		//Amount: "49.99",
+		RefId: heldTransactionId,
+	}
+
+	response := oldTransaction.Decline()
+
+	if response.Approved() {
+		t.Log("DECLINED the previous transasction that was on Hold. ID #", oldTransaction.RefId)
+		t.Log(response.TransactionID())
+	} else {
+		t.Log(response.ErrorMessage())
+		t.Fail()
+	}
+}
+
 func RandomString(n int) string {
 	var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	b := make([]rune, n)
