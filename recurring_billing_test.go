@@ -8,14 +8,14 @@ var newSubscriptionId string
 
 func TestCreateSubscription(t *testing.T) {
 	subscription := Subscription{
-		Name:        "New Subscription",
-		Amount:      "9.00",
-		TrialAmount: "0.00",
+		Name:   "New Subscription",
+		Amount: "9.00",
+		//TrialAmount: "0.00",
 		PaymentSchedule: &PaymentSchedule{
 			StartDate:        CurrentDate(),
 			TotalOccurrences: "9999",
-			TrialOccurrences: "0",
-			Interval:         IntervalMonthly(),
+			//TrialOccurrences: "0",
+			Interval: IntervalMonthly(),
 		},
 		Payment: &Payment{
 			CreditCard: CreditCard{
@@ -26,6 +26,10 @@ func TestCreateSubscription(t *testing.T) {
 		BillTo: &BillTo{
 			FirstName: "Hunter",
 			LastName:  "Long",
+		},
+		Customer: &Customer{
+			ID:    "273287",
+			Email: "info@newemailuser.com",
 		},
 	}
 
@@ -129,5 +133,54 @@ func TestGetCardExpiringSubscriptionList(t *testing.T) {
 	subscriptionList := SubscriptionList("cardExpiringThisMonth")
 
 	t.Log("Amount of Cards Expiring This Month: ", subscriptionList.Count())
+
+}
+
+func TestDeleteCustomerShippingProfile(t *testing.T) {
+	customer := Customer{
+		ID:         newCustomerProfileId,
+		ShippingID: newCustomerShippingId,
+	}
+
+	response := customer.DeleteShippingProfile()
+
+	if response.Approved() {
+		t.Log("Shipping Profile was Deleted")
+	} else {
+		t.Log(response.ErrorMessage())
+		t.Fail()
+	}
+}
+
+func TestDeleteCustomerPaymentProfile(t *testing.T) {
+	customer := Customer{
+		ID:        newCustomerProfileId,
+		PaymentID: newCustomerPaymentId,
+	}
+
+	response := customer.DeletePaymentProfile()
+
+	if response.Approved() {
+		t.Log("Payment Profile was Deleted")
+	} else {
+		t.Log(response.ErrorMessage())
+		t.Fail()
+	}
+}
+
+func TestDeleteCustomerProfile(t *testing.T) {
+
+	customer := Customer{
+		ID: newCustomerProfileId,
+	}
+
+	response := customer.DeleteProfile()
+
+	if response.Approved() {
+		t.Log("Customer was Deleted")
+	} else {
+		t.Log(response.ErrorMessage())
+		t.Fail()
+	}
 
 }

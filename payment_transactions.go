@@ -225,9 +225,11 @@ type Tax struct {
 }
 
 type Customer struct {
-	ID         string `json:"id,omitempty"`
-	PaymentID  string `json:"id,omitempty"`
-	ShippingID string `json:"id,omitempty"`
+	ID          string `json:"id,omitempty"`
+	Email       string `json:"email,omitempty"`
+	PaymentID   string `json:"paymentId,omitempty"`
+	ShippingID  string `json:"shippingId,omitempty"`
+	PhoneNumber string `json:"phoneNumber,omitempty"`
 }
 
 type TransactionSettings struct {

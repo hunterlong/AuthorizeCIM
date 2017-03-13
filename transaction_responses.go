@@ -5,7 +5,7 @@ func (transx TransactionResponse) TransactionID() string {
 }
 
 func (transx TransactionResponse) Message() string {
-	return transx.Response.Message.Messages.Message[0].Text
+	return transx.Response.Errors[0].ErrorText
 }
 
 func (transx TransactionResponse) AVS() AVS {

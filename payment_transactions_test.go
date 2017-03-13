@@ -24,6 +24,7 @@ func TestChargeCard(t *testing.T) {
 		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode+"\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.SkipNow()
 	}
 }
 
@@ -41,6 +42,8 @@ func TestAuthOnlyCard(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Transaction was AUTHORIZED $", newTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
+		t.SkipNow()
 	}
 }
 
@@ -54,6 +57,8 @@ func TestCaptureAuth(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Transaction was CAPTURED $", oldTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
+		t.SkipNow()
 	}
 }
 
@@ -73,6 +78,8 @@ func TestChargeCardChannel(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Transaction was Charged Through Channel (AuthCode) $", newTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
+		t.SkipNow()
 	}
 }
 
@@ -90,6 +97,8 @@ func TestRefundCard(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Transaction was REFUNDED $", newTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
+		t.SkipNow()
 	}
 }
 
@@ -102,6 +111,7 @@ func TestVoidCard(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Transaction was VOIDED $", newTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.SkipNow()
 	}
 }
 
@@ -125,5 +135,7 @@ func TestChargeCustomerProfile(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Customer was Charged $", newTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
+		t.SkipNow()
 	}
 }

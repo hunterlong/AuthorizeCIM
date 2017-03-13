@@ -57,6 +57,10 @@ func TestGetUnSettledBatchList(t *testing.T) {
 		t.Log("Transaction ID: #", v.TransID, "\n")
 	}
 
+	if len(batches) == 0 {
+		t.Fail()
+	}
+
 }
 
 func TestGetBatchStatistics(t *testing.T) {

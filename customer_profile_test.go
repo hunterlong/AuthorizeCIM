@@ -39,6 +39,7 @@ func TestCreateCustomerProfile(t *testing.T) {
 		newCustomerProfileId = response.CustomerProfileID
 		t.Log("New Customer Profile Created #", response.CustomerProfileID)
 	} else {
+		t.Fail()
 		t.Log(response.ErrorMessage())
 	}
 
@@ -50,6 +51,11 @@ func TestGetProfileIds(t *testing.T) {
 	for _, p := range profiles {
 		t.Log("Profile ID #", p)
 	}
+
+	if len(profiles) == 0 {
+		t.Fail()
+	}
+
 	t.Log(profiles)
 }
 
@@ -68,6 +74,7 @@ func TestUpdateCustomerProfile(t *testing.T) {
 		t.Log("Customer Profile was Updated")
 	} else {
 		t.Log(response.ErrorMessage())
+		t.Fail()
 	}
 
 }
@@ -102,6 +109,7 @@ func TestCreateCustomerPaymentProfile(t *testing.T) {
 		t.Log("Created new Payment Profile #", response.CustomerPaymentProfileID, "for Customer ID: ", response.CustomerProfileId)
 	} else {
 		t.Log(response.ErrorMessage())
+		t.Fail()
 	}
 
 }
@@ -117,6 +125,10 @@ func TestGetCustomerPaymentProfile(t *testing.T) {
 	paymentProfiles := response.PaymentProfiles()
 
 	t.Log("Customer Payment Profiles", paymentProfiles)
+
+	if len(paymentProfiles) == 0 {
+		t.Fail()
+	}
 
 }
 
@@ -140,6 +152,7 @@ func TestValidateCustomerPaymentProfile(t *testing.T) {
 		t.Log("Customer Payment Profile is VALID")
 	} else {
 		t.Log(response.ErrorMessage())
+		t.Fail()
 	}
 
 }
@@ -176,23 +189,9 @@ func TestUpdateCustomerPaymentProfile(t *testing.T) {
 		t.Log("Customer Payment Profile was Updated")
 	} else {
 		t.Log(response.ErrorMessage())
+		t.Fail()
 	}
 
-}
-
-func TestDeleteCustomerPaymentProfile(t *testing.T) {
-	customer := Customer{
-		ID:        newCustomerProfileId,
-		PaymentID: newCustomerPaymentId,
-	}
-
-	response := customer.DeletePaymentProfile()
-
-	if response.Approved() {
-		t.Log("Payment Profile was Deleted")
-	} else {
-		t.Log(response.ErrorMessage())
-	}
 }
 
 func TestCreateCustomerShippingProfile(t *testing.T) {
@@ -219,6 +218,9 @@ func TestCreateCustomerShippingProfile(t *testing.T) {
 	if response.Approved() {
 		newCustomerShippingId = response.CustomerAddressID
 		t.Log("New Shipping Added: #", response.CustomerAddressID)
+	} else {
+		t.Log(response.ErrorMessage())
+		t.Fail()
 	}
 }
 
@@ -233,6 +235,10 @@ func TestGetCustomerShippingProfile(t *testing.T) {
 	shippingProfiles := response.ShippingProfiles()
 
 	t.Log("Customer Shipping Profiles", shippingProfiles)
+
+	if shippingProfiles[0].Zip != "92039" {
+		t.Fail()
+	}
 
 }
 
@@ -258,23 +264,11 @@ func TestUpdateCustomerShippingProfile(t *testing.T) {
 
 	if response.Approved() {
 		t.Log("Shipping Address Profile was updated")
-	}
-
-}
-
-func TestDeleteCustomerShippingProfile(t *testing.T) {
-	customer := Customer{
-		ID:         newCustomerProfileId,
-		ShippingID: newCustomerShippingId,
-	}
-
-	response := customer.DeleteShippingProfile()
-
-	if response.Approved() {
-		t.Log("Shipping Profile was Deleted")
 	} else {
 		t.Log(response.ErrorMessage())
+		t.Fail()
 	}
+
 }
 
 func TestAcceptProfilePage(t *testing.T) {
@@ -287,14 +281,14 @@ func TestCreateCustomerProfileFromTransaction(t *testing.T) {
 
 func TestCreateSubscriptionCustomerProfile(t *testing.T) {
 	subscription := Subscription{
-		Name:        "New Customer Subscription",
-		Amount:      "12.00",
-		TrialAmount: "0.00",
+		Name:   "New Customer Subscription",
+		Amount: "7.00",
+		//TrialAmount: "0.00",
 		PaymentSchedule: &PaymentSchedule{
 			StartDate:        CurrentDate(),
 			TotalOccurrences: "9999",
-			TrialOccurrences: "0",
-			Interval:         IntervalMonthly(),
+			//TrialOccurrences: "0",
+			Interval: IntervalMonthly(),
 		},
 		Profile: &CustomerProfiler{
 			CustomerProfileID:         newCustomerProfileId,
@@ -310,6 +304,7 @@ func TestCreateSubscriptionCustomerProfile(t *testing.T) {
 		t.Log("Customer #", response.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.Fail()
 	}
 
 }
@@ -331,21 +326,5 @@ func TestGetCustomerProfile(t *testing.T) {
 	t.Log("Customer Payment Profiles", paymentProfiles)
 	t.Log("Customer Shipping Profiles", shippingProfiles)
 	t.Log("Customer Subscription IDs", subscriptions)
-
-}
-
-func TestDeleteCustomerProfile(t *testing.T) {
-
-	customer := Customer{
-		ID: newCustomerProfileId,
-	}
-
-	response := customer.DeleteProfile()
-
-	if response.Approved() {
-		t.Log("Customer was Deleted")
-	} else {
-		t.Log(response.ErrorMessage())
-	}
 
 }

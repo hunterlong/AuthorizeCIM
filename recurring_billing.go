@@ -2,6 +2,7 @@ package AuthorizeCIM
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 func (response SubscriptionResponse) Approved() bool {
@@ -87,8 +88,10 @@ type Subscription struct {
 	TrialAmount     string            `json:"trialAmount,omitempty"`
 	Payment         *Payment          `json:"payment,omitempty"`
 	BillTo          *BillTo           `json:"billTo,omitempty"`
+	ShipTo          *BillTo           `json:"shipTo,omitempty"`
 	SubscriptionId  string            `json:"subscriptionId,omitempty"`
 	Profile         *CustomerProfiler `json:"profile,omitempty"`
+	Customer        *Customer         `json:"customer,omitempty"`
 }
 
 type BillTo struct {
@@ -137,6 +140,7 @@ func SendSubscription(sub Subscription) (SubscriptionResponse, interface{}) {
 		},
 	}
 	jsoned, err := json.Marshal(action)
+	fmt.Println(string(jsoned))
 	if err != nil {
 		panic(err)
 	}
