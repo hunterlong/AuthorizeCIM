@@ -202,6 +202,13 @@ func (sub SetSubscription) Info() GetSubscriptionResponse {
 	return dat
 }
 
+func (s SubscriptionStatus) Active() bool {
+	if s.Status == "active" {
+		return true
+	}
+	return false
+}
+
 func (sub SetSubscription) Status() SubscriptionStatus {
 	action := GetSubscriptionStatusRequest{
 		ARBGetSubscriptionStatusRequest: ARBGetSubscriptionRequest{

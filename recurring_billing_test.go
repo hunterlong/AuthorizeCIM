@@ -65,7 +65,12 @@ func TestGetSubscriptionStatus(t *testing.T) {
 
 	subscriptionInfo := sub.Status()
 
-	t.Log("Subscription ID has status: ", subscriptionInfo.Status)
+	if subscriptionInfo.Active() {
+		t.Log("Subscription ID has status: ", subscriptionInfo.Status)
+	} else {
+		t.Log("Subscription ID has status: ", subscriptionInfo.Status)
+		t.Fail()
+	}
 
 }
 

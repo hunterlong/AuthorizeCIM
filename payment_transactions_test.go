@@ -123,7 +123,6 @@ func TestDeclinedChargeCard(t *testing.T) {
 	if response.Approved() {
 		t.Fail()
 	} else {
-		previousCharged = response.TransactionID()
 		t.Log("#", response.TransactionID(), "Transaction was DECLINED!!!", "\n")
 		t.Log(response.Message(), "\n")
 		t.Log("AVS Result Text: ", response.AVS().Text(), "\n")
