@@ -13,11 +13,15 @@ func TestGetSettledBatchList(t *testing.T) {
 
 	batches := list.SettledBatch().List()
 
-	for _, v := range batches {
-		t.Log("Batch ID: ", v.BatchID, "\n")
-		t.Log("Payment Method: ", v.PaymentMethod, "\n")
-		t.Log("State: ", v.SettlementState, "\n")
+	if len(batches) == 0 {
+		t.Fail()
 	}
+
+	//for _, v := range batches {
+	//	t.Log("Batch ID: ", v.BatchID, "\n")
+	//	t.Log("Payment Method: ", v.PaymentMethod, "\n")
+	//	t.Log("State: ", v.SettlementState, "\n")
+	//}
 
 }
 
@@ -29,11 +33,15 @@ func TestGetTransactionList(t *testing.T) {
 
 	batches := list.Transactions().List()
 
-	for _, v := range batches {
-		t.Log("Transaction ID: ", v.TransID, "\n")
-		t.Log("Amount: ", v.Amount, "\n")
-		t.Log("Account: ", v.AccountNumber, "\n")
+	if len(batches) != 0 {
+		t.Fail()
 	}
+
+	//for _, v := range batches {
+	//	t.Log("Transaction ID: ", v.TransID, "\n")
+	//	t.Log("Amount: ", v.Amount, "\n")
+	//	t.Log("Account: ", v.AccountNumber, "\n")
+	//}
 
 }
 
@@ -51,11 +59,11 @@ func TestGetUnSettledBatchList(t *testing.T) {
 
 	batches := UnSettledBatch().List()
 
-	for _, v := range batches {
-		t.Log("Status: ", v.TransactionStatus, "\n")
-		t.Log("Amount: ", v.Amount, "\n")
-		t.Log("Transaction ID: #", v.TransID, "\n")
-	}
+	//for _, v := range batches {
+	//	t.Log("Status: ", v.TransactionStatus, "\n")
+	//	t.Log("Amount: ", v.Amount, "\n")
+	//	t.Log("Transaction ID: #", v.TransID, "\n")
+	//}
 
 	if len(batches) == 0 {
 		t.Fail()
