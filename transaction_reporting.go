@@ -74,7 +74,10 @@ func (r Range) Transactions() GetTransactionListResponse {
 	jsoned, _ := json.Marshal(new)
 	response := SendRequest(jsoned)
 	var dat GetTransactionListResponse
-	json.Unmarshal(response, &dat)
+	err := json.Unmarshal(response, &dat)
+	if err != nil {
+		panic(err)
+	}
 	return dat
 }
 

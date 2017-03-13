@@ -9,10 +9,19 @@ var previousCharged string
 
 func TestChargeCard(t *testing.T) {
 	newTransaction := NewTransaction{
-		Amount: "15.90",
+		Amount: RandomNumber(5, 99) + ".90",
 		CreditCard: CreditCard{
 			CardNumber:     "4007000000027",
 			ExpirationDate: "10/23",
+		},
+		BillTo: &BillTo{
+			FirstName:   "okokk",
+			LastName:    "okok",
+			Address:     "1111 white ct",
+			City:        "los angeles",
+			Country:     "USA",
+			Zip:         "29292",
+			PhoneNumber: "8885555555",
 		},
 	}
 	response := newTransaction.Charge()
@@ -28,9 +37,39 @@ func TestChargeCard(t *testing.T) {
 	}
 }
 
+func TestDeclinedChargeCard(t *testing.T) {
+	newTransaction := NewTransaction{
+		Amount: RandomNumber(5, 99) + ".90",
+		CreditCard: CreditCard{
+			CardNumber:     "4007000000027",
+			ExpirationDate: "10/23",
+		},
+		BillTo: &BillTo{
+			FirstName:   "Fraud",
+			LastName:    "User",
+			Address:     "1337 Yolo Ln.",
+			City:        "Beverly Hills",
+			State:       "CA",
+			Country:     "USA",
+			Zip:         "46282",
+			PhoneNumber: "8885555555",
+		},
+	}
+	response := newTransaction.Charge()
+	if response.Approved() {
+		t.Fail()
+	} else {
+		previousCharged = response.TransactionID()
+		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
+		t.Log("AVS Result Code: ", response.AVS().avsResultCode+"\n")
+		t.Log("AVS ACVV Result Code: ", response.AVS().cavvResultCode+"\n")
+		t.Log("AVS CVV Result Code: ", response.AVS().cvvResultCode+"\n")
+	}
+}
+
 func TestAuthOnlyCard(t *testing.T) {
 	newTransaction := NewTransaction{
-		Amount: "100.00",
+		Amount: RandomNumber(5, 99) + ".00",
 		CreditCard: CreditCard{
 			CardNumber:     "4012888818888",
 			ExpirationDate: "10/27",
@@ -49,7 +88,7 @@ func TestAuthOnlyCard(t *testing.T) {
 
 func TestCaptureAuth(t *testing.T) {
 	oldTransaction := PreviousTransaction{
-		Amount: "49.99",
+		Amount: RandomNumber(5, 99) + ".99",
 		RefId:  previousAuth,
 	}
 	response := oldTransaction.Capture()
@@ -64,7 +103,7 @@ func TestCaptureAuth(t *testing.T) {
 
 func TestChargeCardChannel(t *testing.T) {
 	newTransaction := NewTransaction{
-		Amount: "38.00",
+		Amount: RandomNumber(5, 99) + ".00",
 		CreditCard: CreditCard{
 			CardNumber:     "4012888818888",
 			ExpirationDate: "10/24",
@@ -111,6 +150,7 @@ func TestVoidCard(t *testing.T) {
 		t.Log("#", response.TransactionID(), "Transaction was VOIDED $", newTransaction.Amount, "\n")
 	} else {
 		t.Log(response.ErrorMessage(), "\n")
+		t.Log(response.Message(), "\n")
 		t.SkipNow()
 	}
 }
@@ -126,7 +166,7 @@ func TestChargeCustomerProfile(t *testing.T) {
 	}
 
 	newTransaction := NewTransaction{
-		Amount: "35.00",
+		Amount: RandomNumber(5, 99) + ".00",
 	}
 
 	response := newTransaction.ChargeProfile(customer)

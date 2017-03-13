@@ -19,7 +19,7 @@ func TestApproveTransaction(t *testing.T) {
 
 	response := oldTransaction.Approve()
 
-	if response.Approved() {
+	if response.Ok() {
 		t.Log(response.ErrorMessage())
 	} else {
 		t.Log(response.ErrorMessage())
@@ -34,7 +34,7 @@ func TestDeclineTransaction(t *testing.T) {
 
 	response := oldTransaction.Decline()
 
-	if response.Approved() {
+	if response.Ok() {
 		t.Log(response.ErrorMessage())
 	} else {
 		t.Log(response.ErrorMessage())

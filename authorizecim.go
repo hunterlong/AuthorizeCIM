@@ -29,7 +29,7 @@ func SetAPIInfo(name string, key string, mode string) {
 
 func IsConnected() bool {
 	info := GetMerchantDetails()
-	if info.Approved() {
+	if info.Ok() {
 		return true
 	}
 	return false

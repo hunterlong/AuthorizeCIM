@@ -1,13 +1,20 @@
 package AuthorizeCIM
 
 import (
+	"math/rand"
 	"os"
 	"testing"
+	"time"
 )
 
 var newCustomerProfileId string
 var newCustomerPaymentId string
 var newCustomerShippingId string
+var newSecondCustomerProfileId string
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 
 func TestSetAPIInfo(t *testing.T) {
 	apiName := os.Getenv("apiName")
@@ -27,8 +34,8 @@ func TestIsConnected(t *testing.T) {
 func TestCreateCustomerProfile(t *testing.T) {
 
 	customer := Profile{
-		MerchantCustomerID: "21232",
-		Email:              "info@brandnewuser.com",
+		MerchantCustomerID: RandomNumber(1000, 9999),
+		Email:              "info@" + RandomString(8) + ".com",
 		PaymentProfiles: &PaymentProfiles{
 			CustomerType: "individual",
 			Payment: Payment{
@@ -43,7 +50,7 @@ func TestCreateCustomerProfile(t *testing.T) {
 
 	response := customer.CreateProfile()
 
-	if response.Approved() {
+	if response.Ok() {
 		newCustomerProfileId = response.CustomerProfileID
 		t.Log("New Customer Profile Created #", response.CustomerProfileID)
 	} else {
@@ -78,7 +85,7 @@ func TestUpdateCustomerProfile(t *testing.T) {
 
 	response := customer.UpdateProfile()
 
-	if response.Approved() {
+	if response.Ok() {
 		t.Log("Customer Profile was Updated")
 	} else {
 		t.Log(response.ErrorMessage())
@@ -112,7 +119,7 @@ func TestCreateCustomerPaymentProfile(t *testing.T) {
 
 	response := paymentProfile.Add()
 
-	if response.Approved() {
+	if response.Ok() {
 		newCustomerPaymentId = response.CustomerPaymentProfileID
 		t.Log("Created new Payment Profile #", response.CustomerPaymentProfileID, "for Customer ID: ", response.CustomerProfileId)
 	} else {
@@ -156,7 +163,7 @@ func TestValidateCustomerPaymentProfile(t *testing.T) {
 
 	response := customerProfile.Validate()
 
-	if response.Approved() {
+	if response.Ok() {
 		t.Log("Customer Payment Profile is VALID")
 	} else {
 		t.Log(response.ErrorMessage())
@@ -171,7 +178,7 @@ func TestUpdateCustomerPaymentProfile(t *testing.T) {
 		CustomerProfileId: newCustomerProfileId,
 		PaymentProfileId:  newCustomerPaymentId,
 		Description:       "Updated Account",
-		Email:             "info@updatedemail.com",
+		Email:             "info@" + RandomString(8) + ".com",
 		PaymentProfiles: &PaymentProfiles{
 			Payment: Payment{
 				CreditCard: CreditCard{
@@ -193,7 +200,7 @@ func TestUpdateCustomerPaymentProfile(t *testing.T) {
 
 	response := customer.UpdatePaymentProfile()
 
-	if response.Approved() {
+	if response.Ok() {
 		t.Log("Customer Payment Profile was Updated")
 	} else {
 		t.Log(response.ErrorMessage())
@@ -207,7 +214,7 @@ func TestCreateCustomerShippingProfile(t *testing.T) {
 	customer := Profile{
 		MerchantCustomerID: "86437",
 		CustomerProfileId:  newCustomerProfileId,
-		Email:              "info@emailhereooooo.com",
+		Email:              "info@" + RandomString(8) + ".com",
 		Shipping: &Address{
 			FirstName:   "My",
 			LastName:    "Name",
@@ -223,7 +230,7 @@ func TestCreateCustomerShippingProfile(t *testing.T) {
 
 	response := customer.CreateShipping()
 
-	if response.Approved() {
+	if response.Ok() {
 		newCustomerShippingId = response.CustomerAddressID
 		t.Log("New Shipping Added: #", response.CustomerAddressID)
 	} else {
@@ -270,7 +277,7 @@ func TestUpdateCustomerShippingProfile(t *testing.T) {
 
 	response := customer.UpdateShippingProfile()
 
-	if response.Approved() {
+	if response.Ok() {
 		t.Log("Shipping Address Profile was updated")
 	} else {
 		t.Log(response.ErrorMessage())
@@ -288,9 +295,12 @@ func TestCreateCustomerProfileFromTransaction(t *testing.T) {
 }
 
 func TestCreateSubscriptionCustomerProfile(t *testing.T) {
+
+	amount := RandomNumber(5, 99) + "." + RandomNumber(10, 99)
+
 	subscription := Subscription{
-		Name:   "New Customer Subscription",
-		Amount: "7.00",
+		Name:   "New Customer Profile Subscription",
+		Amount: amount,
 		//TrialAmount: "0.00",
 		PaymentSchedule: &PaymentSchedule{
 			StartDate:        CurrentDate(),
