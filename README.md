@@ -6,6 +6,8 @@
 Give your Go Language applications the ability to store and retrieve credit cards from Authorize.net CIM, AIM, and ARB API.
 This golang package lets you create recurring subscriptions, AUTH only transactions, voids, refunds, and other functionality connected to the Authorize.net API.
 
+***
+
 # Features
 * [AIM Payment Transactions](https://github.com/hunterlong/AuthorizeCIM#payment-transactions)
 * [CIM Customer Information Manager](https://github.com/hunterlong/AuthorizeCIM#customer-profile)
@@ -32,6 +34,7 @@ paymentProfiles := customerInfo.PaymentProfiles()
 shippingProfiles := customerInfo.ShippingProfiles()
 subscriptions := customerInfo.Subscriptions()
 ```
+***
 
 # Usage
 * Import package
@@ -46,6 +49,7 @@ import "github.com/hunterlong/authorizecim"
 import auth "github.com/hunterlong/authorizecim"
 // auth.SetAPIInfo(apiName,apiKey,"test")
 ```
+***
 
 ## Set Authorize.net API Keys
 You can get Sandbox Access at:  https://developer.authorize.net/hello_world/sandbox/
@@ -55,8 +59,7 @@ apiKey := "auth_transaction_key_here"
 AuthorizeCIM.SetAPIInfo(apiName,apiKey,"test")
 // use "live" to do transactions on production server
 ```
-
-![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
+***
 
 ## Included API References
 
@@ -72,6 +75,7 @@ func main() {
 
 }
 ```
+***
 
 # Payment Transactions
 
@@ -89,6 +93,7 @@ if response.Approved() {
 
 }
 ```
+***
 
 :white_check_mark: authorizeCard
 ```go
@@ -104,6 +109,7 @@ if response.Approved() {
 
 }
 ```
+***
 
 :white_check_mark: capturePreviousCard
 ```go
@@ -116,6 +122,7 @@ if response.Approved() {
 
 }
 ```
+***
 
 :white_check_mark: captureAuthorizedCardChannel
 ```go
@@ -132,6 +139,7 @@ if response.Approved() {
 
 }
 ```
+***
 
 :white_check_mark: refundTransaction
 ```go
@@ -148,6 +156,7 @@ if response.Approved() {
 
 }
 ```
+***
 
 :white_check_mark: voidTransaction
 ```go
@@ -159,6 +168,7 @@ if response.Approved() {
 
 }
 ```
+***
 
 :white_medium_square: updateSplitTenderGround
 
@@ -183,6 +193,8 @@ if response.Ok() {
 
 }
 ```
+***
+
 :white_medium_square: chargeTokenCard
 
 :white_medium_square: creditAcceptPaymentTransaction
@@ -200,6 +212,7 @@ response.ErrorMessage()         // string
 response.TransactionID()        // string
 response.AVS()                  // [avsResultCode,cavvResultCode,cvvResultCode]
 ```
+***
 
 # Fraud Management
 
@@ -208,6 +221,7 @@ response.AVS()                  // [avsResultCode,cavvResultCode,cvvResultCode]
 transactions := AuthorizeCIM.UnsettledBatchList()
 fmt.Println("Unsettled Count: ", transactions.Count)
 ```
+***
 
 :white_check_mark: updateHeldTransactionRequest
 ```go
@@ -223,6 +237,7 @@ oldTransaction := AuthorizeCIM.PreviousTransaction{
 
 	}
 ```
+***
 
 # Recurring Billing
 
@@ -265,6 +280,7 @@ AuthorizeCIM.IntervalYearly()      // runs every 1 year
 AuthorizeCIM.IntervalDays("15")    // runs every 15 days
 AuthorizeCIM.IntervalMonths("6")   // runs every 6 months
 ```
+***
 
 :white_check_mark: ARBCreateSubscriptionRequest from Customer Profile
 ```go
@@ -292,6 +308,7 @@ subscription := AuthorizeCIM.Subscription{
 		fmt.Println("Customer #",response.CustomerProfileId(), " Created a New Subscription: ", response.SubscriptionID)
 	}
 ```
+***
 
 :white_check_mark: ARBGetSubscriptionRequest
 ```go
@@ -301,6 +318,7 @@ sub := AuthorizeCIM.SetSubscription{
 
 subscriptionInfo := sub.Info()
 ```
+***
 
 :white_check_mark: ARBGetSubscriptionStatusRequest
 ```go
@@ -312,6 +330,7 @@ subscriptionInfo := sub.Status()
 
 fmt.Println("Subscription ID has status: ",subscriptionInfo.Status)
 ```
+***
 
 :white_check_mark: ARBUpdateSubscriptionRequest
 ```go
@@ -331,6 +350,7 @@ if response.Ok() {
 
 }
 ```
+***
 
 :white_check_mark: ARBCancelSubscriptionRequest
 ```go
@@ -342,6 +362,7 @@ subscriptionInfo := sub.Cancel()
 
 fmt.Println("Subscription ID has been canceled: ", sub.Id, "\n")
 ```
+***
 
 :white_check_mark: ARBGetSubscriptionListRequest
 ```go
@@ -351,6 +372,7 @@ fmt.Println("Amount of Inactive Subscriptions: ", inactive.Count())
 active := AuthorizeCIM.SubscriptionList("subscriptionActive")
 fmt.Println("Amount of Active Subscriptions: ", active.Count())
 ```
+***
 
 # Customer Profile (CIM)
 
@@ -379,6 +401,7 @@ if response.Ok() {
        fmt.Println(response.ErrorMessage())
    }
 ```
+***
 
 :white_check_mark: getCustomerProfileRequest
 ```go
@@ -392,12 +415,14 @@ paymentProfiles := customerInfo.PaymentProfiles()
 shippingProfiles := customerInfo.ShippingProfiles()
 subscriptions := customerInfo.Subscriptions()
 ```
+***
 
 :white_check_mark: getCustomerProfileIdsRequest
 ```go
 profiles, _ := AuthorizeCIM.GetProfileIds()
 fmt.Println(profiles)
 ```
+***
 
 :white_check_mark: updateCustomerProfileRequest
 ```go
@@ -414,6 +439,7 @@ if response.Ok() {
 
 }
 ```
+***
 
 :white_check_mark: deleteCustomerProfileRequest
 ```go
@@ -427,6 +453,7 @@ if response.Ok() {
 
 }
 ```
+***
 
 # Customer Payment Profile
 
@@ -461,6 +488,7 @@ if response.Ok() {
     fmt.Println(response.ErrorMessage())
 }
 ```
+***
 
 :white_check_mark: getCustomerPaymentProfileRequest
 ```go
@@ -477,6 +505,7 @@ paymentProfiles := response.PaymentProfiles()
 ```go
 profileIds := AuthorizeCIM.GetPaymentProfileIds("2017-03","cardsExpiringInMonth")
 ```
+***
 
 :white_check_mark: validateCustomerPaymentProfileRequest
 ```go
@@ -491,6 +520,7 @@ if response.Ok() {
 
 }
 ```
+***
 
 :white_check_mark: updateCustomerPaymentProfileRequest
 ```go
@@ -526,6 +556,8 @@ if response.Ok() {
     fmt.Println(response.ErrorMessage())
 }
 ```
+***
+
 :white_check_mark: deleteCustomerPaymentProfileRequest
 ```go
 customer := AuthorizeCIM.Customer{
@@ -541,6 +573,7 @@ if response.Ok() {
     fmt.Println(response.ErrorMessage())
 }
 ```
+***
 
 # Customer Shipping Profile
 
@@ -571,6 +604,7 @@ if response.Ok() {
     fmt.Println(response.ErrorMessage())
 }
 ```
+***
 
 :white_check_mark: getCustomerShippingAddressRequest
 ```go
@@ -584,6 +618,8 @@ shippingProfiles := response.ShippingProfiles()
 
 fmt.Println("Customer Shipping Profiles", shippingProfiles)
 ```
+***
+
 :white_check_mark: updateCustomerShippingAddressRequest
 ```go
 customer := AuthorizeCIM.Profile{
@@ -608,6 +644,8 @@ if response.Ok() {
     fmt.Println("Shipping Profile was updated")
 }
 ```
+***
+
 :white_check_mark: deleteCustomerShippingAddressRequest
 ```go
 customer := AuthorizeCIM.Customer{
@@ -623,6 +661,8 @@ customer := AuthorizeCIM.Customer{
 		fmt.Println(response.ErrorMessage())
 	}
 ```
+***
+
 :white_medium_square: getHostedProfilePageRequest
 
 :white_medium_square: createCustomerProfileFromTransactionRequest
@@ -644,6 +684,8 @@ for _, v := range batches {
     t.Log("State: ", v.SettlementState, "\n")
 }
 ```
+***
+
 :white_check_mark: getUnSettledBatchListRequest
 ```go
 batches := AuthorizeCIM.UnSettledBatch().List()
@@ -655,6 +697,8 @@ for _, v := range batches {
 }
 
 ```
+***
+
 :white_check_mark: getTransactionListRequest
 ```go
 list := AuthorizeCIM.Range{
@@ -669,6 +713,8 @@ for _, v := range batches {
     t.Log("Account: ", v.AccountNumber, "\n")
 }
 ```
+***
+
 :white_check_mark: getTransactionDetails
 ```go
 oldTransaction := AuthorizeCIM.PreviousTransaction{
@@ -678,6 +724,8 @@ response := oldTransaction.Info()
 
 fmt.PrintLn("Transaction Status: ",response.TransactionStatus,"\n")
 ```
+***
+
 :white_check_mark: getBatchStatistics
 ```go
 list := AuthorizeCIM.Range{
@@ -692,6 +740,8 @@ fmt.PrintLn("Void Count: ", batch.VoidCount, "\n")
 fmt.PrintLn("Charge Amount: ", batch.ChargeAmount, "\n")
 fmt.PrintLn("Refund Amount: ", batch.RefundAmount, "\n")
 ```
+***
+
 :white_check_mark: getMerchantDetails
 ```go
 info := AuthorizeCIM.GetMerchantDetails()
@@ -700,8 +750,7 @@ fmt.PrintLn("Test Mode: ", info.IsTestMode, "\n")
 fmt.PrintLn("Merchant Name: ", info.MerchantName, "\n")
 fmt.PrintLn("Gateway ID: ", info.GatewayID, "\n")
 ```
-
-![alt tag](http://pichoster.net/images/2016/05/30/githubbreakerJKAya.jpg)
+***
 
 # ToDo
 * Organize and refactor some areas
