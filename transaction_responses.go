@@ -5,7 +5,7 @@ func (transx TransactionResponse) TransactionID() string {
 }
 
 func (transx TransactionResponse) Message() string {
-	return transx.Response.Message.Messages.Message[0].Text
+	return transx.Response.Errors[0].ErrorText
 }
 
 func (transx TransactionResponse) AVS() AVS {
@@ -32,7 +32,21 @@ func (r MessagesResponse) ErrorMessage() string {
 	return r.Messages.Message[0].Text
 }
 
-func (r MessagesResponse) Approved() bool {
+func (r TransactionResponse) Approved() bool {
+	if r.Response.ResponseCode == "1" || r.Response.ResponseCode == "4" {
+		return true
+	}
+	return false
+}
+
+func (r TransactionResponse) Held() bool {
+	if r.Response.ResponseCode == "4" {
+		return true
+	}
+	return false
+}
+
+func (r MessagesResponse) Ok() bool {
 	if r.Messages.ResultCode == "Ok" {
 		return true
 	}

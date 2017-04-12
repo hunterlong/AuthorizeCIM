@@ -12,6 +12,7 @@ func (tranx NewTransaction) Charge() (*TransactionResponse, error) {
 		Payment: &Payment{
 			CreditCard: tranx.CreditCard,
 		},
+		BillTo:   tranx.BillTo,
 		AuthCode: tranx.AuthCode,
 	}
 	response, err := SendTransactionRequest(new)
@@ -132,6 +133,7 @@ type NewTransaction struct {
 	RefTransId string     `json:"refTransId,omitempty"`
 	CreditCard CreditCard `json:"payment,omitempty"`
 	AuthCode   string     `json:"authCode,omitempty"`
+	BillTo     *BillTo    `json:"omitempty"`
 }
 
 type PreviousTransaction struct {
@@ -140,28 +142,36 @@ type PreviousTransaction struct {
 }
 
 type TransactionResponse struct {
-	Response struct {
-		ResponseCode   string          `json:"responseCode"`
-		AuthCode       string          `json:"authCode"`
-		AvsResultCode  string          `json:"avsResultCode"`
-		CvvResultCode  string          `json:"cvvResultCode"`
-		CavvResultCode string          `json:"cavvResultCode"`
-		TransID        string          `json:"transId"`
-		RefTransID     string          `json:"refTransID"`
-		TransHash      string          `json:"transHash"`
-		TestRequest    string          `json:"testRequest"`
-		AccountNumber  string          `json:"accountNumber"`
-		AccountType    string          `json:"accountType"`
-		Errors         []AuthNetErrors `json:"errors"`
-		TransHashSha2  string          `json:"transHashSha2"`
-		Message        MessagesResponse
-	} `json:"transactionResponse"`
+	Response TranxResponse `json:"transactionResponse"`
 	MessagesResponse
 }
 
-type AuthNetErrors struct {
-	ErrorCode string `json:"errorCode"`
-	ErrorText string `json:"errorText"`
+type TranxResponse struct {
+	ResponseCode   string `json:"responseCode"`
+	AuthCode       string `json:"authCode"`
+	AvsResultCode  string `json:"avsResultCode"`
+	CvvResultCode  string `json:"cvvResultCode"`
+	CavvResultCode string `json:"cavvResultCode"`
+	TransID        string `json:"transId"`
+	RefTransID     string `json:"refTransID"`
+	TransHash      string `json:"transHash"`
+	TestRequest    string `json:"testRequest"`
+	AccountNumber  string `json:"accountNumber"`
+	AccountType    string `json:"accountType"`
+	Errors         []struct {
+		ErrorCode string `json:"errorCode"`
+		ErrorText string `json:"errorText"`
+	} `json:"errors"`
+	TransactionMessages
+	TransHashSha2 string `json:"transHashSha2"`
+	Message       TransactionMessages
+}
+
+type TransactionMessages struct {
+	Message []struct {
+		Code        string `json:"code"`
+		Description string `json:"description"`
+	} `json:"messages"`
 }
 
 type Message struct {
@@ -225,9 +235,11 @@ type Tax struct {
 }
 
 type Customer struct {
-	ID         string `json:"id,omitempty"`
-	PaymentID  string `json:"id,omitempty"`
-	ShippingID string `json:"id,omitempty"`
+	ID          string `json:"id,omitempty"`
+	Email       string `json:"email,omitempty"`
+	PaymentID   string `json:"paymentId,omitempty"`
+	ShippingID  string `json:"shippingId,omitempty"`
+	PhoneNumber string `json:"phoneNumber,omitempty"`
 }
 
 type TransactionSettings struct {
@@ -261,7 +273,7 @@ type TransactionRequest struct {
 	//Shipping            Shipping            `json:"shipping,omitempty"`
 	//PoNumber            string              `json:"poNumber,omitempty"`
 	//Customer            Customer            `json:"customer,omitempty"`
-	BillTo     *Address `json:"billTo,omitempty"`
+	BillTo     *BillTo  `json:"billTo,omitempty"`
 	ShipTo     *Address `json:"shipTo,omitempty"`
 	CustomerIP string   `json:"customerIP,omitempty"`
 	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"`
