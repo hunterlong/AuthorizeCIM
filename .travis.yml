@@ -4,8 +4,6 @@ os:
   - linux
 
 go:
-  - 1.5
-  - 1.7
   - 1.8
 
 addons:
