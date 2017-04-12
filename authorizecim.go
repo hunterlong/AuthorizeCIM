@@ -28,12 +28,15 @@ func SetAPIInfo(name string, key string, mode string) {
 	}
 }
 
-func IsConnected() bool {
-	info := GetMerchantDetails()
-	if info.Ok() {
-		return true
+func IsConnected() (bool, error) {
+	info, err := GetMerchantDetails()
+	if err != nil {
+		return false, err
 	}
-	return false
+	if info.Ok() {
+		return true, err
+	}
+	return false, err
 }
 
 func GetAuthentication() MerchantAuthentication {

@@ -32,7 +32,7 @@ func TestApproveTransaction(t *testing.T) {
 	}
 }
 
-func TestDeclineTransaction(t *testing.T) {
+func TestDeclineTransaction2(t *testing.T) {
 	oldTransaction := PreviousTransaction{
 		Amount: "49.99",
 		RefId:  "39824723983",

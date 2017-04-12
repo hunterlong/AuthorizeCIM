@@ -12,7 +12,10 @@ func TestCancelSubscription(t *testing.T) {
 		Id: newSubscriptionId,
 	}
 
-	subscriptionInfo := sub.Cancel()
+	subscriptionInfo, err := sub.Cancel()
+	if err != nil {
+		t.Fail()
+	}
 
 	if subscriptionInfo.Ok() {
 		t.Log("Subscription ID has been canceled: ", sub.Id, "\n")
@@ -30,7 +33,11 @@ func TestCancelSecondSubscription(t *testing.T) {
 		Id: newSecondSubscriptionId,
 	}
 
-	subscriptionInfo := sub.Cancel()
+	subscriptionInfo, err := sub.Cancel()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	if subscriptionInfo.Ok() {
 		t.Log("Second Subscription ID has been canceled: ", sub.Id, "\n")
@@ -48,7 +55,11 @@ func TestDeleteCustomerShippingProfile(t *testing.T) {
 		ShippingID: newCustomerShippingId,
 	}
 
-	response := customer.DeleteShippingProfile()
+	response, err := customer.DeleteShippingProfile()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	if response.Ok() {
 		t.Log("Shipping Profile was Deleted")
@@ -64,7 +75,11 @@ func TestDeleteCustomerPaymentProfile(t *testing.T) {
 		PaymentID: newCustomerPaymentId,
 	}
 
-	response := customer.DeletePaymentProfile()
+	response, err := customer.DeletePaymentProfile()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	if response.Ok() {
 		t.Log("Payment Profile was Deleted")
@@ -80,7 +95,11 @@ func TestDeleteCustomerProfile(t *testing.T) {
 		ID: newCustomerProfileId,
 	}
 
-	response := customer.DeleteProfile()
+	response, err := customer.DeleteProfile()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	if response.Ok() {
 		t.Log("Customer was Deleted")
@@ -97,7 +116,11 @@ func TestDeleteSecondCustomerProfile(t *testing.T) {
 		ID: newSecondCustomerProfileId,
 	}
 
-	response := customer.DeleteProfile()
+	response, err := customer.DeleteProfile()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	if response.Ok() {
 		t.Log("Second Customer was Deleted")
@@ -114,7 +137,11 @@ func TestDeclineTransaction(t *testing.T) {
 		RefId: heldTransactionId,
 	}
 
-	response := oldTransaction.Decline()
+	response, err := oldTransaction.Decline()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	if response.Approved() {
 		t.Log("DECLINED the previous transasction that was on Hold. ID #", oldTransaction.RefId)

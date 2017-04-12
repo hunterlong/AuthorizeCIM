@@ -198,6 +198,13 @@ func (sub SetSubscription) Info() (*GetSubscriptionResponse, error) {
 	return &dat, err
 }
 
+func (s SubscriptionStatus) Active() bool {
+	if s.Status == "active" {
+		return true
+	}
+	return false
+}
+
 func (sub SetSubscription) Status() (*SubscriptionStatus, error) {
 	action := GetSubscriptionStatusRequest{
 		ARBGetSubscriptionStatusRequest: ARBGetSubscriptionRequest{
