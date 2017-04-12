@@ -17,7 +17,7 @@ func (r BatchListResponse) List() []BatchList {
 	return r.BatchList
 }
 
-func (r Range) SettledBatch() BatchListResponse {
+func (r Range) SettledBatch() (*BatchListResponse, error) {
 	new := GetSettledBatchListRequest{
 		GetSettledBatchList: GetSettledBatchList{
 			MerchantAuthentication: GetAuthentication(),
@@ -28,92 +28,107 @@ func (r Range) SettledBatch() BatchListResponse {
 	}
 	jsoned, err := json.Marshal(new)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	response := SendRequest(jsoned)
+	response, err := SendRequest(jsoned)
 	var dat BatchListResponse
 	json.Unmarshal(response, &dat)
-	return dat
+	return &dat, err
 }
 
-func UnSettledBatch() UnsettledTransactionListResponse {
+func UnSettledBatch() (*UnsettledTransactionListResponse, error) {
 	new := GetUnsettledBatchTransactionListRequest{
 		GetUnsettledTransactionList: GetUnsettledTransactionList{
 			MerchantAuthentication: GetAuthentication(),
 		},
 	}
-	jsoned, _ := json.Marshal(new)
-	response := SendRequest(jsoned)
+	jsoned, err := json.Marshal(new)
+	if err != nil {
+		return nil, err
+	}
+	response, err := SendRequest(jsoned)
 	var dat UnsettledTransactionListResponse
-	json.Unmarshal(response, &dat)
-	return dat
+	err = json.Unmarshal(response, &dat)
+	return &dat, err
 }
 
 func (r UnsettledTransactionListResponse) List() []Transaction {
 	return r.Transactions
 }
 
-func (r GetTransactionListResponse) List() []Transaction {
+func (r *GetTransactionListResponse) List() []Transaction {
 	return r.GetTransactionList.Transactions.Transaction
 }
 
-func (r GetTransactionListResponse) Count() int {
+func (r *GetTransactionListResponse) Count() int {
 	return r.GetTransactionList.TotalNumInResultSet
 }
 
-func (r Range) Transactions() GetTransactionListResponse {
+func (r Range) Transactions() (*GetTransactionListResponse, error) {
 	new := GetTransactionListRequest{
 		GetTransactionList: GetTransactionList{
 			MerchantAuthentication: GetAuthentication(),
 			BatchID:                r.BatchId,
 		},
 	}
-	jsoned, _ := json.Marshal(new)
-	response := SendRequest(jsoned)
+	jsoned, err := json.Marshal(new)
+	if err != nil {
+		return nil, err
+	}
+	response, err := SendRequest(jsoned)
 	var dat GetTransactionListResponse
 	json.Unmarshal(response, &dat)
-	return dat
+	return &dat, err
 }
 
-func (r Range) Statistics() Statistics {
+func (r Range) Statistics() (*Statistics, error) {
 	new := GetBatchStatisticsRequest{
 		GetBatchStatistics: GetBatchStatistics{
 			MerchantAuthentication: GetAuthentication(),
 			BatchID:                r.BatchId,
 		},
 	}
-	jsoned, _ := json.Marshal(new)
-	response := SendRequest(jsoned)
+	jsoned, err := json.Marshal(new)
+	if err != nil {
+		return nil, err
+	}
+	response, err := SendRequest(jsoned)
 	var dat BatchStatisticsResponse
-	json.Unmarshal(response, &dat)
-	return dat.Batch.Statistics[0]
+	err = json.Unmarshal(response, &dat)
+	return &dat.Batch.Statistics[0], err
 }
 
-func GetMerchantDetails() MerchantDetailsResponse {
+func GetMerchantDetails() (*MerchantDetailsResponse, error) {
 	new := GetMerchantDetailsRequest{
 		GetMerchantDetailsReq: GetMerchantDetailsReq{
 			MerchantAuthentication: GetAuthentication(),
 		},
 	}
-	jsoned, _ := json.Marshal(new)
-	response := SendRequest(jsoned)
+	jsoned, err := json.Marshal(new)
+	if err != nil {
+		return nil, err
+	}
+	response, err := SendRequest(jsoned)
 	var dat MerchantDetailsResponse
-	json.Unmarshal(response, &dat)
-	return dat
+	err = json.Unmarshal(response, &dat)
+	return &dat, err
 }
 
-func (tranx PreviousTransaction) Info() FullTransaction {
+func (tranx PreviousTransaction) Info() (*FullTransaction, error) {
 	new := GetTransactionDetailsRequest{
 		GetTransactionDetails: GetTransactionDetails{
 			MerchantAuthentication: GetAuthentication(),
 			TransID:                tranx.RefId,
 		},
 	}
-	jsoned, _ := json.Marshal(new)
-	response := SendRequest(jsoned)
+	jsoned, err := json.Marshal(new)
+	if err != nil {
+		return nil, err
+	}
+	response, err := SendRequest(jsoned)
 	var dat TransactionDetailsResponse
-	json.Unmarshal(response, &dat)
-	return dat.Transaction
+	err = json.Unmarshal(response, &dat)
+	return &dat.Transaction, err
 }
 
 type GetSettledBatchListRequest struct {
@@ -166,20 +181,20 @@ type Transactions struct {
 }
 
 type Transaction struct {
-	TransID           string `json:"transId"`
-	SubmitTimeUTC     string `json:"submitTimeUTC"`
-	SubmitTimeLocal   string `json:"submitTimeLocal"`
-	TransactionStatus string `json:"transactionStatus"`
-	Invoice           string `json:"invoice"`
-	FirstName         string `json:"firstName"`
-	LastName          string `json:"lastName"`
-	Amount            string `json:"amount"`
-	AccountType       string `json:"accountType"`
-	AccountNumber     string `json:"accountNumber"`
-	SettleAmount      string `json:"settleAmount,omitempty"`
+	TransID           string  `json:"transId"`
+	SubmitTimeUTC     string  `json:"submitTimeUTC"`
+	SubmitTimeLocal   string  `json:"submitTimeLocal"`
+	TransactionStatus string  `json:"transactionStatus"`
+	Invoice           string  `json:"invoice,omitempty"`
+	FirstName         string  `json:"firstName,omitempty"`
+	LastName          string  `json:"lastName,omitempty"`
+	Amount            string  `json:"amount,omitempty"`
+	AccountType       string  `json:"accountType,omitempty"`
+	AccountNumber     string  `json:"accountNumber,omitempty"`
+	SettleAmount      float64 `json:"settleAmount,omitempty"`
 	Subscription      struct {
-		ID     string `json:"id"`
-		PayNum string `json:"payNum"`
+		ID     int `json:"id"`
+		PayNum int `json:"payNum,omitempty"`
 	} `json:"subscription,omitempty"`
 	MarketType     string `json:"marketType,omitempty"`
 	Product        string `json:"product,omitempty"`
@@ -292,7 +307,7 @@ type Statistics struct {
 	AccountType                        string  `json:"accountType"`
 	ChargeAmount                       float64 `json:"chargeAmount"`
 	ChargeCount                        int     `json:"chargeCount"`
-	RefundAmount                       int     `json:"refundAmount"`
+	RefundAmount                       float64 `json:"refundAmount"`
 	RefundCount                        int     `json:"refundCount"`
 	VoidCount                          int     `json:"voidCount"`
 	DeclineCount                       int     `json:"declineCount"`

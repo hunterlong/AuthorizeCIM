@@ -5,14 +5,14 @@ import (
 	"time"
 )
 
-func UnsettledBatchList() TransactionsList {
-	response, _ := SendGetUnsettled()
-	return response
+func UnsettledBatchList() (*TransactionsList, error) {
+	response, err := SendGetUnsettled()
+	return response, err
 }
 
-func (input TransactionsList) List() []BatchTransaction {
-	response, _ := SendGetUnsettled()
-	return response.Transactions
+func (input TransactionsList) List() ([]BatchTransaction, error) {
+	response, err := SendGetUnsettled()
+	return response.Transactions, err
 }
 
 func updateHeldTransaction() {
@@ -72,7 +72,7 @@ type HeldTransactionRequest struct {
 	RefTransID string `json:"refTransId"`
 }
 
-func SendTransactionUpdate(tranx PreviousTransaction, method string) (TransactionResponse, interface{}) {
+func SendTransactionUpdate(tranx PreviousTransaction, method string) (*TransactionResponse, error) {
 	action := UpdateHeldTransactionRequest{
 		UpdateHeldTransaction: UpdateHeldTransaction{
 			MerchantAuthentication: GetAuthentication(),
@@ -85,28 +85,28 @@ func SendTransactionUpdate(tranx PreviousTransaction, method string) (Transactio
 	}
 	jsoned, err := json.Marshal(action)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	response := SendRequest(jsoned)
+	response, err := SendRequest(jsoned)
 	var dat TransactionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return dat, err
+	return &dat, err
 }
 
-func (t PreviousTransaction) Approve() TransactionResponse {
-	response, _ := SendTransactionUpdate(t, "approve")
-	return response
+func (t PreviousTransaction) Approve() (*TransactionResponse, error) {
+	response, err := SendTransactionUpdate(t, "approve")
+	return response, err
 }
 
-func (t PreviousTransaction) Decline() TransactionResponse {
-	response, _ := SendTransactionUpdate(t, "decline")
-	return response
+func (t PreviousTransaction) Decline() (*TransactionResponse, error) {
+	response, err := SendTransactionUpdate(t, "decline")
+	return response, err
 }
 
-func SendGetUnsettled() (TransactionsList, interface{}) {
+func SendGetUnsettled() (*TransactionsList, error) {
 	action := UnsettledTransactionsRequest{
 		GetUnsettledTransactionListRequest: GetUnsettledTransactionListRequest{
 			MerchantAuthentication: GetAuthentication(),
@@ -115,13 +115,13 @@ func SendGetUnsettled() (TransactionsList, interface{}) {
 	}
 	jsoned, err := json.Marshal(action)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	response := SendRequest(jsoned)
+	response, err := SendRequest(jsoned)
 	var dat TransactionsList
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return dat, err
+	return &dat, err
 }

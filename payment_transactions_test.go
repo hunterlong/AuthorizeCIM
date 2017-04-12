@@ -15,7 +15,10 @@ func TestChargeCard(t *testing.T) {
 			ExpirationDate: "10/23",
 		},
 	}
-	response := newTransaction.Charge()
+	response, err := newTransaction.Charge()
+	if err != nil {
+		t.Fail()
+	}
 	if response.Approved() {
 		previousCharged = response.TransactionID()
 		t.Log("#", response.TransactionID(), "Transaction was CHARGED $", newTransaction.Amount, "\n")
@@ -35,7 +38,11 @@ func TestAuthOnlyCard(t *testing.T) {
 			ExpirationDate: "10/27",
 		},
 	}
-	response := newTransaction.AuthOnly()
+	response, err := newTransaction.AuthOnly()
+	if err != nil {
+		t.Fail()
+	}
+
 	if response.Approved() {
 		previousAuth = response.TransactionID()
 		t.Log("#", response.TransactionID(), "Transaction was AUTHORIZED $", newTransaction.Amount, "\n")
@@ -49,7 +56,10 @@ func TestCaptureAuth(t *testing.T) {
 		Amount: "49.99",
 		RefId:  previousAuth,
 	}
-	response := oldTransaction.Capture()
+	response, err := oldTransaction.Capture()
+	if err != nil {
+		t.Fail()
+	}
 	if response.Approved() {
 		t.Log("#", response.TransactionID(), "Transaction was CAPTURED $", oldTransaction.Amount, "\n")
 	} else {
@@ -66,7 +76,10 @@ func TestChargeCardChannel(t *testing.T) {
 		},
 		AuthCode: "RANDOMAUTHCODE",
 	}
-	response := newTransaction.Charge()
+	response, err := newTransaction.Charge()
+	if err != nil {
+		t.Fail()
+	}
 
 	if response.Approved() {
 		previousAuth = response.TransactionID()
@@ -85,7 +98,10 @@ func TestRefundCard(t *testing.T) {
 		},
 		RefTransId: "0392482938402",
 	}
-	response := newTransaction.Refund()
+	response, err := newTransaction.Refund()
+	if err != nil {
+		t.Fail()
+	}
 	if response.Approved() {
 		t.Log("#", response.TransactionID(), "Transaction was REFUNDED $", newTransaction.Amount, "\n")
 	} else {
@@ -97,7 +113,10 @@ func TestVoidCard(t *testing.T) {
 	newTransaction := PreviousTransaction{
 		RefId: previousCharged,
 	}
-	response := newTransaction.Void()
+	response, err := newTransaction.Void()
+	if err != nil {
+		t.Fail()
+	}
 	if response.Approved() {
 		t.Log("#", response.TransactionID(), "Transaction was VOIDED $", newTransaction.Amount, "\n")
 	} else {
@@ -119,8 +138,11 @@ func TestChargeCustomerProfile(t *testing.T) {
 		Amount: "35.00",
 	}
 
-	response := newTransaction.ChargeProfile(customer)
-	
+	response, err := newTransaction.ChargeProfile(customer)
+	if err != nil {
+		t.Fail()
+	}
+
 	if response.Approved() {
 		t.Log("#", response.TransactionID(), "Customer was Charged $", newTransaction.Amount, "\n")
 	} else {

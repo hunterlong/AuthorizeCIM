@@ -5,7 +5,10 @@ import (
 )
 
 func TestGetUnsettledTransactions(t *testing.T) {
-	transactions := UnsettledBatchList()
+	transactions, err := UnsettledBatchList()
+	if err != nil {
+		t.Fail()
+	}
 
 	t.Log("Count Unsettled: ", transactions.Count)
 	t.Log(transactions.List())
@@ -17,7 +20,10 @@ func TestApproveTransaction(t *testing.T) {
 		RefId:  "39824723983",
 	}
 
-	response := oldTransaction.Approve()
+	response, err := oldTransaction.Approve()
+	if err != nil {
+		t.Fail()
+	}
 
 	if response.Approved() {
 		t.Log(response.ErrorMessage())
@@ -32,7 +38,10 @@ func TestDeclineTransaction(t *testing.T) {
 		RefId:  "39824723983",
 	}
 
-	response := oldTransaction.Decline()
+	response, err := oldTransaction.Decline()
+	if err != nil {
+		t.Fail()
+	}
 
 	if response.Approved() {
 		t.Log(response.ErrorMessage())

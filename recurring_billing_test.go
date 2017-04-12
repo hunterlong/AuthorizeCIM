@@ -29,7 +29,11 @@ func TestCreateSubscription(t *testing.T) {
 		},
 	}
 
-	response := subscription.Charge()
+	response, err := subscription.Charge()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	if response.Approved() {
 		newSubscriptionId = response.SubscriptionID
@@ -46,7 +50,11 @@ func TestGetSubscription(t *testing.T) {
 		Id: newSubscriptionId,
 	}
 
-	subscriptionInfo := sub.Info()
+	subscriptionInfo, err := sub.Info()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	t.Log("Subscription Name: #", subscriptionInfo.Subscription.Name, "\n")
 	t.Log("Subscription Status: ", subscriptionInfo.Subscription.Status, "\n")
@@ -59,7 +67,11 @@ func TestGetSubscriptionStatus(t *testing.T) {
 		Id: newSubscriptionId,
 	}
 
-	subscriptionInfo := sub.Status()
+	subscriptionInfo, err := sub.Status()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	t.Log("Subscription ID has status: ", subscriptionInfo.Status)
 
@@ -77,7 +89,11 @@ func TestUpdateSubscription(t *testing.T) {
 		SubscriptionId: newSubscriptionId,
 	}
 
-	response := subscription.Update()
+	response, err := subscription.Update()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	if response.Approved() {
 		t.Log("Updated Subscription \n")
@@ -93,7 +109,11 @@ func TestCancelSubscription(t *testing.T) {
 		Id: newSubscriptionId,
 	}
 
-	subscriptionInfo := sub.Cancel()
+	subscriptionInfo, err := sub.Cancel()
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	t.Log("Subscription ID has been canceled: ", sub.Id, "\n")
 	t.Log(subscriptionInfo.ErrorMessage(), "\n")
@@ -102,7 +122,11 @@ func TestCancelSubscription(t *testing.T) {
 
 func TestGetInactiveSubscriptionList(t *testing.T) {
 
-	subscriptionList := SubscriptionList("subscriptionInactive")
+	subscriptionList, err := SubscriptionList("subscriptionInactive")
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	t.Log("Amount of Inactive Subscriptions: ", subscriptionList.Count())
 
@@ -110,7 +134,11 @@ func TestGetInactiveSubscriptionList(t *testing.T) {
 
 func TestGetActiveSubscriptionList(t *testing.T) {
 
-	subscriptionList := SubscriptionList("subscriptionActive")
+	subscriptionList, err := SubscriptionList("subscriptionActive")
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	t.Log("Amount of Active Subscriptions: ", subscriptionList.Count())
 
@@ -118,7 +146,11 @@ func TestGetActiveSubscriptionList(t *testing.T) {
 
 func TestGetExpiringSubscriptionList(t *testing.T) {
 
-	subscriptionList := SubscriptionList("subscriptionExpiringThisMonth")
+	subscriptionList, err := SubscriptionList("subscriptionExpiringThisMonth")
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	t.Log("Amount of Subscriptions Expiring This Month: ", subscriptionList.Count())
 
@@ -126,7 +158,11 @@ func TestGetExpiringSubscriptionList(t *testing.T) {
 
 func TestGetCardExpiringSubscriptionList(t *testing.T) {
 
-	subscriptionList := SubscriptionList("cardExpiringThisMonth")
+	subscriptionList, err := SubscriptionList("cardExpiringThisMonth")
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+	}
 
 	t.Log("Amount of Cards Expiring This Month: ", subscriptionList.Count())
 

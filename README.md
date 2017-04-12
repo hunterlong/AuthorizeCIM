@@ -84,7 +84,7 @@ newTransaction := AuthorizeCIM.NewTransaction{
 			ExpirationDate: "10/23",
 		},
 	}
-response := newTransaction.Charge()
+response, err := newTransaction.Charge()
 if response.Approved() {
 
 }
@@ -99,7 +99,7 @@ newTransaction := AuthorizeCIM.NewTransaction{
 			ExpirationDate: "10/27",
 		},
 	}
-response := newTransaction.AuthOnly()
+response, err := newTransaction.AuthOnly()
 if response.Approved() {
 
 }
@@ -111,7 +111,7 @@ oldTransaction := AuthorizeCIM.PreviousTransaction{
 		Amount: "49.99",
 		RefId:  "AUTHCODEHERE001",
 	}
-response := oldTransaction.Capture()
+response, err := oldTransaction.Capture()
 if response.Approved() {
 
 }
@@ -127,7 +127,7 @@ newTransaction := AuthorizeCIM.NewTransaction{
 		},
 		AuthCode: "YOURAUTHCODE",
 	}
-response := newTransaction.Charge()
+response, err := newTransaction.Charge()
 if response.Approved() {
 
 }
@@ -143,7 +143,7 @@ newTransaction := AuthorizeCIM.NewTransaction{
 		},
 		RefTransId: "0392482938402",
 	}
-response := newTransaction.Refund()
+response, err := newTransaction.Refund()
 if response.Approved() {
 
 }
@@ -154,7 +154,7 @@ if response.Approved() {
 oldTransaction := AuthorizeCIM.PreviousTransaction{
 		RefId: "3987324293834",
 	}
-response := oldTransaction.Void()
+response, err := oldTransaction.Void()
 if response.Approved() {
 
 }
@@ -177,7 +177,7 @@ newTransaction := AuthorizeCIM.NewTransaction{
 		Amount: "35.00",
 	}
 
-response := newTransaction.ChargeProfile(customer)
+response, err := newTransaction.ChargeProfile(customer)
 
 if response.Approved() {
 
@@ -215,7 +215,7 @@ oldTransaction := AuthorizeCIM.PreviousTransaction{
 		RefId:  "39824723983",
 	}
 
-	response := oldTransaction.Approve()
+	response, err := oldTransaction.Approve()
 	//response := oldTransaction.Decline()
 
 	if response.Approved() {
@@ -249,7 +249,7 @@ subscription := AuthorizeCIM.Subscription{
 		},
 	}
 
-response := subscription.Charge()
+response, err := subscription.Charge()
 
 if response.Approved() {
     fmt.Println("New Subscription ID: ",response.SubscriptionID)
@@ -284,7 +284,7 @@ subscription := AuthorizeCIM.Subscription{
 		},
 	}
 
-	response := subscription.Charge()
+	response, err := subscription.Charge()
 
 	if response.Approved() {
 		newSubscriptionId = response.SubscriptionID
@@ -307,7 +307,7 @@ sub := AuthorizeCIM.SetSubscription{
 		Id: "2973984693",
 	}
 
-subscriptionInfo := sub.Status()
+subscriptionInfo, err := sub.Status()
 
 fmt.Println("Subscription ID has status: ",subscriptionInfo.Status)
 ```
@@ -324,7 +324,7 @@ subscription := AuthorizeCIM.Subscription{
 		SubscriptionId: newSubscriptionId,
 	}
 
-response := subscription.Update()
+response, err := subscription.Update()
 
 if response.Approved() {
 
@@ -337,7 +337,7 @@ sub := AuthorizeCIM.SetSubscription{
 		Id: "2973984693",
 	}
 
-subscriptionInfo := sub.Cancel()
+subscriptionInfo, err := sub.Cancel()
 
 fmt.Println("Subscription ID has been canceled: ", sub.Id, "\n")
 ```
@@ -369,7 +369,7 @@ customer := AuthorizeCIM.Profile{
 		},
 	}
 
-	response := customer.Create()
+	response, err := customer.Create()
 
 if response.Approved() {
     fmt.Println("New Customer Profile Created #",response.CustomerProfileID)
@@ -385,7 +385,7 @@ customer := AuthorizeCIM.Customer{
 		ID: "13838",
 	}
 
-customerInfo := customer.Info()
+customerInfo, err := customer.Info()
 
 paymentProfiles := customerInfo.PaymentProfiles()
 shippingProfiles := customerInfo.ShippingProfiles()
@@ -420,7 +420,7 @@ customer := AuthorizeCIM.Customer{
 		ID: "13838",
 	}
 
-	response := customer.Delete()
+	response, err := customer.Delete()
 
 if response.Approved() {
 
@@ -452,7 +452,7 @@ paymentProfile := AuthorizeCIM.CustomerPaymentProfile{
 		},
 	}
 
-response := paymentProfile.Add()
+response, err := paymentProfile.Add()
 
 if response.Approved() {
 
@@ -467,7 +467,7 @@ customer := AuthorizeCIM.Customer{
 		ID: "3923482487",
 	}
 
-response := customer.Info()
+response, err := customer.Info()
 
 paymentProfiles := response.PaymentProfiles()
 ```
@@ -484,7 +484,7 @@ customerProfile := AuthorizeCIM.Customer{
 		PaymentID: "984583934",
 	}
 
-response := customerProfile.Validate()
+response, err := customerProfile.Validate()
 
 if response.Approved() {
 
@@ -516,7 +516,7 @@ customer := AuthorizeCIM.Profile{
 		},
 	}
 
-response := customer.UpdatePaymentProfile()
+response, err := customer.UpdatePaymentProfile()
 
 if response.Approved() {
     fmt.Println("Customer Payment Profile was Updated")
@@ -531,7 +531,7 @@ customer := AuthorizeCIM.Customer{
 		PaymentID: "98238472349",
 	}
 
-response := customer.DeletePaymentProfile()
+response, err := customer.DeletePaymentProfile()
 
 if response.Approved() {
     fmt.Println("Payment Profile was Deleted")
@@ -561,7 +561,7 @@ customer := AuthorizeCIM.Profile{
 		},
 	}
 
-response := customer.CreateShipping()
+response, err := customer.CreateShipping()
 
 if response.Approved() {
     fmt.Println("New Shipping Added: #",response.CustomerAddressID)
@@ -576,7 +576,7 @@ customer := AuthorizeCIM.Customer{
 		ID: "3842934233",
 	}
 
-response := customer.Info()
+response, err := customer.Info()
 
 shippingProfiles := response.ShippingProfiles()
 
@@ -600,7 +600,7 @@ customer := AuthorizeCIM.Profile{
 		},
 	}
 
-response := customer.UpdateShippingProfile()
+response, err := customer.UpdateShippingProfile()
 
 if response.Approved() {
     fmt.Println("Shipping Profile was updated")
@@ -613,7 +613,7 @@ customer := AuthorizeCIM.Customer{
 		ShippingID: "34892734829",
 	}
 
-	response := customer.DeleteShippingProfile()
+	response, err := customer.DeleteShippingProfile()
 
 	if response.Approved() {
 		fmt.Println("Shipping Profile was Deleted")

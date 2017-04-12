@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-func (tranx NewTransaction) Charge() TransactionResponse {
+func (tranx NewTransaction) Charge() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "authCaptureTransaction",
@@ -14,11 +14,11 @@ func (tranx NewTransaction) Charge() TransactionResponse {
 		},
 		AuthCode: tranx.AuthCode,
 	}
-	response, _ := SendTransactionRequest(new)
-	return response
+	response, err := SendTransactionRequest(new)
+	return response, err
 }
 
-func (tranx NewTransaction) ChargeProfile(profile Customer) TransactionResponse {
+func (tranx NewTransaction) ChargeProfile(profile Customer) (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "authCaptureTransaction",
@@ -30,11 +30,11 @@ func (tranx NewTransaction) ChargeProfile(profile Customer) TransactionResponse 
 			},
 		},
 	}
-	response, _ := SendTransactionRequest(new)
-	return response
+	response, err := SendTransactionRequest(new)
+	return response, err
 }
 
-func (tranx NewTransaction) AuthOnly() TransactionResponse {
+func (tranx NewTransaction) AuthOnly() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "authOnlyTransaction",
@@ -43,39 +43,39 @@ func (tranx NewTransaction) AuthOnly() TransactionResponse {
 			CreditCard: tranx.CreditCard,
 		},
 	}
-	response, _ := SendTransactionRequest(new)
-	return response
+	response, err := SendTransactionRequest(new)
+	return response, err
 }
 
-func (tranx NewTransaction) Refund() TransactionResponse {
+func (tranx NewTransaction) Refund() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "refundTransaction",
 		Amount:          tranx.Amount,
 		RefTransId:      tranx.RefTransId,
 	}
-	response, _ := SendTransactionRequest(new)
-	return response
+	response, err := SendTransactionRequest(new)
+	return response, err
 }
 
-func (tranx PreviousTransaction) Void() TransactionResponse {
+func (tranx PreviousTransaction) Void() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "voidTransaction",
 		RefTransId:      tranx.RefId,
 	}
-	response, _ := SendTransactionRequest(new)
-	return response
+	response, err := SendTransactionRequest(new)
+	return response, err
 }
 
-func (tranx PreviousTransaction) Capture() TransactionResponse {
+func (tranx PreviousTransaction) Capture() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "priorAuthCaptureTransaction",
 		RefTransId:      tranx.RefId,
 	}
-	response, _ := SendTransactionRequest(new)
-	return response
+	response, err := SendTransactionRequest(new)
+	return response, err
 }
 
 func UpdateSplitTenderGround() {
@@ -106,7 +106,7 @@ func GetHostedPaymentPage() {
 
 }
 
-func SendTransactionRequest(input TransactionRequest) (TransactionResponse, interface{}) {
+func SendTransactionRequest(input TransactionRequest) (*TransactionResponse, error) {
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: GetAuthentication(),
@@ -115,15 +115,15 @@ func SendTransactionRequest(input TransactionRequest) (TransactionResponse, inte
 	}
 	jsoned, err := json.Marshal(action)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	response := SendRequest(jsoned)
+	response, err := SendRequest(jsoned)
 	var dat TransactionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return dat, err
+	return &dat, err
 }
 
 type NewTransaction struct {
