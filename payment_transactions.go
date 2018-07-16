@@ -54,6 +54,9 @@ func (tranx NewTransaction) Refund() (*TransactionResponse, error) {
 		TransactionType: "refundTransaction",
 		Amount:          tranx.Amount,
 		RefTransId:      tranx.RefTransId,
+		Payment: &Payment{
+			CreditCard: tranx.CreditCard,
+		},
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
