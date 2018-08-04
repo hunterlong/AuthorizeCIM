@@ -39,14 +39,14 @@ subscriptions := customerInfo.Subscriptions()
 # Usage
 * Import package
 ```
-go get github.com/hunterlong/authorizecim
+go get gopkg.in/hunterlong/authorizecim.v1
 ```
 ```go
-import "github.com/hunterlong/authorizecim"
+import "gopkg.in/hunterlong/authorizecim.v1"
 ```
 ###### Or Shorten the Package Name
 ```go
-import auth "github.com/hunterlong/authorizecim"
+import auth "gopkg.in/hunterlong/authorizecim.v1"
 // auth.SetAPIInfo(apiName,apiKey,"test")
 ```
 ***
