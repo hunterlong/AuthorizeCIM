@@ -358,8 +358,8 @@ type Profile struct {
 
 type PaymentProfiles struct {
 	CustomerType string  `json:"customerType,omitempty"`
-	Payment      Payment `json:"payment,omitempty"`
 	BillTo       *BillTo `json:"billTo,omitempty"`
+	Payment      Payment `json:"payment,omitempty"`
 	PaymentId    string  `json:"paymentProfileId,omitempty"`
 }
 
