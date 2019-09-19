@@ -12,6 +12,7 @@ func (tranx NewTransaction) Charge() (*TransactionResponse, error) {
 		Payment: &Payment{
 			CreditCard: tranx.CreditCard,
 		},
+		Order:    tranx.Order,
 		BillTo:   tranx.BillTo,
 		AuthCode: tranx.AuthCode,
 	}
@@ -136,6 +137,7 @@ type NewTransaction struct {
 	RefTransId string     `json:"refTransId,omitempty"`
 	CreditCard CreditCard `json:"payment,omitempty"`
 	AuthCode   string     `json:"authCode,omitempty"`
+	Order      *Order     `json:"order,omitempty"`
 	BillTo     *BillTo    `json:"omitempty"`
 }
 
