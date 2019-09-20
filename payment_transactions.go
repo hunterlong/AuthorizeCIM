@@ -12,6 +12,7 @@ func (tranx NewTransaction) Charge() (*TransactionResponse, error) {
 		Payment: &Payment{
 			CreditCard: tranx.CreditCard,
 		},
+		Order:    tranx.Order,
 		BillTo:   tranx.BillTo,
 		AuthCode: tranx.AuthCode,
 	}
@@ -53,7 +54,7 @@ func (tranx NewTransaction) Refund() (*TransactionResponse, error) {
 	new = TransactionRequest{
 		TransactionType: "refundTransaction",
 		Amount:          tranx.Amount,
-		RefTransId:      tranx.RefTransId,
+		RefId:           tranx.RefId,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -63,7 +64,7 @@ func (tranx PreviousTransaction) Void() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "voidTransaction",
-		RefTransId:      tranx.RefId,
+		RefId:           tranx.RefId,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -73,7 +74,7 @@ func (tranx PreviousTransaction) Capture() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "priorAuthCaptureTransaction",
-		RefTransId:      tranx.RefId,
+		RefId:           tranx.RefId,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -111,7 +112,8 @@ func SendTransactionRequest(input TransactionRequest) (*TransactionResponse, err
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: GetAuthentication(),
-			TransactionRequest:     input,
+			RefId:              input.RefId,
+			TransactionRequest: input,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -119,6 +121,9 @@ func SendTransactionRequest(input TransactionRequest) (*TransactionResponse, err
 		return nil, err
 	}
 	response, err := SendRequest(jsoned)
+	if err != nil {
+		return nil, err
+	}
 	var dat TransactionResponse
 	err = json.Unmarshal(response, &dat)
 	if err != nil {
@@ -129,10 +134,10 @@ func SendTransactionRequest(input TransactionRequest) (*TransactionResponse, err
 
 type NewTransaction struct {
 	Amount     string     `json:"amount,omitempty"`
-	InvoiceId  string     `json:"invoiceId,omitempty"`
-	RefTransId string     `json:"refTransId,omitempty"`
+	RefId      string     `json:"-"`
 	CreditCard CreditCard `json:"payment,omitempty"`
 	AuthCode   string     `json:"authCode,omitempty"`
+	Order      *Order     `json:"order,omitempty"`
 	BillTo     *BillTo    `json:"omitempty"`
 }
 
@@ -190,7 +195,7 @@ type CreatePayment struct {
 
 type CreateTransactionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication,omitempty"`
-	RefID                  string                 `json:"refId,omitempty"`
+	RefId                  string                 `json:"refId,omitempty"`
 	TransactionRequest     TransactionRequest     `json:"transactionRequest,omitempty"`
 }
 
@@ -261,23 +266,29 @@ type UserField struct {
 }
 
 type TransactionRequest struct {
-	TransactionType string     `json:"transactionType,omitempty"`
-	Amount          string     `json:"amount,omitempty"`
-	Payment         *Payment   `json:"payment,omitempty"`
-	RefTransId      string     `json:"refTransId,omitempty"`
-	AuthCode        string     `json:"authCode,omitempty"`
-	Profile         *Profile   `json:"profile,omitempty"`
-	LineItems       *LineItems `json:"lineItems,omitempty"`
-	//Tax                 Tax                 `json:"tax,omitempty"`
-	//Duty                Duty                `json:"duty,omitempty"`
-	//Shipping            Shipping            `json:"shipping,omitempty"`
-	//PoNumber            string              `json:"poNumber,omitempty"`
-	//Customer            Customer            `json:"customer,omitempty"`
-	BillTo     *BillTo  `json:"billTo,omitempty"`
-	ShipTo     *Address `json:"shipTo,omitempty"`
-	CustomerIP string   `json:"customerIP,omitempty"`
-	//TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"`
-	//UserFields          UserFields          `json:"userFields,omitempty"`
+	TransactionType     string               `json:"transactionType,omitempty"`
+	Amount              string               `json:"amount,omitempty"`
+	Payment             *Payment             `json:"payment,omitempty"`
+	RefId               string               `json:"-"`
+	AuthCode            string               `json:"authCode,omitempty"`
+	Profile             *Profile             `json:"profile,omitempty"`
+	Order               *Order               `json:"order,omitempty"`
+	LineItems           *LineItems           `json:"lineItems,omitempty"`
+	Tax                 *Tax                 `json:"tax,omitempty"`
+	Duty                *Duty                `json:"duty,omitempty"`
+	Shipping            *Shipping            `json:"shipping,omitempty"`
+	PoNumber            *string              `json:"poNumber,omitempty"`
+	Customer            *Customer            `json:"customer,omitempty"`
+	BillTo              *BillTo              `json:"billTo,omitempty"`
+	ShipTo              *Address             `json:"shipTo,omitempty"`
+	CustomerIP          string               `json:"customerIP,omitempty"`
+	TransactionSettings *TransactionSettings `json:"transactionSettings,omitempty"`
+	UserFields          *UserFields          `json:"userFields,omitempty"`
+}
+
+type Order struct {
+	InvoiceNumber string `json:"invoiceNumber,omitempty"`
+	Description   string `json:"description,omitempty"`
 }
 
 type Address struct {

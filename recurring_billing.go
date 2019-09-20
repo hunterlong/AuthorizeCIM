@@ -86,6 +86,7 @@ type Subscription struct {
 	Amount          string            `json:"amount,omitempty"`
 	TrialAmount     string            `json:"trialAmount,omitempty"`
 	Payment         *Payment          `json:"payment,omitempty"`
+	Order           *Order            `json:"order,omitempty"`
 	BillTo          *BillTo           `json:"billTo,omitempty"`
 	SubscriptionId  string            `json:"subscriptionId,omitempty"`
 	Profile         *CustomerProfiler `json:"profile,omitempty"`
