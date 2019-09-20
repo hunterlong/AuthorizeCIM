@@ -265,24 +265,24 @@ type UserField struct {
 }
 
 type TransactionRequest struct {
-	TransactionType string     `json:"transactionType,omitempty"`
-	Amount          string     `json:"amount,omitempty"`
-	Payment         *Payment   `json:"payment,omitempty"`
-	RefTransId      string     `json:"refTransId,omitempty"`
-	AuthCode        string     `json:"authCode,omitempty"`
-	Profile         *Profile   `json:"profile,omitempty"`
-	Order           *Order     `json:"order,omitempty"`
-	LineItems       *LineItems `json:"lineItems,omitempty"`
-	//Tax                 Tax                 `json:"tax,omitempty"`
-	//Duty                Duty                `json:"duty,omitempty"`
-	//Shipping            Shipping            `json:"shipping,omitempty"`
-	//PoNumber            string              `json:"poNumber,omitempty"`
-	Customer            Customer            `json:"customer,omitempty"`
-	BillTo              *BillTo             `json:"billTo,omitempty"`
-	ShipTo              *Address            `json:"shipTo,omitempty"`
-	CustomerIP          string              `json:"customerIP,omitempty"`
-	TransactionSettings TransactionSettings `json:"transactionSettings,omitempty"`
-	UserFields          UserFields          `json:"userFields,omitempty"`
+	TransactionType     string               `json:"transactionType,omitempty"`
+	Amount              string               `json:"amount,omitempty"`
+	Payment             *Payment             `json:"payment,omitempty"`
+	RefTransId          string               `json:"refTransId,omitempty"`
+	AuthCode            string               `json:"authCode,omitempty"`
+	Profile             *Profile             `json:"profile,omitempty"`
+	Order               *Order               `json:"order,omitempty"`
+	LineItems           *LineItems           `json:"lineItems,omitempty"`
+	Tax                 *Tax                 `json:"tax,omitempty"`
+	Duty                *Duty                `json:"duty,omitempty"`
+	Shipping            *Shipping            `json:"shipping,omitempty"`
+	PoNumber            *string              `json:"poNumber,omitempty"`
+	Customer            *Customer            `json:"customer,omitempty"`
+	BillTo              *BillTo              `json:"billTo,omitempty"`
+	ShipTo              *Address             `json:"shipTo,omitempty"`
+	CustomerIP          string               `json:"customerIP,omitempty"`
+	TransactionSettings *TransactionSettings `json:"transactionSettings,omitempty"`
+	UserFields          *UserFields          `json:"userFields,omitempty"`
 }
 
 type Order struct {
