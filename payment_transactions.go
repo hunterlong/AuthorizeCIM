@@ -133,7 +133,6 @@ func SendTransactionRequest(input TransactionRequest) (*TransactionResponse, err
 
 type NewTransaction struct {
 	Amount     string     `json:"amount,omitempty"`
-	InvoiceId  string     `json:"invoiceId,omitempty"`
 	RefTransId string     `json:"refTransId,omitempty"`
 	CreditCard CreditCard `json:"payment,omitempty"`
 	AuthCode   string     `json:"authCode,omitempty"`
