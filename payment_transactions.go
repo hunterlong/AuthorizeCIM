@@ -54,7 +54,7 @@ func (tranx NewTransaction) Refund() (*TransactionResponse, error) {
 	new = TransactionRequest{
 		TransactionType: "refundTransaction",
 		Amount:          tranx.Amount,
-		RefTransId:      tranx.RefTransId,
+		RefId:           tranx.RefId,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -64,7 +64,7 @@ func (tranx PreviousTransaction) Void() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "voidTransaction",
-		RefTransId:      tranx.RefId,
+		RefId:           tranx.RefId,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -74,7 +74,7 @@ func (tranx PreviousTransaction) Capture() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "priorAuthCaptureTransaction",
-		RefTransId:      tranx.RefId,
+		RefId:           tranx.RefId,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -112,7 +112,8 @@ func SendTransactionRequest(input TransactionRequest) (*TransactionResponse, err
 	action := CreatePayment{
 		CreateTransactionRequest: CreateTransactionRequest{
 			MerchantAuthentication: GetAuthentication(),
-			TransactionRequest:     input,
+			RefId:              input.RefId,
+			TransactionRequest: input,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -133,7 +134,7 @@ func SendTransactionRequest(input TransactionRequest) (*TransactionResponse, err
 
 type NewTransaction struct {
 	Amount     string     `json:"amount,omitempty"`
-	RefTransId string     `json:"refTransId,omitempty"`
+	RefId      string     `json:"-"`
 	CreditCard CreditCard `json:"payment,omitempty"`
 	AuthCode   string     `json:"authCode,omitempty"`
 	Order      *Order     `json:"order,omitempty"`
@@ -194,7 +195,7 @@ type CreatePayment struct {
 
 type CreateTransactionRequest struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication,omitempty"`
-	RefID                  string                 `json:"refId,omitempty"`
+	RefId                  string                 `json:"refId,omitempty"`
 	TransactionRequest     TransactionRequest     `json:"transactionRequest,omitempty"`
 }
 
@@ -268,7 +269,7 @@ type TransactionRequest struct {
 	TransactionType     string               `json:"transactionType,omitempty"`
 	Amount              string               `json:"amount,omitempty"`
 	Payment             *Payment             `json:"payment,omitempty"`
-	RefTransId          string               `json:"refTransId,omitempty"`
+	RefId               string               `json:"-"`
 	AuthCode            string               `json:"authCode,omitempty"`
 	Profile             *Profile             `json:"profile,omitempty"`
 	Order               *Order               `json:"order,omitempty"`
