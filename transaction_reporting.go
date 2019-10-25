@@ -57,11 +57,11 @@ func (r UnsettledTransactionListResponse) List() []Transaction {
 }
 
 func (r *GetTransactionListResponse) List() []Transaction {
-	return r.GetTransactionList.Transactions.Transaction
+	return r.Transactions
 }
 
 func (r *GetTransactionListResponse) Count() int {
-	return r.GetTransactionList.TotalNumInResultSet
+	return r.TotalNumInResultSet
 }
 
 func (r Range) Transactions() (*GetTransactionListResponse, error) {
@@ -77,7 +77,7 @@ func (r Range) Transactions() (*GetTransactionListResponse, error) {
 	}
 	response, err := SendRequest(jsoned)
 	var dat GetTransactionListResponse
-	json.Unmarshal(response, &dat)
+	err = json.Unmarshal(response, &dat)
 	return &dat, err
 }
 
@@ -169,16 +169,14 @@ type GetTransactionList struct {
 }
 
 type GetTransactionListResponse struct {
-	GetTransactionList struct {
-		MessagesResponse
-		Transactions        Transactions `json:"transactions"`
-		TotalNumInResultSet int          `json:"totalNumInResultSet"`
-	} `json:"getTransactionListResponse"`
+	MessagesResponse
+	Transactions        []Transaction `json:"transactions"`
+	TotalNumInResultSet int           `json:"totalNumInResultSet"`
 }
 
-type Transactions struct {
-	Transaction []Transaction `json:"transaction"`
-}
+//type Transactions struct {
+//	Transaction []Transaction `json:"transaction"`
+//}
 
 type Transaction struct {
 	TransID           string  `json:"transId"`
