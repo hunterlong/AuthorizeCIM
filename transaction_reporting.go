@@ -214,6 +214,8 @@ type TransactionDetailsResponse struct {
 }
 
 type FullTransaction struct {
+	//artificially introduced. Never filled by AuthNet
+	PaymentType               string
 	TransID                   string    `json:"transId"`
 	SubmitTimeUTC             time.Time `json:"submitTimeUTC"`
 	SubmitTimeLocal           string    `json:"submitTimeLocal"`
@@ -232,7 +234,8 @@ type FullTransaction struct {
 		SettlementState              string    `json:"settlementState"`
 	} `json:"batch"`
 	Order struct {
-		InvoiceNumber string `json:"invoiceNumber"`
+		InvoiceNumber      string `json:"invoiceNumber"`
+		InvoiceDescription string `json:"description"`
 	} `json:"order"`
 	RequestedAmountSpecified         bool    `json:"requestedAmountSpecified"`
 	AuthAmount                       float64 `json:"authAmount"`
@@ -247,10 +250,15 @@ type FullTransaction struct {
 			RoutingNumber        string      `json:"routingNumber"`
 			AccountNumber        string      `json:"accountNumber"`
 			NameOnAccount        string      `json:"nameOnAccount"`
-			EcheckType           int         `json:"echeckType"`
+			EcheckType           string      `json:"echeckType"`
 			EcheckTypeSpecified  bool        `json:"echeckTypeSpecified"`
 			BankName             interface{} `json:"bankName"`
-		} `json:"bankAccount"`
+		} `json:"bankAccount,omitempty"`
+		CreditCard struct {
+			CardNumber     string `json:"cardNumber"`
+			ExpirationDate string `json:"expirationDate"`
+			CardType       string `json:"cardType"`
+		} `json:"creditCard,omitempty"`
 	} `json:"payment"`
 	RecurringBilling          bool `json:"recurringBilling"`
 	RecurringBillingSpecified bool `json:"recurringBillingSpecified"`
@@ -261,6 +269,14 @@ type FullTransaction struct {
 		Code        string    `json:"code"`
 		Description string    `json:"description"`
 	} `json:"returnedItems"`
+	Customer struct {
+		Type  string `json:"type"`
+		Id    string `json:"id"`
+		Email string `json:"email"`
+	} `json:"customer"`
+	BillTo struct {
+		Company string `json:"company,omitempty"`
+	} `json:"billTo"`
 }
 
 type GetUnsettledBatchTransactionListRequest struct {
