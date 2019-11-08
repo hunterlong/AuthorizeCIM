@@ -2,7 +2,6 @@ package AuthorizeCIM
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -58,9 +57,7 @@ func SendRequest(input []byte) ([]byte, error) {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	body = bytes.TrimPrefix(body, []byte("\xef\xbb\xbf"))
-	if showLogs {
-		fmt.Println(string(body))
-	}
+
 	return body, err
 }
 
