@@ -17,10 +17,12 @@ func init() {
 }
 
 func TestSetAPIInfo(t *testing.T) {
-	apiName := os.Getenv("apiName")
-	apiKey := os.Getenv("apiKey")
-	//apiMode := os.Getenv("mode")
+	apiName := os.Getenv("AUTHORIZE_ID")
+	apiKey := os.Getenv("AUTHORIZE_TRANSACTION_KEY")
+	// apiMode := os.Getenv("AUTHORIZE_API_ENVIRONMENT")
+
 	SetAPIInfo(apiName, apiKey, "test")
+
 	t.Log("API Info Set")
 }
 
