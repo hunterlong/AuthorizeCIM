@@ -239,6 +239,11 @@ type FullTransaction struct {
 	RequestedAmountSpecified         bool    `json:"requestedAmountSpecified"`
 	AuthAmount                       float64 `json:"authAmount"`
 	SettleAmount                     float64 `json:"settleAmount"`
+	Tax				struct	{
+		Amount			float64	`json:"amount"`
+		Name			string	`json:"name"`
+		Description		string	`json:"description"`
+	} `json:"tax"`
 	PrepaidBalanceRemainingSpecified bool    `json:"prepaidBalanceRemainingSpecified"`
 	TaxExempt                        bool    `json:"taxExempt"`
 	TaxExemptSpecified               bool    `json:"taxExemptSpecified"`
