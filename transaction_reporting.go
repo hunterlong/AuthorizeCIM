@@ -118,7 +118,7 @@ func (tranx PreviousTransaction) Info() (*FullTransaction, error) {
 	new := GetTransactionDetailsRequest{
 		GetTransactionDetails: GetTransactionDetails{
 			MerchantAuthentication: GetAuthentication(),
-			TransID:                tranx.RefId,
+			TransID:                tranx.RefID,
 		},
 	}
 	jsoned, err := json.Marshal(new)

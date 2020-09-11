@@ -115,7 +115,7 @@ if response.Approved() {
 ```go
 oldTransaction := AuthorizeCIM.PreviousTransaction{
 		Amount: "49.99",
-		RefId:  "AUTHCODEHERE001",
+		RefID:  "AUTHCODEHERE001",
 	}
 response, err := oldTransaction.Capture()
 if response.Approved() {
@@ -149,7 +149,7 @@ newTransaction := AuthorizeCIM.NewTransaction{
 			CardNumber:     "4012888818888",
 			ExpirationDate: "10/24",
 		},
-		RefTransId: "0392482938402",
+		RefTransID: "0392482938402",
 	}
 response, err := newTransaction.Refund()
 if response.Approved() {
@@ -161,7 +161,7 @@ if response.Approved() {
 :white_check_mark: voidTransaction
 ```go
 oldTransaction := AuthorizeCIM.PreviousTransaction{
-		RefId: "3987324293834",
+		RefID: "3987324293834",
 	}
 response, err := oldTransaction.Void()
 if response.Approved() {
@@ -227,7 +227,7 @@ fmt.Println("Unsettled Count: ", transactions.Count)
 ```go
 oldTransaction := AuthorizeCIM.PreviousTransaction{
 		Amount: "49.99",
-		RefId:  "39824723983",
+		RefID:  "39824723983",
 	}
 
 	response, err := oldTransaction.Approve()
@@ -718,7 +718,7 @@ for _, v := range batches {
 :white_check_mark: getTransactionDetails
 ```go
 oldTransaction := AuthorizeCIM.PreviousTransaction{
-		RefId: "60019493304",
+		RefID: "60019493304",
 	}
 response := oldTransaction.Info()
 

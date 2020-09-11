@@ -24,6 +24,7 @@ func (tranx NewTransaction) ChargeProfile(profile Customer) (*TransactionRespons
 	new = TransactionRequest{
 		TransactionType: "authCaptureTransaction",
 		Amount:          tranx.Amount,
+		LineItems:       tranx.LineItems,
 		Profile: &Profile{
 			CustomerProfileId: profile.ID,
 			PaymentProfile: &PaymentProfile{
@@ -53,7 +54,7 @@ func (tranx NewTransaction) Refund() (*TransactionResponse, error) {
 	new = TransactionRequest{
 		TransactionType: "refundTransaction",
 		Amount:          tranx.Amount,
-		RefTransId:      tranx.RefTransId,
+		RefTransID:      tranx.RefTransID,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -63,7 +64,7 @@ func (tranx PreviousTransaction) Void() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "voidTransaction",
-		RefTransId:      tranx.RefId,
+		RefTransID:      tranx.RefID,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -73,7 +74,7 @@ func (tranx PreviousTransaction) Capture() (*TransactionResponse, error) {
 	var new TransactionRequest
 	new = TransactionRequest{
 		TransactionType: "priorAuthCaptureTransaction",
-		RefTransId:      tranx.RefId,
+		RefTransID:      tranx.RefID,
 	}
 	response, err := SendTransactionRequest(new)
 	return response, err
@@ -128,16 +129,16 @@ func SendTransactionRequest(input TransactionRequest) (*TransactionResponse, err
 }
 
 type NewTransaction struct {
-	Amount     string     `json:"amount,omitempty"`
-	InvoiceId  string     `json:"invoiceId,omitempty"`
-	RefTransId string     `json:"refTransId,omitempty"`
-	CreditCard CreditCard `json:"payment,omitempty"`
-	AuthCode   string     `json:"authCode,omitempty"`
-	BillTo     *BillTo    `json:"omitempty"`
+	Amount     string               `json:"amount,omitempty"`
+	RefTransID string               `json:"refTransId,omitempty"`
+	CreditCard CreditCard           `json:"payment,omitempty"`
+	AuthCode   string               `json:"authCode,omitempty"`
+	BillTo     *BillTo              `json:"billTo,omitempty"`
+	LineItems  map[string]*LineItem `json:"lineItems,omitempty"`
 }
 
 type PreviousTransaction struct {
-	RefId  string `json:"refTransId,omitempty"`
+	RefID  string `json:"refTransId,omitempty"`
 	Amount string `json:"amount,omitempty"`
 }
 
@@ -204,10 +205,6 @@ type CreditCard struct {
 	CardCode       string `json:"cardCode,omitempty"`
 }
 
-type LineItems struct {
-	LineItem []LineItem `json:"lineItem,omitempty"`
-}
-
 type LineItem struct {
 	ItemID      string `json:"itemId,omitempty"`
 	Name        string `json:"name,omitempty"`
@@ -261,13 +258,14 @@ type UserField struct {
 }
 
 type TransactionRequest struct {
-	TransactionType string     `json:"transactionType,omitempty"`
-	Amount          string     `json:"amount,omitempty"`
-	Payment         *Payment   `json:"payment,omitempty"`
-	RefTransId      string     `json:"refTransId,omitempty"`
-	AuthCode        string     `json:"authCode,omitempty"`
-	Profile         *Profile   `json:"profile,omitempty"`
-	LineItems       *LineItems `json:"lineItems,omitempty"`
+	TransactionType string               `json:"transactionType,omitempty"`
+	Amount          string               `json:"amount,omitempty"`
+	Payment         *Payment             `json:"payment,omitempty"`
+	RefTransID      string               `json:"refTransId,omitempty"`
+	InvoiceNumber   string               `json:"invoiseNumber,omitempty"`
+	AuthCode        string               `json:"authCode,omitempty"`
+	Profile         *Profile             `json:"profile,omitempty"`
+	LineItems       map[string]*LineItem `json:"lineItems,omitempty"`
 	//Tax                 Tax                 `json:"tax,omitempty"`
 	//Duty                Duty                `json:"duty,omitempty"`
 	//Shipping            Shipping            `json:"shipping,omitempty"`

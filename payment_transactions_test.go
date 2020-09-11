@@ -170,7 +170,7 @@ func TestAuthOnlyCard(t *testing.T) {
 func TestCaptureAuth(t *testing.T) {
 	oldTransaction := PreviousTransaction{
 		Amount: "49.99",
-		RefId:  previousAuth,
+		RefID:  previousAuth,
 	}
 	response, err := oldTransaction.Capture()
 	if err != nil {
@@ -212,7 +212,7 @@ func TestRefundCard(t *testing.T) {
 			CardNumber:     "4012888818888",
 			ExpirationDate: "10/24",
 		},
-		RefTransId: "0392482938402",
+		RefTransID: "0392482938402",
 	}
 	response, err := newTransaction.Refund()
 	if err != nil {
@@ -227,7 +227,7 @@ func TestRefundCard(t *testing.T) {
 
 func TestVoidCard(t *testing.T) {
 	newTransaction := PreviousTransaction{
-		RefId: previousCharged,
+		RefID: previousCharged,
 	}
 	response, err := newTransaction.Void()
 	if err != nil {

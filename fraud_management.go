@@ -76,10 +76,10 @@ func SendTransactionUpdate(tranx PreviousTransaction, method string) (*Transacti
 	action := UpdateHeldTransactionRequest{
 		UpdateHeldTransaction: UpdateHeldTransaction{
 			MerchantAuthentication: GetAuthentication(),
-			RefID: tranx.RefId,
+			RefID: tranx.RefID,
 			HeldTransactionRequest: HeldTransactionRequest{
 				Action:     method,
-				RefTransID: tranx.RefId,
+				RefTransID: tranx.RefID,
 			},
 		},
 	}
