@@ -428,6 +428,7 @@ type GetShippingProfiles struct {
 
 type GetPaymentProfiles struct {
 	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
+	DefaultPaymentProfile bool `json:"defaultPaymentProfile"`
 	Payment                  struct {
 		CreditCard struct {
 			CardNumber     string `json:"cardNumber"`
