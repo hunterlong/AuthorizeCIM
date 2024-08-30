@@ -158,6 +158,7 @@ type TranxResponse struct {
 	TestRequest    string `json:"testRequest"`
 	AccountNumber  string `json:"accountNumber"`
 	AccountType    string `json:"accountType"`
+	Profile        Profile `json:"profile"`
 	Errors         []struct {
 		ErrorCode string `json:"errorCode"`
 		ErrorText string `json:"errorText"`
