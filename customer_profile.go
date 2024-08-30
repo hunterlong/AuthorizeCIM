@@ -335,7 +335,7 @@ type CreateCustomerProfileRequest struct {
 type CreateCustomerProfile struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
 	Profile                Profile                `json:"profile"`
-	ValidationMode         string                 `json:"validationMode"`
+	ValidationMode         string                 `json:"validationMode,omitempty"`
 }
 
 type CustomerProfiler struct {
