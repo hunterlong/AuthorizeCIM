@@ -166,7 +166,7 @@ func CreateProfile(profile Profile) (*CustomProfileResponse, error) {
 		CreateCustomerProfile: CreateCustomerProfile{
 			MerchantAuthentication: GetAuthentication(),
 			Profile:                profile,
-			ValidationMode:         testMode,
+			//ValidationMode:         testMode,
 		},
 	}
 	jsoned, err := json.Marshal(action)
@@ -335,7 +335,7 @@ type CreateCustomerProfileRequest struct {
 type CreateCustomerProfile struct {
 	MerchantAuthentication MerchantAuthentication `json:"merchantAuthentication"`
 	Profile                Profile                `json:"profile"`
-	ValidationMode         string                 `json:"validationMode"`
+	ValidationMode         string                 `json:"validationMode,omitempty"`
 }
 
 type CustomerProfiler struct {
@@ -428,6 +428,7 @@ type GetShippingProfiles struct {
 
 type GetPaymentProfiles struct {
 	CustomerPaymentProfileID string `json:"customerPaymentProfileId"`
+	DefaultPaymentProfile bool `json:"defaultPaymentProfile"`
 	Payment                  struct {
 		CreditCard struct {
 			CardNumber     string `json:"cardNumber"`
